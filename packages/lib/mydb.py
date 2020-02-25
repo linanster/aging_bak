@@ -21,39 +21,43 @@ def query_aging_all():
         conn = MySQLdb.Connect(host=db_addr, port=db_port, user=db_user, passwd=db_passwd, db=db_name)
     except Exception as e:
         print "连接数据库失败: " + str(e)
+        results = 1
     else:
         cursor = conn.cursor()
         cursor.execute(sql_query_aging_all)
-        result = cursor.fetchall()
+        # results probably is [], no data queried out from database
+        results = cursor.fetchall()
         cursor.close()
-    finally:
         conn.close()
-    return result
+    finally:
+        return results
 
 def query_device_all():
     try:
         conn = MySQLdb.Connect(host=db_addr, port=db_port, user=db_user, passwd=db_passwd, db=db_name)
     except Exception as e:
         print "连接数据库失败: " + str(e)
+        results = 1
     else:
         cursor = conn.cursor()
         cursor.execute(sql_query_device_all)
-        result = cursor.fetchall()
+        results = cursor.fetchall()
         cursor.close()
-    finally:
         conn.close()
-    return result
+    finally:
+        return results
 
 def query_factory_all():
     try:
         conn = MySQLdb.Connect(host=db_addr, port=db_port, user=db_user, passwd=db_passwd, db=db_name, charset='utf8')
     except Exception as e:
         print "连接数据库失败: " + str(e)
+        results = 1
     else:
         cursor = conn.cursor()
         cursor.execute(sql_query_factory_all)
-        result = cursor.fetchall()
+        results = cursor.fetchall()
         cursor.close()
-    finally:
         conn.close()
-    return result
+    finally:
+        return results

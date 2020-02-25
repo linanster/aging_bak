@@ -19,26 +19,28 @@
       <th>MAC_BLE</th>
       <th>MAC_WIFI</th>
       <th>合格</th>
-      <th>云保存</th>
+      <th>云同步</th>
       <th>时间</th>
     </tr>
     {% for result in results %}
-    <tr>
-      <td>{{ loop.index }}</td>
-      <td>{{result[0]}}</td>
-      <td>{{result[1]}}</td>
-      <td>{{result[2]}}</td>
-      <td>{{result[3]}}</td>
-      <td>{{result[4]}}</td>
-      <td>{{result[5]}}</td>
-      <td>{{result[6]}}</td>
-      <td>{{result[7]}}</td>
-      <td>{{result[8]}}</td>
-      <td>{{result[9]}}</td>
-      <td>{{result[10]}}</td>
-    </tr>
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{result[0]}}</td>
+        <td>{{result[1]}}</td>
+        <td>{{result[2]}}</td>
+        <td>{{result[3]}}</td>
+        <td>{{result[4]}}</td>
+        <td>{{result[5]}}</td>
+        <td>{{result[6]}}</td>
+        <td>{{result[7]}}</td>
+        <td>{{result[8]}}</td>
+        <td>{{result[9]}}</td>
+        <td>{{result[10]}}</td>
+      </tr>
+    {% else %}
     {% endfor %}
   </table>
-  <a href="/index">返回主页</a>
+  <!-- <a href="/index">返回主页</a> -->
+  <a href="{{ url_for('handle_index') }}">返回主页</a>
 </body>
 </html>

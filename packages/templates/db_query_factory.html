@@ -21,8 +21,10 @@
       <td>{{result[1]}}</td>
       <td>{{result[2]}}</td>
     </tr>
+    {% else %}
     {% endfor %}
   </table>
-  <a href="/index">返回主页</a>
+  <!-- <a href="/index">返回主页</a> -->
+  <a href="{{ url_for('handle_index') }}">返回主页</a>
 </body>
 </html>
