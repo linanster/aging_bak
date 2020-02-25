@@ -1,0 +1,30 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<html>
+<head>
+  <title>
+    GE Lighting Aging Test Tool
+  </title>
+</head>
+<body>
+  <h4>设备类型: </h4>
+  <table border="1">
+    <tr>
+      <th>序号</th>
+      <th>类型代码</th>
+      <th>设备类型</th>
+      <th>详细信息</th>
+      <th>其他信息</th>
+    </tr>
+    {% for result in results %}
+    <tr>
+      <td>{{ loop.index }}</td>
+      <td>{{result[0]}}</td>
+      <td>{{result[1]}}</td>
+      <td>{{result[2]}}</td>
+      <td>{{result[3]}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <a href="/index">返回主页</a>
+</body>
+</html>
