@@ -7,7 +7,7 @@
 # 2. Flask安装及配置
 
 ## 2.1 安装python3
-CentOS: yum install python36 python36-pip python3-devel gcc
+CentOS: yum install python36 python36-pip python3-devel gcc<br/>
 RaspPI: 
 
 ## 2.2 安装python3第三方开发包
