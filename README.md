@@ -8,7 +8,7 @@
 
 ## 2.1 安装python3
 CentOS: yum install python36 python36-pip python3-devel gcc<br/>
-RaspPI: <br/>
+RaspPI: python3.6 python3.6-dev python3-pip<br/>
 
 ## 2.2 安装python3第三方开发包
 pip3 install flask flask-script flask-blueprint flask-sqlalchemy flask-migrate flask-session<br/>
