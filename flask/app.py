@@ -2,7 +2,6 @@
 # coding:utf8
 #
 from flask import Flask, request, render_template
-import MySQLdb
 import json
 from lib import mydb
 from lib import mycmd
