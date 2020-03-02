@@ -1,7 +1,8 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python3
 # coding: utf8
 #
-import MySQLdb
+# import MySQLdb
+import pymysql as MySQLdb
 
 # predefined variables
 db_addr = 'localhost'
@@ -20,7 +21,7 @@ def query_aging_all():
     try:
         conn = MySQLdb.Connect(host=db_addr, port=db_port, user=db_user, passwd=db_passwd, db=db_name)
     except Exception as e:
-        print "连接数据库失败: " + str(e)
+        print("连接数据库失败: " + str(e))
         results = 1
     else:
         cursor = conn.cursor()
@@ -36,7 +37,7 @@ def query_device_all():
     try:
         conn = MySQLdb.Connect(host=db_addr, port=db_port, user=db_user, passwd=db_passwd, db=db_name)
     except Exception as e:
-        print "连接数据库失败: " + str(e)
+        print ("连接数据库失败: " + str(e))
         results = 1
     else:
         cursor = conn.cursor()
@@ -51,7 +52,7 @@ def query_factory_all():
     try:
         conn = MySQLdb.Connect(host=db_addr, port=db_port, user=db_user, passwd=db_passwd, db=db_name, charset='utf8')
     except Exception as e:
-        print "连接数据库失败: " + str(e)
+        print ("连接数据库失败: " + str(e))
         results = 1
     else:
         cursor = conn.cursor()

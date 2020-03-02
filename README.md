@@ -12,7 +12,8 @@ RaspPI: <br/>
 
 ## 2.2 安装python3第三方开发包
 pip3 install flask flask-script flask-blueprint flask-sqlalchemy flask-migrate flask-session<br/>
-pip3 install MySQL-python<br/>
+pip3 install **pymysql**<br/>
+pip2 install **MySQL-python**<br/>
 
 ## 2.3 其他
 
