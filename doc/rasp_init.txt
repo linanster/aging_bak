@@ -1,0 +1,79 @@
+1. Customized Alias 
+/etc/bash.bashrc
+~/.bashrc
+alias ls='ls --color=auto'
+alias ll='ls -l'
+alias la='ls -A'
+alias l='ls -CF'
+alias l.='ls -d .*'
+
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+
+2. Network interface (wlan0) configuration
+root@raspberrypi:~# 
+root@raspberrypi:~# cat /etc/network/interfaces
+# interfaces(5) file used by ifup(8) and ifdown(8)
+
+# Please note that this file is written to be used with dhcpcd
+# For static IP, consult /etc/dhcpcd.conf and 'man dhcpcd.conf'
+
+# Include files from /etc/network/interfaces.d:
+source-directory /etc/network/interfaces.d
+
+# auto lo eth0 wlan0
+# iface lo inet loopback
+# iface eth0 inet dhcp
+# iface wlan0 inet dhcp
+# iface wlan0 inet static
+#   address 192.168.50.101
+#   netmask 255.255.255.0
+#   gateway 192.168.50.1
+root@raspberrypi:~# 
+root@raspberrypi:~# 
+root@raspberrypi:~# tail /etc/dhcpcd.conf 
+#static domain_name_servers=192.168.1.1
+
+# fallback to static profile on eth0
+#interface eth0
+#fallback static_eth0
+#
+#
+interface wlan0
+static ip_address=192.168.50.101/24
+static routers=192.168.50.1
+root@raspberrypi:~# 
+root@raspberrypi:~# 
+
+3. Apt repo configuration
+3.1 edit /etc/apt/source.list
+root@raspberrypi:~# cat /etc/apt/sources.list
+deb http://raspbian.raspberrypi.org/raspbian/ buster main contrib non-free rpi
+# Uncomment line below then 'apt-get update' to enable 'apt-get source'
+#deb-src http://raspbian.raspberrypi.org/raspbian/ buster main contrib non-free rpi
+root@raspberrypi:~# 
+3.2 install public key
+wget http://raspbian.raspberrypi.org/raspbian.public.key
+apt-key add raspbian.public.key
+3.3 execute update
+apt update
+
+4. Remove vimtiny and install vim
+apt remove vim-common
+apt install vim
+
+5. SSH configuration
+5.1 permit root login
+root@raspberrypi:~# cat /etc/ssh/sshd_config | grep PermitRootLogin
+#PermitRootLogin prohibit-password
+PermitRootLogin yes
+5.2 enable and start ssh.service
+systemctl enable ssh.service
+systemctl strat ssh.service
+
+6. Other configuration
+6.1 raspi-config TUI-based config tool
