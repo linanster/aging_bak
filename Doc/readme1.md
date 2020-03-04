@@ -1,10 +1,13 @@
 # 1. 基础组件安装
 
 ## 1.1 CentOS
-安装python3:<br/>yum install python36 python36-pip python3-devel gcc<br/>
-安装mariadb:<br/>yum install mariadb mariadb-server mariadb-devel mariadb-libs<br/>
+安装python3:<br/>
+yum install python36 python36-pip python3-devel gcc<br/>
+安装mariadb:<br/>
+yum install mariadb mariadb-server mariadb-devel mariadb-libs<br/>
 ## 1.2 Rasp
 安装python3:<br/>
+apt install python3.6 python3.6-dev python3-pip
 安装mariadb:<br/>
 
 # 2. 组件初始化配置
