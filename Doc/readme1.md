@@ -7,8 +7,9 @@ yum install python36 python36-pip python3-devel gcc<br/>
 yum install mariadb mariadb-server mariadb-devel mariadb-libs<br/>
 ## 1.2 Rasp
 安装python3:<br/>
-apt install python3.6 python3.6-dev python3-pip
+apt install python3.6 python3.6-dev python3-pip<br/>
 安装mariadb:<br/>
+apt install mariadb-server mariadb-client<br/>
 
 # 2. 组件初始化配置
 ## 2.1 mariadb环境
