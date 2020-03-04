@@ -19,7 +19,7 @@ mysql -uroot -hlocalhost -p'123456' < mariadb/db1.sql<br/>
 - 导入测试数据<br/>
 mysql -uroot -hlocalhost -p'123456' < mariadb/db2.sql<br/>
 ## 2.2 python3环境
-- pip安装python3第三方开发包
+- pip安装python3第三方开发包<br/>
 pip3 install flask flask-script flask-blueprint flask-sqlalchemy flask-migrate flask-session<br/>
 pip3 install **pymysql**<br/>
 
