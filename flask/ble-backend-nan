@@ -1,0 +1,42 @@
+#! /usr/bin/env sh
+#
+usage="Usage: ble-backend [--start] [--scan] [--stop]\n"
+
+if [ $# -eq 0 ]; then
+  printf "${usage}"
+  exit 1
+fi
+
+while [ $# -gt 0 ]; do
+  case $1 in
+    --help|-h)
+      printf "${usage}"
+      exit 0
+      ;;
+    --start)
+      echo 'start'
+      exit 0
+      ;;
+    --scan)
+      while true; do
+        echo "scan" 
+        mysql -p123456 -e 'INSERT ge.tb_data_aging(device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(5, 2, '3.1', -65, -33, "scantest", "scantest", true, false, now())'
+        sleep 10
+      done
+      exit 0
+      ;;
+    --stop)
+      echo 'stop'
+      exit 0
+      ;;
+    *)
+      # continue
+      shift
+      ;;
+  esac
+  shift || true
+done
+
+printf "Invalid input\n"
+printf "${usage}"
+exit 1

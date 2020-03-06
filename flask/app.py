@@ -38,17 +38,21 @@ def handle_info_factory():
 def handle_cmd_start():
     errno = mycmd.start()
     if errno == 0:
-        return json.loads('{"cmd":"start","result":"success"}')
+        # return json.loads('{"cmd":"start","result":"success"}')
+        return json.dumps({"cmd":"start","result":"success"})
     else:
-        return json.loads('{"cmd":"start","result":"failed","errno":%d}' % errno)
+        # return json.loads('{"cmd":"start","result":"failed","errno":%d}' % errno)
+        return json.dumps({"cmd":"start","result":"failed","errno":errno})
 
 @app.route('/cmd_stop/', methods=['POST'])
 def handle_cmd_stop():
     errno = mycmd.stop()
     if errno == 0:
-        return json.loads('{"cmd":"stop","result":"success"}')
+        # return json.loads('{"cmd":"stop","result":"success"}')
+        return json.dumps({"cmd":"stop","result":"success"})
     else:
-        return json.loads('{"cmd":"stop","result":"failed","errno":%d}' % errno)
+        # return json.loads('{"cmd":"stop","result":"failed","errno":%d}' % errno)
+        return json.dumps({"cmd":"stop","result":"failed","errno":errno})
 
 
 if __name__ == '__main__':

@@ -10,7 +10,8 @@ def start():
         print('starting...')
         time.sleep(3)
         # print os.getcwd() - /git/aging/flask
-        p = subprocess.Popen("./ble-backend --scan", shell=True, close_fds=True, stdin=subprocess.PIPE, stdout=None)
+        p = subprocess.Popen("./ble-backend-nan --scan", shell=True, close_fds=True, stdin=subprocess.PIPE, stdout=None)
+        # p = subprocess.Popen("./ble-backend -command=scan", shell=True, close_fds=True, stdin=subprocess.PIPE, stdout=None)
         # 模拟错误
         # raise Error
     except Exception as e:

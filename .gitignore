@@ -1,3 +1,4 @@
 **/*.py[cdo]
 **/*.bak
 **/*.swp
+**/ble-backend
