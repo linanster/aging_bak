@@ -15,21 +15,21 @@ while [ $# -gt 0 ]; do
       ;;
     # --start)
     -command=start)
-      echo 'start'
-      sleep 10
+      echo '**start**'
+      sleep 5
       exit 0
       ;;
     # --changemesh)
     -command=changemesh)
-      echo 'changemesh'
-      sleep 1
+      echo '*changemesh*'
+      sleep 5
       exit 0
       ;;
     # --scan)
     -command=scan)
-      echo "scan"
+      echo "**scan**"
       mysql -p123456 -e 'INSERT ge.tb_data_aging(device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(5, 2, '3.1', -65, -33, "scantest", "scantest", true, false, now())'
-      sleep 1
+      sleep 5
       exit 0
       ;;
     *)
