@@ -22,5 +22,8 @@
   <form action="/cmd_stop/" method="post"> 
     <button type="submit">结束</button>
   </form>
+  {%- for message in get_flashed_messages() %}
+    {{ message }}
+  {%- endfor %} 
 </body>
 </html>

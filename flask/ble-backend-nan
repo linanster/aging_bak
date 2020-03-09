@@ -1,6 +1,6 @@
 #! /usr/bin/env sh
 #
-usage="Usage: ble-backend [--start] [--scan] [--stop]\n"
+usage="Usage: ble-backend [--start] [--changemesh] [--scan] [--stop]\n"
 
 if [ $# -eq 0 ]; then
   printf "${usage}"
@@ -13,20 +13,23 @@ while [ $# -gt 0 ]; do
       printf "${usage}"
       exit 0
       ;;
-    --start)
+    # --start)
+    -command=start)
       echo 'start'
+      sleep 10
       exit 0
       ;;
-    --scan)
-      while true; do
-        echo "scan" 
-        mysql -p123456 -e 'INSERT ge.tb_data_aging(device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(5, 2, '3.1', -65, -33, "scantest", "scantest", true, false, now())'
-        sleep 10
-      done
+    # --changemesh)
+    -command=changemesh)
+      echo 'changemesh'
+      sleep 1
       exit 0
       ;;
-    --stop)
-      echo 'stop'
+    # --scan)
+    -command=scan)
+      echo "scan"
+      mysql -p123456 -e 'INSERT ge.tb_data_aging(device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(5, 2, '3.1', -65, -33, "scantest", "scantest", true, false, now())'
+      sleep 1
       exit 0
       ;;
     *)
