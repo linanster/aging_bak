@@ -22,6 +22,15 @@
   <form action="/cmd_stop/" method="post"> 
     <button type="submit">结束</button>
   </form>
+  <form action="/db_create/" method="post"> 
+    <button type="submit">初始化数据库</button>
+  </form>
+  <form action="/db_delete/" method="post"> 
+    <button type="submit">删除数据库</button>
+  </form>
+  <form action="/db_gen_testdata/" method="post"> 
+    <button type="submit">生成测试数据</button>
+  </form>
   {%- for message in get_flashed_messages() %}
     {{ message }}
   {%- endfor %} 

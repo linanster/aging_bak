@@ -25,17 +25,17 @@
     {% for result in results %}
       <tr>
         <td>{{ loop.index }}</td>
-        <td>{{result[0]}}</td>
-        <td>{{result[1]}}</td>
-        <td>{{result[2]}}</td>
-        <td>{{result[3]}}</td>
-        <td>{{result[4]}}</td>
-        <td>{{result[5]}}</td>
-        <td>{{result[6]}}</td>
-        <td>{{result[7]}}</td>
-        <td>{{result[8]}}</td>
-        <td>{{result[9]}}</td>
-        <td>{{result[10]}}</td>
+        <td>{{result.id}}</td>
+        <td>{{result.device_type}}</td>
+        <td>{{result.factory}}</td>
+        <td>{{result.fw_version}}</td>
+        <td>{{result.rssi_ble}}</td>
+        <td>{{result.rssi_wifi}}</td>
+        <td>{{result.mac_ble}}</td>
+        <td>{{result.mac_wifi}}</td>
+        <td>{{result.is_qualified}}</td>
+        <td>{{result.is_sync}}</td>
+        <td>{{result.datetime}}</td>
       </tr>
     {% else %}
     {% endfor %}

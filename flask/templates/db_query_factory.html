@@ -17,9 +17,9 @@
     {% for result in results %}
     <tr>
       <td>{{ loop.index }}</td>
-      <td>{{result[0]}}</td>
-      <td>{{result[1]}}</td>
-      <td>{{result[2]}}</td>
+      <td>{{result.id}}</td>
+      <td>{{result.name}}</td>
+      <td>{{result.description}}</td>
     </tr>
     {% else %}
     {% endfor %}
