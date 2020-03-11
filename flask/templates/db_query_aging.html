@@ -40,8 +40,7 @@
     {% else %}
     {% endfor %}
   </table>
-  <!-- <a href="/index/">返回主页</a> -->
-  <a href="{{ url_for('index') }}">返回主页</a> | 
-  <a href="{{ url_for('info_aging') }}">刷新</a>
+  <a href="{{ url_for('blue_index.index') }}">返回主页</a> | 
+  <a href="{{ url_for('blue_database.info_aging') }}">刷新</a>
 </body>
 </html>

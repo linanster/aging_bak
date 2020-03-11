@@ -45,6 +45,7 @@ function conf_apt(){
   echo "deb http://raspbian.raspberrypi.org/raspbian/ buster main contrib non-free rpi" > /etc/apt/sources.list
   wget http://raspbian.raspberrypi.org/raspbian.public.key
   apt-key add raspbian.public.key
+  apt update
 }
 
 function install_python3(){
