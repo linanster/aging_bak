@@ -98,3 +98,9 @@ def _scan():
         print("scan success")
         return 0
 
+@async_call
+def turn_on_off(mac, on_off):
+    print("[debug] ble-backend -command={} -mac={}".format(on_off, mac))
+    return 0
+
+    

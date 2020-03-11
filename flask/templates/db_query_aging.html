@@ -21,6 +21,7 @@
       <th>合格</th>
       <th>云同步</th>
       <th>时间</th>
+      <th colspan="2">控制</th>
     </tr>
     {% for result in results %}
       <tr>
@@ -36,11 +37,29 @@
         <td>{{result.is_qualified}}</td>
         <td>{{result.is_sync}}</td>
         <td>{{result.datetime}}</td>
+	<td>
+          <form action = "{{url_for('blue_command.cmd_on_off')}}" method = "post">
+	    <input type = "hidden" name = "mac" value="{{result.mac_ble}}" />
+	    <input type = "hidden" name = "on_off" value="on" />
+	    <button type="submit">on</button>
+	  </form>
+	</td>
+	<td>
+	  <form action = "{{url_for('blue_command.cmd_on_off')}}" method = "post">
+	    <input type = "hidden" name = "mac" value="{{result.mac_ble}}" />			
+	    <input type = "hidden" name = "on_off" value="off" />
+	    <button type="submit">off</button>
+	  </form>
+	</td>
       </tr>
     {% else %}
     {% endfor %}
   </table>
   <a href="{{ url_for('blue_index.index') }}">返回主页</a> | 
   <a href="{{ url_for('blue_database.info_aging') }}">刷新</a>
+  <br>
+  {%- for message in get_flashed_messages() %}
+    {{ message }}
+  {%- endfor %} 
 </body>
 </html>

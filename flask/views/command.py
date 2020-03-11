@@ -28,3 +28,12 @@ def cmd_stop():
         flash('stop error')
     return redirect(url_for('blue_index.index'))
 
+@blue_command.route('/cmd_on_off/', methods=['POST'])
+def cmd_on_off():
+    mac = request.form.get('mac')
+    on_off = request.form.get('on_off')
+    print("[debug] press turn {} {}".format(on_off, mac))
+    errno = mycmd.turn_on_off(mac, on_off)
+    flash('Turn {} {}'.format(on_off, mac))
+    return redirect(url_for('blue_database.info_aging'))
+
