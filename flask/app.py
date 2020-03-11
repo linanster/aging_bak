@@ -25,7 +25,8 @@ def index():
 
 @app.route('/info_aging/', methods=['GET'])
 def info_aging():
-    results = mydb.query_aging_all()
+    # results = mydb.query_aging_all()
+    results = mydb.query_aging_all_from_view()
     return render_template('db_query_aging.html', results=results)
 @app.route('/info_device/', methods=['GET'])
 def info_device():

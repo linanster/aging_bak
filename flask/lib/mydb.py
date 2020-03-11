@@ -8,9 +8,11 @@ import datetime
 
 # 1. lasy init
 db = SQLAlchemy(use_native_unicode='utf8')
+db2 = SQLAlchemy(use_native_unicode='utf8')
 
 def init_model(app):
     db.init_app(app)
+    db2.init_app(app)
 
 
 # 2. model definition
@@ -61,6 +63,20 @@ class tb_data_aging(db.Model):
         self.is_sync = is_sync
         self.datetime = datetime
 
+class view_data_aging(db2.Model):
+    id = db2.Column(db2.Integer, nullable=False, autoincrement=True, primary_key = True)
+    device_type = db2.Column(db2.String(100))
+    factory = db2.Column(db2.String(100))
+    fw_version = db2.Column(db2.String(100))
+    rssi_ble = db2.Column(db2.Integer)
+    rssi_wifi = db2.Column(db2.Integer)
+    mac_ble = db2.Column(db2.String(100))
+    mac_wifi = db2.Column(db2.String(100))
+    is_qualified = db2.Column(db2.Boolean)
+    is_sync = db2.Column(db2.Boolean)
+    datetime = db2.Column(db2.Time, default=datetime.datetime.now())
+
+
 # 3. CRUD functions
 
 def create_tables():
@@ -68,6 +84,19 @@ def create_tables():
 
 def delete_tables():
     db.drop_all()
+    
+
+def query_aging_all():
+    return tb_data_aging.query.all()
+
+def query_device_all():
+    return tb_device_type.query.all()
+
+def query_factory_all():
+    return tb_factory.query.all()
+
+def query_aging_all_from_view():
+    return view_data_aging.query.all()
 
 def gen_testdata():
     d1 = tb_device_type(1, 'C-Life', 'Gen1/Gen2 ST C-Life(Ox01)')
@@ -90,15 +119,4 @@ def gen_testdata():
     for data in datas:
         db.session.add(data)
     db.session.commit()
-
-
-def query_aging_all():
-    return tb_data_aging.query.all()
-
-def query_device_all():
-    return tb_device_type.query.all()
-
-def query_factory_all():
-    return tb_factory.query.all()
-
 
