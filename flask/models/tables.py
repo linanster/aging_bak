@@ -44,7 +44,7 @@ class tb_data_aging(db.Model):
     mac_wifi = db.Column(db.String(100))
     is_qualified = db.Column(db.Boolean)
     is_sync = db.Column(db.Boolean)
-    datetime = db.Column(db.Time, default=datetime.datetime.now())
+    datetime = db.Column(db.DateTime, default=datetime.datetime.now())
     def __init__(self, device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime=None):
         self.device_type = device_type
         self.factory = factory

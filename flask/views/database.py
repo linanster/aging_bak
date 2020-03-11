@@ -1,4 +1,5 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for
+import datetime
 
 from models import query_aging_all_from_view
 from models import db, tb_device_type, tb_factory, tb_data_aging
@@ -9,8 +10,8 @@ blue_database = Blueprint('blue_database', __name__)
 
 @blue_database.route('/info_aging/', methods=['GET'])
 def info_aging():
-    # results = query_aging_all()
-    results = query_aging_all_from_view()
+    results = query_aging_all()
+    # results = query_aging_all_from_view()
     return render_template('db_query_aging.html', results=results)
 @blue_database.route('/info_device/', methods=['GET'])
 def info_device():
@@ -68,9 +69,9 @@ def gen_testdata():
     f1 = tb_factory(1, 'Leedarson', '立达信')
     f2 = tb_factory(2, 'Innotech', 'Smart LED Light Bulbs')
     f3 = tb_factory(3, 'Tonly', '通力')
-    a1 = tb_data_aging(5, 2, '3.1', -65, -33, 'd74d38dabcf1', '88:50:F6:04:62:31', True, False)
-    a2 = tb_data_aging(1, 3, '3.2', -65, -33, 'd74d38dabcf5', '88:50:F6:04:62:35', True, False)
-    a3 = tb_data_aging(17, 1, '3.40', -65, -33, 'd74d38dabcf7', '88:50:F6:04:62:37', True, False)
+    a1 = tb_data_aging(5, 2, '3.1', -65, -33, 'd74d38dabcf1', '88:50:F6:04:62:31', True, False, datetime.datetime.now())
+    a2 = tb_data_aging(1, 3, '3.2', -65, -33, 'd74d38dabcf5', '88:50:F6:04:62:35', True, False, datetime.datetime.now())
+    a3 = tb_data_aging(17, 1, '3.40', -65, -33, 'd74d38dabcf7', '88:50:F6:04:62:37', True, False, datetime.datetime.now())
 
     datas = [d1, d2, d3, d4, d5, f1, f2, f3]
     for data in datas:
