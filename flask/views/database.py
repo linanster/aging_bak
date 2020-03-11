@@ -1,8 +1,12 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for
 import datetime
 
-from models import query_aging_all_from_view
 from models import db, tb_device_type, tb_factory, tb_data_aging
+from models import view, view_data_aging
+
+# create_view and delete_view is actually two pymysql execute function
+# not that like typical models, such as db
+from models import create_view, delete_view
 
 blue_database = Blueprint('blue_database', __name__)
 
@@ -10,27 +14,31 @@ blue_database = Blueprint('blue_database', __name__)
 
 @blue_database.route('/info_aging/', methods=['GET'])
 def info_aging():
-    results = query_aging_all()
-    # results = query_aging_all_from_view()
+    # todo: view_data_aging only works for mysql, not for sqlite
+    # results = tb_data_aging.query.all()
+    results = view_data_aging.query.all()
     return render_template('db_query_aging.html', results=results)
+
 @blue_database.route('/info_device/', methods=['GET'])
 def info_device():
-    results = query_device_all()
+    results = tb_device_type.query.all()
     return render_template('db_query_device.html', results=results)
+
 @blue_database.route('/info_factory/', methods=['GET'])
 def info_factory():
-    results = query_factory_all()
+    results = tb_factory.query.all()
     return render_template('db_query_factory.html', results=results)
 
 @blue_database.route('/db_create/', methods=['GET', 'POST'])
 def db_create():
-    create_tables()
+    db.create_all()
     flash('Database Initialized!')
     return redirect(url_for('blue_index.index'))
 
+
 @blue_database.route('/db_delete/', methods=['GET', 'POST'])
 def db_delete():
-    delete_tables()
+    db.drop_all()
     flash('Database deleted!')
     return redirect(url_for('blue_index.index'))
   
@@ -40,25 +48,23 @@ def db_gen_testdata():
     flash('Test data insert!')
     return redirect(url_for('blue_index.index'))
 
-
+@blue_database.route('/view_create/', methods=['GET', 'POST'])
+def view_create():
+    # todo: find a solution that let flask-sqlalchemy support View
+    # view.create_all()
+    create_view()
+    flash('View Created!')
+    return redirect(url_for('blue_index.index'))
+@blue_database.route('/view_delete/', methods=['GET', 'POST'])
+def view_delete():
+    # todo: find a solution that let flask-sqlalchemy support View
+    # view.drop_all()
+    delete_view()
+    flash('View Deleted!')
+    return redirect(url_for('blue_index.index'))
 
 # 2. database CRUD functions
 
-def create_tables():
-    db.create_all()
-
-def delete_tables():
-    db.drop_all()
-
-
-def query_aging_all():
-    return tb_data_aging.query.all()
-
-def query_device_all():
-    return tb_device_type.query.all()
-
-def query_factory_all():
-    return tb_factory.query.all()
 
 def gen_testdata():
     d1 = tb_device_type(1, 'C-Life', 'Gen1/Gen2 ST C-Life(Ox01)')
