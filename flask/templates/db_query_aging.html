@@ -1,11 +1,23 @@
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <html>
 <head>
+  {% if refresh %}
+  <meta http-equiv="refresh" content="3;url={{ url_for('blue_database.info_aging', refresh=True) }}">
+  {% endif %}
   <title>
     DataIQ Version Query Portal
   </title>
 </head>
 <body>
+
+  {%- for message in get_flashed_messages() %}
+    {{ message }}
+  {%- endfor %}
+
+  <form action="/cmd_stop/" method="post">
+    <button type="submit">停止</button>
+  </form>
+
   <table border="1">
     <h4>老化测试数据: </h4>
     <tr>

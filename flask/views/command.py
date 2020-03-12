@@ -3,6 +3,7 @@ from pipe_nonblock import Pipe
 
 from lib import mycmd
 
+
 blue_command = Blueprint('blue_command', __name__)
 
 
@@ -16,7 +17,8 @@ def cmd_start():
     # errno is None
     errno = mycmd.start(pipe2_recv, pipe1_send)
     flash('Started!')
-    return redirect(url_for('blue_index.index'))
+    # return redirect(url_for('blue_index.index'))
+    return redirect(url_for('blue_database.info_aging', refresh=True))
 
 @blue_command.route('/cmd_stop/', methods=['POST'])
 def cmd_stop():
@@ -26,7 +28,7 @@ def cmd_stop():
         flash('Stopped!')
     else:
         flash('stop error')
-    return redirect(url_for('blue_index.index'))
+    return redirect(url_for('blue_database.info_aging'))
 
 @blue_command.route('/cmd_on_off/', methods=['POST'])
 def cmd_on_off():

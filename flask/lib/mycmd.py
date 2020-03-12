@@ -30,26 +30,28 @@ def start(pipe_recv, pipe_send):
     while True:
         try:
             buf, = pipe_recv.recv(100)
-            print('[debug] process start(scan) receive:', buf)
+            # print('[debug] process start(scan) receive:', buf)
             if 'stop' == buf:
                 break
             else:
                 continue
         except:
+            # todo: move data to another place
+            # migration.move_data_stage()
             _scan()
-            # todo: refresh page info_age
-            p = subprocess.Popen('_refresh')
+            # todo: refresh page info_age with scan_loop
             time.sleep(10)
     pipe_send.send('stopped')
-    print('[debug] process start(scan) send: stopped')
+    # print('[debug] process start(scan) send: stopped')
     return 0
 
 # @async_call
 def stop(pipe_recv, pipe_send):
     pipe_send.send('stop')
-    print('[debug] process stop send: stop')
+    # todo: migration.move_data_archive
+    # print('[debug] process stop send: stop')
     buf = pipe_recv.recv(10)
-    print('[debug] process stop receive:', buf)
+    # print('[debug] process stop receive:', buf)
     if 'stopped' == buf:
         return 0
     else:

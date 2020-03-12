@@ -17,7 +17,12 @@ def info_aging():
     # todo: view_data_aging only works for mysql, not for sqlite
     # results = tb_data_aging.query.all()
     results = view_data_aging.query.all()
+    refresh = request.args.get('refresh')
+    # print('==refresh==:', refresh)
+    if refresh:
+        return render_template('db_query_aging.html', results=results, refresh=True)
     return render_template('db_query_aging.html', results=results)
+
 
 @blue_database.route('/info_device/', methods=['GET'])
 def info_device():
