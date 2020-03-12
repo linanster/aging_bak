@@ -4,7 +4,6 @@
 import time
 import os
 import subprocess
-# from threading import Thread
 from multiprocessing import Process
 from flask import flash, redirect, url_for
 
@@ -14,7 +13,6 @@ program = "./ble-backend-nan" if TEST else "./ble-backend"
 
 def async_call(fn):
     def wrapper(*args, **kwargs):
-        # Thread(target=fn, args=args, kwargs=kwargs).start()
         Process(target=fn, args=args, kwargs=kwargs).start()
     return wrapper
 
@@ -39,6 +37,8 @@ def start(pipe_recv, pipe_send):
                 continue
         except:
             _scan()
+            # todo: refresh page info_age
+            p = subprocess.Popen('_refresh')
             time.sleep(10)
     pipe_send.send('stopped')
     print('[debug] process start(scan) send: stopped')
@@ -54,6 +54,20 @@ def stop(pipe_recv, pipe_send):
         return 0
     else:
         return 1
+
+# @async_call
+def turn_on_off(mac, on_off):
+    try:
+        print('turn {} {} start'.format(on_off, mac))
+        p = subprocess.Popen("{} -command={} -mac={}".format(program, on_off, mac), shell=True, cwd='./go')
+        # wait till on/off command finished
+        p.wait()
+    except Exception as e:
+        print('turn_on_off error:', str(e))
+        return 1
+    else:
+        print('turn {} {} complete'.format(on_off, mac))
+        return 0
 
 @async_call
 def _start():
@@ -90,20 +104,6 @@ def _scan():
         return 1
     else:
         print("scan success")
-        return 0
-
-# @async_call
-def turn_on_off(mac, on_off):
-    try:
-        # print("[debug] ble-backend -command={} -mac={}".format(on_off, mac))
-        print('turn {} {} start'.format(on_off, mac))
-        p = subprocess.Popen("{} -command={} -mac={}".format(program, on_off, mac), shell=True, cwd='./go')
-        p.wait()
-    except Exception as e:
-        print('turn_on_off error:', str(e))
-        return 1
-    else:
-        print('turn {} {} complete'.format(on_off, mac))
         return 0
 
     

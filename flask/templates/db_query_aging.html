@@ -55,8 +55,10 @@
     {% else %}
     {% endfor %}
   </table>
+  <br>
   <a href="{{ url_for('blue_index.index') }}">返回主页</a> | 
   <a href="{{ url_for('blue_database.info_aging') }}">刷新</a>
+  <br>
   <br>
   {%- for message in get_flashed_messages() %}
     {{ message }}
