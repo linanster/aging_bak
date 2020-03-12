@@ -8,8 +8,8 @@ import subprocess
 from multiprocessing import Process
 from flask import flash, redirect, url_for
 
-DEBUG = True
-program = "./ble-backend-nan" if DEBUG else "./ble-backend"
+TEST = True
+program = "./ble-backend-nan" if TEST else "./ble-backend"
 
 
 def async_call(fn):
@@ -60,9 +60,7 @@ def _start():
     try:
         print('start start...')
         # print os.getcwd() - /git/aging/flask
-        # p = subprocess.Popen("./ble-backend-nan --command=start", shell=True, close_fds=True, stdin=subprocess.PIPE, stdout=None)
-        # p = subprocess.Popen("./ble-backend -command=start", shell=True, close_fds=True, stdin=subprocess.PIPE, stdout=None)
-        p = subprocess.Popen("{} -command=start".format(program), shell=True, close_fds=True, stdin=subprocess.PIPE, stdout=None)
+        p = subprocess.Popen("{} -command=start".format(program), shell=True, cwd='./go')
     except Exception as e:
         print("start error:",str(e))
         return 1
@@ -74,9 +72,7 @@ def _start():
 def _changemesh():
     try:
         print('changemesh start...')
-        # p = subprocess.Popen("./ble-backend-nan -command=changemesh", shell=True, close_fds=True, stdin=subprocess.PIPE, stdout=None)
-        # p = subprocess.Popen("./ble-backend -command=changemesh", shell=True, close_fds=True, stdin=subprocess.PIPE, stdout=None)
-        p = subprocess.Popen("{} -command=changemesh".format(program), shell=True, close_fds=True, stdin=subprocess.PIPE, stdout=None)
+        p = subprocess.Popen("{} -command=changemesh".format(program), shell=True, cwd='./go')
     except Exception as e:
         print("change mesh error:", str(e))
         return 1
@@ -88,9 +84,7 @@ def _changemesh():
 def _scan():
     try:
         print('scan start...')
-        # p = subprocess.Popen("./ble-backend-nan -command=scan", shell=True, close_fds=True, stdin=subprocess.PIPE, stdout=None)
-        # p = subprocess.Popen("./ble-backend -command=scan", shell=True, close_fds=True, stdin=subprocess.PIPE, stdout=None)
-        p = subprocess.Popen("{} -command=scan".format(program), shell=True, close_fds=True, stdin=subprocess.PIPE, stdout=None)
+        p = subprocess.Popen("{} -command=scan".format(program), shell=True, cwd='./go')
     except Exception as e:
         print("scan error:", str(e))
         return 1
@@ -98,9 +92,18 @@ def _scan():
         print("scan success")
         return 0
 
-@async_call
+# @async_call
 def turn_on_off(mac, on_off):
-    print("[debug] ble-backend -command={} -mac={}".format(on_off, mac))
-    return 0
+    try:
+        # print("[debug] ble-backend -command={} -mac={}".format(on_off, mac))
+        print('turn {} {} start'.format(on_off, mac))
+        p = subprocess.Popen("{} -command={} -mac={}".format(program, on_off, mac), shell=True, cwd='./go')
+        p.wait()
+    except Exception as e:
+        print('turn_on_off error:', str(e))
+        return 1
+    else:
+        print('turn {} {} complete'.format(on_off, mac))
+        return 0
 
     
