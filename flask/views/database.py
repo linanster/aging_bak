@@ -1,12 +1,12 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for
 import datetime
 
-from models import db, tb_device_type, tb_factory, tb_data_aging
+from models import db, db_stage, db_archive, tb_device_type, tb_factory, tb_data_aging
 from models import view, view_data_aging
 
 # create_view and delete_view is actually two pymysql execute function
 # not that like typical models, such as db
-from models import create_view, delete_view
+from lib import create_view, delete_view
 
 blue_database = Blueprint('blue_database', __name__)
 
@@ -14,7 +14,6 @@ blue_database = Blueprint('blue_database', __name__)
 
 @blue_database.route('/info_aging/', methods=['GET'])
 def info_aging():
-    # todo: view_data_aging only works for mysql, not for sqlite
     # results = tb_data_aging.query.all()
     results = view_data_aging.query.all()
     refresh = request.args.get('refresh')
@@ -37,6 +36,8 @@ def info_factory():
 @blue_database.route('/db_create/', methods=['GET', 'POST'])
 def db_create():
     db.create_all()
+    db_stage.create_all()
+    db_archive.create_all()
     flash('Database Initialized!')
     return redirect(url_for('blue_index.index'))
 
@@ -44,6 +45,8 @@ def db_create():
 @blue_database.route('/db_delete/', methods=['GET', 'POST'])
 def db_delete():
     db.drop_all()
+    db_stage.drop_all()
+    db_archive.drop_all()
     flash('Database deleted!')
     return redirect(url_for('blue_index.index'))
   

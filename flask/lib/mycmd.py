@@ -6,6 +6,7 @@ import os
 import subprocess
 from multiprocessing import Process
 from flask import flash, redirect, url_for
+from .mypymysql import migrate_to_stage, migrate_to_archive, cleanup_temp, cleanup_stage
 
 TEST = True
 program = "./ble-backend-nan" if TEST else "./ble-backend"
@@ -30,28 +31,29 @@ def start(pipe_recv, pipe_send):
     while True:
         try:
             buf, = pipe_recv.recv(100)
-            # print('[debug] process start(scan) receive:', buf)
+            print('[debug] process start(scan) receive:', buf)
             if 'stop' == buf:
                 break
             else:
                 continue
         except:
-            # todo: move data to another place
-            # migration.move_data_stage()
+            # move data to another place
+            cleanup_temp()
             _scan()
             # todo: refresh page info_age with scan_loop
             time.sleep(10)
+            # todo: cause table lock
+            # migrate_to_stage()
     pipe_send.send('stopped')
-    # print('[debug] process start(scan) send: stopped')
+    print('[debug] process start(scan) send: stopped')
     return 0
 
 # @async_call
 def stop(pipe_recv, pipe_send):
     pipe_send.send('stop')
-    # todo: migration.move_data_archive
-    # print('[debug] process stop send: stop')
+    print('[debug] process stop send: stop')
     buf = pipe_recv.recv(10)
-    # print('[debug] process stop receive:', buf)
+    print('[debug] process stop receive:', buf)
     if 'stopped' == buf:
         return 0
     else:
@@ -98,14 +100,8 @@ def _changemesh():
     
 @async_call
 def _scan():
-    try:
-        print('scan start...')
-        p = subprocess.Popen("{} -command=scan".format(program), shell=True, cwd='./go')
-    except Exception as e:
-        print("scan error:", str(e))
-        return 1
-    else:
-        print("scan success")
-        return 0
+    print('scan start...')
+    p = subprocess.Popen("{} -command=scan".format(program), shell=True, cwd='./go')
+    # p.wait()
 
     
