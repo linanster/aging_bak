@@ -25,11 +25,6 @@ def deletedb():
     db.drop_all()
 
 @manager.command
-def testdata():
-    from app.models import tb_data_aging
-    tb_data_aging.seed()
-
-@manager.command
 def createview():
     from app.lib import create_view
     create_view()
@@ -38,6 +33,11 @@ def createview():
 def deleteview():
     from app.lib import delete_view
     delete_view()
+
+@manager.command
+def testdata():
+    from app.models import tb_data_aging
+    tb_data_aging.seed()
 
 if __name__ == '__main__':
     manager.run()
