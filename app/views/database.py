@@ -26,12 +26,12 @@ def info_aging():
 @blue_database.route('/info_device/', methods=['GET'])
 def info_device():
     results = tb_device_type.query.all()
-    return render_template('db_query_device.html', results=results)
+    return render_template('managedevice.html', results=results)
 
 @blue_database.route('/info_factory/', methods=['GET'])
 def info_factory():
     results = tb_factory.query.all()
-    return render_template('db_query_factory.html', results=results)
+    return render_template('managefactory.html', results=results)
 
   
 

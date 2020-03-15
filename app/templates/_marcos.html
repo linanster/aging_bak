@@ -1,0 +1,21 @@
+{% macro input(name,value='',type='text',size=20) %}
+    <input type="{{ type }}"
+           name="{{ name }}"
+           value="{{ value }}"
+           size="{{ size }}"
+            />
+{% endmacro %}
+
+{% macro input_factory(name,value='',type='text') %}
+    <input type="{{ type }}"
+           name="{{ name }}"
+           value="{{ value }}"
+            />
+{% endmacro %}
+
+{% macro input_device_type(name,value='',type='text') %}
+    <input type="{{ type }}"
+           name="{{ name }}"
+           value="{{ value }}"
+            />
+{% endmacro %}

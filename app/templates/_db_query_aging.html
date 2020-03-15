@@ -2,7 +2,7 @@
 <html>
 <head>
   {% if refresh %}
-  <meta http-equiv="refresh" content="3;url={{ url_for('blue_database.info_aging', refresh=True) }}">
+  <meta http-equiv="refresh" content="3;url={{ url_for('blue_index.testing', refresh=True) }}">
   {% endif %}
   <title>
     Aging Test Tool
@@ -69,7 +69,7 @@
   </table>
   <br>
   <a href="{{ url_for('blue_index.index') }}">返回主页</a> | 
-  <a href="{{ url_for('blue_database.info_aging') }}">刷新</a>
+  <a href="{{ url_for('blue_index.testing') }}">刷新</a>
   <br>
   <br>
   {%- for message in get_flashed_messages() %}
