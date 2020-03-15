@@ -11,6 +11,8 @@ from .mypymysql import migrate_to_stage, migrate_to_archive, cleanup_temp, clean
 TEST = True
 program = "./ble-backend-nan" if TEST else "./ble-backend"
 
+gofolder = os.path.join(os.getcwd(), 'go')
+
 
 def async_call(fn):
     def wrapper(*args, **kwargs):
@@ -63,7 +65,7 @@ def stop(pipe_recv, pipe_send):
 def turn_on_off(mac, on_off):
     try:
         print('turn {} {} start'.format(on_off, mac))
-        p = subprocess.Popen("{} -command={} -mac={}".format(program, on_off, mac), shell=True, cwd='./go')
+        p = subprocess.Popen("{} -command={} -mac={}".format(program, on_off, mac), shell=True, cwd=gofolder)
         # wait till on/off command finished
         p.wait()
     except Exception as e:
@@ -78,7 +80,7 @@ def _start():
     try:
         print('start start...')
         # print os.getcwd() - /git/aging/flask
-        p = subprocess.Popen("{} -command=start".format(program), shell=True, cwd='./go')
+        p = subprocess.Popen("{} -command=start".format(program), shell=True, cwd=gofolder)
     except Exception as e:
         print("start error:",str(e))
         return 1
@@ -90,7 +92,7 @@ def _start():
 def _changemesh():
     try:
         print('changemesh start...')
-        p = subprocess.Popen("{} -command=changemesh".format(program), shell=True, cwd='./go')
+        p = subprocess.Popen("{} -command=changemesh".format(program), shell=True, cwd=gofolder)
     except Exception as e:
         print("change mesh error:", str(e))
         return 1
@@ -101,7 +103,7 @@ def _changemesh():
 @async_call
 def _scan():
     print('scan start...')
-    p = subprocess.Popen("{} -command=scan".format(program), shell=True, cwd='./go')
+    p = subprocess.Popen("{} -command=scan".format(program), shell=True, cwd=gofolder)
     # p.wait()
 
     

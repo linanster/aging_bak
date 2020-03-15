@@ -1,12 +1,12 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for
 import datetime
 
-from models import db, db_stage, db_archive, tb_device_type, tb_factory, tb_data_aging
-from models import view, view_data_aging
+from app.models import db, db_stage, db_archive, tb_device_type, tb_factory, tb_data_aging
+from app.models import view, view_data_aging
 
 # create_view and delete_view is actually two pymysql execute function
 # not that like typical models, such as db
-from lib import create_view, delete_view
+from app.lib import create_view, delete_view
 
 blue_database = Blueprint('blue_database', __name__)
 
