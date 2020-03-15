@@ -20,22 +20,37 @@ class tb_device_type(db.Model):
     code = db.Column(db.Integer, nullable=False, unique=True)
     type = db.Column('type', db.String(100), nullable=False)
     detail = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text)
-    def __init__(self, code, type, detail, description=None):
+    description = db.Column(db.Text, nullable=True)
+    def __init__(self, code, type, detail, description=''):
         self.code = code
         self.type = type
         self.detail = detail
         self.description = description
-
+    @staticmethod
+    def seed():
+        d1 = tb_device_type(1, 'C-Life', 'Gen1/Gen2 ST C-Life(Ox01)')
+        d2 = tb_device_type(17, 'C-Life', 'Gen2 Andromeda C-Life(0x11)')
+        d3 = tb_device_type(18, 'C-Life', 'Gen2 MFG C-Life(0x12)')
+        d4 = tb_device_type(5, 'C-Sleep', 'Gen1/Gen2 ST C-Sleep(0x05)')
+        d5 = tb_device_type(19, 'C-Sleep', 'Gen2 MFG C-Sleep(0x13)')
+        db.session.add_all([d1, d2, d3, d4, d5])
+        db.session.commit()
 
 class tb_factory(db.Model):
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
     name = db.Column(db.String(100), unique=True, nullable=False)
     description = db.Column(db.Text)
-    def __init__(self, id, name, description=None):
+    def __init__(self, id, name, description=''):
         self.id = id
         self.name = name
         self.description = description
+    @staticmethod
+    def seed():
+        f1 = tb_factory(1, 'Leedarson', '立达信')
+        f2 = tb_factory(2, 'Innotech', 'Smart LED Light Bulbs')
+        f3 = tb_factory(3, 'Tonly', '通力')
+        db.session.add_all([f1, f2, f3])
+        db.session.commit()
 
 class tb_data_aging(db.Model):
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
@@ -60,6 +75,13 @@ class tb_data_aging(db.Model):
         self.is_qualified = is_qualified
         self.is_sync = is_sync
         self.datetime = datetime
+    @staticmethod
+    def seed():
+        a1 = tb_data_aging(5, 2, '3.1', -65, -33, 'd74d38dabcf1', '88:50:F6:04:62:31', True, False, datetime.datetime.now())
+        a2 = tb_data_aging(1, 3, '3.2', -65, -33, 'd74d38dabcf5', '88:50:F6:04:62:35', True, False, datetime.datetime.now())
+        a3 = tb_data_aging(17, 1, '3.40', -65, -33, 'd74d38dabcf7', '88:50:F6:04:62:37', True, False, datetime.datetime.now())
+        db.session.add_all([a1, a2, a3])
+        db.session.commit()
 
 class tb_data_aging_stage(db_stage.Model):
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
