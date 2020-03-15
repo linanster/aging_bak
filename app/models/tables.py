@@ -16,11 +16,13 @@ def init_tables(app):
 # 2. model definition
 
 class tb_device_type(db.Model):
+    __tablename__ = 'tb_device_type'
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
     code = db.Column(db.Integer, nullable=False, unique=True)
     type = db.Column('type', db.String(100), nullable=False)
     detail = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=True)
+    tb_data_aging = db.relationship('tb_data_aging', backref='tb_device_type')
     def __init__(self, code, type, detail, description=''):
         self.code = code
         self.type = type
@@ -37,9 +39,11 @@ class tb_device_type(db.Model):
         db.session.commit()
 
 class tb_factory(db.Model):
+    __tablename__ = 'tb_factory'
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
     name = db.Column(db.String(100), unique=True, nullable=False)
     description = db.Column(db.Text)
+    tb_data_aging = db.relationship('tb_data_aging', backref='tb_factory')
     def __init__(self, id, name, description=''):
         self.id = id
         self.name = name
@@ -53,6 +57,7 @@ class tb_factory(db.Model):
         db.session.commit()
 
 class tb_data_aging(db.Model):
+    __tablename__ = 'tb_data_aging'
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
     device_type = db.Column(db.Integer, db.ForeignKey('tb_device_type.code'), nullable=False)
     factory = db.Column(db.Integer, db.ForeignKey('tb_factory.id'), nullable=False) 
