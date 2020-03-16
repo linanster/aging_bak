@@ -14,28 +14,33 @@ pipe2_recv, pipe2_send = Pipe(duplex=False, conn1_nonblock=True, conn2_nonblock=
 
 @blue_command.route('/cmd_start/', methods=['POST'])
 def cmd_start():
-    # errno is None
+    devicecode = request.form.get('devicecode')
+    factoryid = request.form.get('factoryid')
     cleanup_temp()
-    errno = start(pipe2_recv, pipe1_send)
-    flash('Started!')
-    return redirect(url_for('blue_database.info_aging', refresh=True, started=True))
+    errno = start(pipe2_recv, pipe1_send, devicecode, factoryid)
+    # flash('Started!')
+    # return redirect(url_for('blue_database.info_aging', refresh=True, started=True))
+    return redirect(url_for('blue_nav.testing'))
 
 @blue_command.route('/cmd_stop/', methods=['POST'])
 def cmd_stop():
     print("[debug] press stop")
     errno = stop(pipe1_recv,pipe2_send)
     if 0 == errno:
-        flash('Stopped!')
+        # flash('Stopped!')
+        pass
     else:
-        flash('stop error')
+        # flash('stop error')
+        pass
     return redirect(url_for('blue_database.info_aging'))
 
 @blue_command.route('/cmd_on_off/', methods=['POST'])
 def cmd_on_off():
+    index = request.form.get('index')
     mac = request.form.get('mac')
     on_off = request.form.get('on_off')
-    print("[debug] press turn {} {}".format(on_off, mac))
+    print("[debug] press turn {} #{} with Mac {}".format(on_off, index, mac))
     errno = turn_on_off(mac, on_off)
-    flash('Turn {} {}'.format(on_off, mac))
+    flash('Turn {} #{} with mac {}'.format(on_off, index, mac))
     return redirect(url_for('blue_database.info_aging'))
 

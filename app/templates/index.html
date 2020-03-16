@@ -3,8 +3,20 @@
 {% block content %}
   {{ super() }}
   <form action="/cmd_start/" method="post">
-    工厂信息: <input type="text" name="factory" />
-    设备类型: <input type="text" name="device" />
+    工厂信息: 
+<select name="factoryid" >
+<option value="1">Leedarson</option>
+<option value="2">Innotech</option>
+<option value="3">Tonly</option>
+</select>
+    设备类型: 
+<select name="devicecode" >
+<option value="1">C-Life(Gen1/Gen2 ST C-Life(Ox01))</option>
+<option value="17">C-Life(Gen2 Andromeda C-Life(0x11))</option>
+<option value="18">C-Life(Gen2 MFG C-Life(0x12))</option>
+<option value="5">C-Sleep(Gen1/Gen2 ST C-Sleep(0x05))</option>
+<option value="19">C-Sleep(Gen2 MFG C-Sleep(0x13))</option>
+</select>
     <input type="submit" value="开始" />
   </form>
   {%- for message in get_flashed_messages() %}

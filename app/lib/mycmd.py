@@ -20,7 +20,7 @@ def async_call(fn):
     return wrapper
 
 @async_call
-def start(pipe_recv, pipe_send):
+def start(pipe_recv, pipe_send, devicecode, factoryid):
     # 1. Start "ble-bakcend -command=start", and then waiting 60 seconds.
     _start()
     # time.sleep(60)
@@ -41,7 +41,7 @@ def start(pipe_recv, pipe_send):
         except:
             # move data to another place
             cleanup_temp()
-            _scan()
+            _scan(devicecode, factoryid)
             # todo: refresh page info_age with scan_loop
             time.sleep(10)
             # todo: cause table lock
@@ -101,9 +101,9 @@ def _changemesh():
         return 0
     
 @async_call
-def _scan():
+def _scan(devicecode, factoryid):
     print('scan start...')
-    p = subprocess.Popen("{} -command=scan".format(program), shell=True, cwd=gofolder)
+    p = subprocess.Popen("{} -command=scan -devicecode={} -factoryid={}".format(program, devicecode, factoryid), shell=True, cwd=gofolder)
     # p.wait()
 
     

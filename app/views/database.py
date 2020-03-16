@@ -18,7 +18,6 @@ def info_aging():
     results = view_data_aging.query.all()
     refresh = request.args.get('refresh')
     started = request.args.get('started')
-    # print('==refresh==:', refresh)
     return render_template('manageaging.html', results=results, refresh=refresh, started=started)
 
 

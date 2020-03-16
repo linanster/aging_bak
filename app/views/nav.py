@@ -20,3 +20,8 @@ def manage():
 def about():
     return render_template('about.html')
 
+@blue_nav.route('/testing/')
+def testing():
+    results = view_data_aging.query.all()
+    return render_template('testing.html', results=results)
+
