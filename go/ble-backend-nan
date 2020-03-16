@@ -36,7 +36,7 @@ while [ $# -gt 0 ]; do
     -command=on)
       shift
       mac=$(echo "$1" | awk -F= '{print $2}')
-      sleep 2
+      sleep 1
       echo "**turn on $mac**"
       exit 0
       ;;

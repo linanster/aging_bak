@@ -17,10 +17,9 @@ def info_aging():
     # results = tb_data_aging.query.all()
     results = view_data_aging.query.all()
     refresh = request.args.get('refresh')
+    started = request.args.get('started')
     # print('==refresh==:', refresh)
-    if refresh:
-        return render_template('db_query_aging.html', results=results, refresh=True)
-    return render_template('db_query_aging.html', results=results)
+    return render_template('manageaging.html', results=results, refresh=refresh, started=started)
 
 
 @blue_database.route('/info_device/', methods=['GET'])

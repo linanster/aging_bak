@@ -2,7 +2,14 @@
 
 {% block content %}
   {{ super() }}
-  {% include '_index.html' %}
+  <form action="/cmd_start/" method="post">
+    工厂信息: <input type="text" name="factory" />
+    设备类型: <input type="text" name="device" />
+    <input type="submit" value="开始" />
+  </form>
+  {%- for message in get_flashed_messages() %}
+    {{ message }}
+  {%- endfor %}
 {% endblock %}
 
 {% block footer %}

@@ -2,7 +2,7 @@
 <html>
 <head>
   {% if refresh %}
-  <meta http-equiv="refresh" content="3;url={{ url_for('blue_index.testing', refresh=True) }}">
+  <meta http-equiv="refresh" content="5;url={{ url_for('blue_database.info_aging', refresh=True, started=True) }}">
   {% endif %}
   <title>
     Aging Test Tool
@@ -14,9 +14,6 @@
     {{ message }}
   {%- endfor %}
 
-  <form action="/cmd_stop/" method="post">
-    <button type="submit">停止</button>
-  </form>
 
   <table border="1">
     <h4>老化测试数据: </h4>
@@ -68,8 +65,13 @@
     {% endfor %}
   </table>
   <br>
-  <a href="{{ url_for('blue_index.index') }}">返回主页</a> | 
-  <a href="{{ url_for('blue_index.testing') }}">刷新</a>
+  <a href="{{ url_for('blue_database.info_aging') }}">刷新</a> | 
+  <a href="{{ url_for('blue_database.info_aging', refresh=True) }}">自动刷新</a>
+  {% if started %}
+  <form action="/cmd_stop/" method="post">
+    <button type="submit">停止</button>
+  </form>
+  {% endif %}
   <br>
   <br>
   {%- for message in get_flashed_messages() %}

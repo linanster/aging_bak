@@ -18,8 +18,7 @@ def cmd_start():
     cleanup_temp()
     errno = start(pipe2_recv, pipe1_send)
     flash('Started!')
-    # return redirect(url_for('blue_index.index'))
-    return redirect(url_for('blue_index.testing', refresh=True))
+    return redirect(url_for('blue_database.info_aging', refresh=True, started=True))
 
 @blue_command.route('/cmd_stop/', methods=['POST'])
 def cmd_stop():
@@ -29,7 +28,7 @@ def cmd_stop():
         flash('Stopped!')
     else:
         flash('stop error')
-    return redirect(url_for('blue_index.testing'))
+    return redirect(url_for('blue_database.info_aging'))
 
 @blue_command.route('/cmd_on_off/', methods=['POST'])
 def cmd_on_off():
@@ -38,5 +37,5 @@ def cmd_on_off():
     print("[debug] press turn {} {}".format(on_off, mac))
     errno = turn_on_off(mac, on_off)
     flash('Turn {} {}'.format(on_off, mac))
-    return redirect(url_for('blue_index.testing'))
+    return redirect(url_for('blue_database.info_aging'))
 
