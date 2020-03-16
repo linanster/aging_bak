@@ -34,8 +34,10 @@ while [ $# -gt 0 ]; do
       factoryid=$(echo "$1" | awk -F= '{print $2}')
       echo "devicecode: ${devicecode}"
       echo "factoryid: ${factoryid}"
+      for i in {1..50}; do
       mysql -p123456 -e "INSERT ge.tb_data_aging(device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(${devicecode}, ${factoryid}, '3.1', -65, -33, 'scantest', 'scantest', true, false, now())"
       mysql -p123456 -e "INSERT ge.tb_data_aging(device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(${devicecode}, ${factoryid}, '3.1', -65, -33, 'scantest', 'scantest', true, false, now())"
+      done
       mysql -p123456 -e "INSERT ge.tb_data_aging(device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(${devicecode}, ${factoryid}, '3.1', -65, -33, 'scantest', 'scantest', false, false, now())"
       sleep 5
       exit 0
