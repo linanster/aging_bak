@@ -14,7 +14,8 @@
 {% block styles %}
     {{ super() }}
     <link rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootswatch/3.4.1/flatly/bootstrap.min.css">
+      {# href="https://stackpath.bootstrapcdn.com/bootswatch/3.4.1/flatly/bootstrap.min.css"> #}
+      href="{{ url_for('static',filename='cdn.css') }}">
 {% endblock %}
 
 {% block content %}
