@@ -12,7 +12,7 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li ><a href="#">开始测试<span class="sr-only">(current)</span></a></li>        
+        <li {% if request.path in ['/index/', '/testing/'] %}class='active'{% endif %}><a href="#">开始测试<span class="sr-only">(current)</span></a></li>        
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">管理 <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
