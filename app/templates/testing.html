@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block navbar %}
+    {% include '_navbar_for_testing.html' %}
+{% endblock %}
+
 {% block content %}
   {{ super() }}
   {% include '_testing.html' %}

@@ -1,24 +1,41 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  {{ super() }}
-  <form action="/cmd_start/" method="post">
-    工厂信息: 
-<select name="factoryid" >
-<option value="1">Leedarson</option>
-<option value="2">Innotech</option>
-<option value="3">Tonly</option>
-</select>
-    设备类型: 
-<select name="devicecode" >
-<option value="1">C-Life(Gen1/Gen2 ST C-Life(Ox01))</option>
-<option value="17">C-Life(Gen2 Andromeda C-Life(0x11))</option>
-<option value="18">C-Life(Gen2 MFG C-Life(0x12))</option>
-<option value="5">C-Sleep(Gen1/Gen2 ST C-Sleep(0x05))</option>
-<option value="19">C-Sleep(Gen2 MFG C-Sleep(0x13))</option>
-</select>
-    <input type="submit" value="开始" />
+  <form action="/cmd_start/" method="post" class="form-horizontal">
+  <fieldset>
+    <legend>测试准备</legend> 
+    <div class="form-group" style="width:50%">
+      <label for="factoryid" class="col-lg-2 control-label">选择厂家</label>
+      <div class="col-lg-10">
+        <select class="form-control" id="factoryid" name="factoryid">
+          <option value="" style='display: none'>-</option>
+          <option value="1">Leedarson</option>
+          <option value="2">Innotech</option>
+          <option value="3">Tonly</option>
+        </select>
+        <br>
+      </div>
+      <label for="devicetype" class="col-lg-2 control-label">设备类型</label>
+      <div class="col-lg-10">
+        <select class="form-control" id="devicecode" name="devicecode">
+          <option value="" style='display: none'>-</option>
+	  <option value="1">C-Life(Gen1/Gen2 ST C-Life(Ox01))</option>
+	  <option value="17">C-Life(Gen2 Andromeda C-Life(0x11))</option>
+	  <option value="18">C-Life(Gen2 MFG C-Life(0x12))</option>
+	  <option value="5">C-Sleep(Gen1/Gen2 ST C-Sleep(0x05))</option>
+	  <option value="19">C-Sleep(Gen2 MFG C-Sleep(0x13))</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-lg-10 col-lg-offset-2">
+        <button type="reset" class="btn btn-default">取消</button>
+        <button type="submit" class="btn btn-primary">开始</button>
+      </div>
+    </div>
+  </fieldset>
   </form>
+
   {%- for message in get_flashed_messages() %}
     {{ message }}
   {%- endfor %}

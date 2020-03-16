@@ -8,7 +8,8 @@
 {% endblock %}
 
 {% block navbar %}
-    {{ nav.top.render() }}
+    {# {{ nav.top.render() }} #}
+    {% include '_navbar.html' %}
 {% endblock %}
 
 {% block styles %}
