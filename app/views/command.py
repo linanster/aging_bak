@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for
 from pipe_nonblock import Pipe
 
-from app.lib import start, stop, turn_on_off, cleanup_temp, cleanup_stage, migrate_to_archive
+from app.lib import start, stop, pause, resume, turn_on_off, cleanup_temp, cleanup_stage, migrate_to_archive
 
 
 blue_command = Blueprint('blue_command', __name__)
@@ -16,7 +16,7 @@ def cmd_start():
     # flash('Started!')
     return redirect(url_for('blue_nav.testing'))
 
-@blue_command.route('/cmd_stop/', methods=['POST'])
+@blue_command.route('/cmd_stop/', methods=['GET'])
 def cmd_stop():
     print("[debug] press stop")
     errno = stop()
@@ -28,6 +28,7 @@ def cmd_stop():
         pass
     return redirect(url_for('blue_database.info_aging'))
 
+
 @blue_command.route('/cmd_on_off/', methods=['POST'])
 def cmd_on_off():
     index = request.form.get('index')
@@ -38,3 +39,12 @@ def cmd_on_off():
     flash('Turn {} #{} with mac {}'.format(on_off, index, mac))
     return redirect(url_for('blue_database.info_aging'))
 
+@blue_command.route('/cmd_pause/', methods=['GET'])
+def cmd_pause():
+    pause()
+    return redirect(url_for('blue_nav.testing'))
+
+@blue_command.route('/cmd_resume/', methods=['GET'])
+def cmd_resume():
+    resume()
+    return redirect(url_for('blue_nav.testing'))

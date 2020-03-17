@@ -28,5 +28,5 @@ def testing():
     end = page * PER_PAGE if len(results) > page * PER_PAGE else len(results)
     pagination = Pagination(page=page, total=len(results), per_page=PER_PAGE, bs_version=3)
     ret = view_data_aging.query.slice(start, end)
-
-    return render_template('testing.html', pagination=pagination, results=ret)
+    # return render_template('testing.html', pagination=pagination, results=ret)
+    return render_template('testing.html', results=results)

@@ -8,9 +8,10 @@ from multiprocessing import Process
 from flask import flash, redirect, url_for
 from .mypymysql import migrate_to_stage, migrate_to_archive, cleanup_temp, cleanup_stage
 
-from .tools import get_running_state, set_running_state, reset_running_state
-from .tools import get_paused_state, set_paused_state, reset_paused_state
+from .tools import get_stopped_state, set_stopped_state, reset_stopped_state
 from .tools import get_stop_action, set_stop_action, reset_stop_action
+from .tools import get_paused_state, set_paused_state, reset_paused_state
+from .tools import get_pause_action, set_pause_action, reset_pause_action
 
 
 TEST = True
@@ -26,8 +27,9 @@ def async_call(fn):
 
 @async_call
 def start(devicecode, factoryid):
-    set_running_state()
+    reset_stopped_state()
     reset_stop_action()
+    reset_paused_state()
     # 1. Start "ble-bakcend -command=start", and then waiting 60 seconds.
     _start()
     # time.sleep(60)
@@ -39,8 +41,9 @@ def start(devicecode, factoryid):
     # 3. loop run "ble-backend --command=scan", in every 10 seconds
 
     while True:
+        _pause_pending()
         if get_stop_action():
-            reset_running_state()
+            set_stopped_state()
             break
         else:
             cleanup_temp()
@@ -48,14 +51,27 @@ def start(devicecode, factoryid):
             time.sleep(10)
     return 0
 
+def _pause_pending():
+    while get_paused_state() and not get_stop_action():
+        time.sleep(1)
+            
+        
+def pause():
+    set_paused_state()
+    return 0
+
+def resume():
+    reset_paused_state()
+    return 0 
+
 # @async_call
 def stop():
     set_stop_action()
     while True:
-        if get_running_state():
-            time.sleep(1)
-        else:
+        if get_stopped_state():
             break
+        else:
+            time.sleep(1)
     return 0
     
 

@@ -1,17 +1,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <html>
 <head>
+{% if not paused() %}
   <meta http-equiv="refresh" content="5;url={{ url_for('blue_nav.testing') }}">
+{% endif %}
   <title>
     Aging Test Tool
   </title>
 </head>
 <body>
-{{ pagination.info }}
-{{ pagination.links }}
-  <form action="/cmd_stop/" method="post">
-    <button type="submit" class="btn btn-default">停止</button>
-  </form>
+  <a href="/cmd_stop/" class="btn btn-danger">停止</a>
+{% if paused() %}
+  <a href="/cmd_resume/" class="btn btn-success">继续</a>
+{% else %}
+  <a href="/cmd_pause/" class="btn btn-warning">暂停</a>
+{% endif %}
 <table class="table table-striped table-hover ">
   <thead>
     <tr>
@@ -66,7 +69,6 @@
     {% endfor %}
   </tbody>
 </table> 
-{{ pagination.links }}
   <br>
   <br>
   <br>
