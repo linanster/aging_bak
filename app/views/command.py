@@ -31,12 +31,15 @@ def cmd_stop():
 
 @blue_command.route('/cmd_on_off/', methods=['POST'])
 def cmd_on_off():
+    is_testing = request.form.get('is_testing')
     index = request.form.get('index')
     mac = request.form.get('mac')
     on_off = request.form.get('on_off')
     print("[debug] press turn {} #{} with Mac {}".format(on_off, index, mac))
     errno = turn_on_off(mac, on_off)
     flash('Turn {} #{} with mac {}'.format(on_off, index, mac))
+    if is_testing:
+        return redirect(url_for('blue_nav.testing'))
     return redirect(url_for('blue_database.info_aging'))
 
 @blue_command.route('/cmd_pause/', methods=['GET'])
