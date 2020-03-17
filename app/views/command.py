@@ -7,24 +7,19 @@ from app.lib import start, stop, turn_on_off, cleanup_temp, cleanup_stage, migra
 blue_command = Blueprint('blue_command', __name__)
 
 
-# pipe1_recv for stop()
-pipe1_recv, pipe1_send = Pipe(duplex=False, conn1_nonblock=False, conn2_nonblock=False)
-pipe2_recv, pipe2_send = Pipe(duplex=False, conn1_nonblock=True, conn2_nonblock=True)
-
-
 @blue_command.route('/cmd_start/', methods=['POST'])
 def cmd_start():
     devicecode = request.form.get('devicecode')
     factoryid = request.form.get('factoryid')
     cleanup_temp()
-    errno = start(pipe2_recv, pipe1_send, devicecode, factoryid)
+    errno = start(devicecode, factoryid)
     # flash('Started!')
     return redirect(url_for('blue_nav.testing'))
 
 @blue_command.route('/cmd_stop/', methods=['POST'])
 def cmd_stop():
     print("[debug] press stop")
-    errno = stop(pipe1_recv,pipe2_send)
+    errno = stop()
     if 0 == errno:
         # flash('Stopped!')
         pass

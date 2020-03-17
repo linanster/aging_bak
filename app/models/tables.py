@@ -27,7 +27,8 @@ class tb_state(db.Model):
     def seed():
         s_running = tb_state('s_running', False, 'indicate running or not')
         s_paused = tb_state('s_paused', False, 'indicate paused or not')
-        db.session.add_all([s_running, s_paused])
+        a_stop = tb_state('a_stop', False, 'indicate if stop command send out')
+        db.session.add_all([s_running, a_stop, s_paused])
         db.session.commit()
 
 # 2. model definition

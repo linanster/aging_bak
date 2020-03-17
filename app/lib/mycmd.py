@@ -8,6 +8,11 @@ from multiprocessing import Process
 from flask import flash, redirect, url_for
 from .mypymysql import migrate_to_stage, migrate_to_archive, cleanup_temp, cleanup_stage
 
+from .tools import get_running_state, set_running_state, reset_running_state
+from .tools import get_paused_state, set_paused_state, reset_paused_state
+from .tools import get_stop_action, set_stop_action, reset_stop_action
+
+
 TEST = True
 program = "./ble-backend-nan" if TEST else "./ble-backend"
 
@@ -20,7 +25,9 @@ def async_call(fn):
     return wrapper
 
 @async_call
-def start(pipe_recv, pipe_send, devicecode, factoryid):
+def start(devicecode, factoryid):
+    set_running_state()
+    reset_stop_action()
     # 1. Start "ble-bakcend -command=start", and then waiting 60 seconds.
     _start()
     # time.sleep(60)
@@ -30,36 +37,27 @@ def start(pipe_recv, pipe_send, devicecode, factoryid):
     # time.sleep(30)
     time.sleep(3)
     # 3. loop run "ble-backend --command=scan", in every 10 seconds
+
     while True:
-        try:
-            buf, = pipe_recv.recv(100)
-            print('[debug] process start(scan) receive:', buf)
-            if 'stop' == buf:
-                break
-            else:
-                continue
-        except:
-            # move data to another place
+        if get_stop_action():
+            reset_running_state()
+            break
+        else:
             cleanup_temp()
             _scan(devicecode, factoryid)
-            # todo: refresh page info_age with scan_loop
             time.sleep(10)
-            # todo: cause table lock
-            # migrate_to_stage()
-    pipe_send.send('stopped')
-    print('[debug] process start(scan) send: stopped')
     return 0
 
 # @async_call
-def stop(pipe_recv, pipe_send):
-    pipe_send.send('stop')
-    print('[debug] process stop send: stop')
-    buf = pipe_recv.recv(10)
-    print('[debug] process stop receive:', buf)
-    if 'stopped' == buf:
-        return 0
-    else:
-        return 1
+def stop():
+    set_stop_action()
+    while True:
+        if get_running_state():
+            time.sleep(1)
+        else:
+            break
+    return 0
+    
 
 # @async_call
 def turn_on_off(mac, on_off):
