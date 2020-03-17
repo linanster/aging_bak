@@ -3,4 +3,5 @@
 **/*.swp
 **/ble-backend
 **/*.sqlite3
+**/*.sqlite
 **/__pycache__

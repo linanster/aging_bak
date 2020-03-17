@@ -39,8 +39,10 @@ def cmd_on_off():
     errno = turn_on_off(mac, on_off)
     flash('Turn {} #{} with mac {}'.format(on_off, index, mac))
     if is_testing:
-        return redirect(url_for('blue_nav.testing'))
-    return redirect(url_for('blue_database.info_aging'))
+        endpoint = 'blue_nav.testing'
+    else:
+        endpoint = 'blue_database.info_aging'
+    return redirect(url_for(endpoint, control_index=index))
 
 @blue_command.route('/cmd_pause/', methods=['GET'])
 def cmd_pause():

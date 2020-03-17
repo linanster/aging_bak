@@ -17,6 +17,7 @@ blue_database = Blueprint('blue_database', __name__)
 def info_aging():
     # results = tb_data_aging.query.all()
     results = view_data_aging.query.all()
+    control_index = request.args.get('control_index')
 
     # pagination code
     PER_PAGE = 30
@@ -26,8 +27,7 @@ def info_aging():
     pagination = Pagination(page=page, total=len(results), per_page=PER_PAGE, bs_version=3)
     ret = view_data_aging.query.slice(start, end)
 
-    # return render_template('manageaging.html', results=results)
-    return render_template('manageaging.html', pagination=pagination, results=ret)
+    return render_template('manageaging.html', pagination=pagination, results=ret, control_index=control_index)
 
 
 @blue_database.route('/info_device/', methods=['GET'])
