@@ -7,6 +7,8 @@ def init_views(app):
     view.init_app(app)
 
 class view_data_aging(view.Model):
+    __bind_key__ = 'main'
+    __tablename__ = 'view_data_aging'
     id = view.Column(view.Integer, nullable=False, autoincrement=True, primary_key = True)
     device_type = view.Column(view.String(100))
     factory = view.Column(view.String(100))

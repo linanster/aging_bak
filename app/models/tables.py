@@ -13,10 +13,27 @@ def init_tables(app):
     db_stage.init_app(app)
     db_archive.init_app(app)
 
+class tb_state(db.Model):
+    __bind_key__ = 'state'
+    __tablename__ = 'tb_state'
+    id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key=True)
+    metric = db.Column(db.String(100))
+    state = db.Column(db.Boolean)
+    description = db.Column(db.String(100))
+    def __init__(self, metric, state=False, description=''):
+        self.metric = metric
+        self.state = state
+        self.description = description
+    def seed():
+        s_running = tb_state('s_running', False, 'indicate running or not')
+        s_paused = tb_state('s_paused', False, 'indicate paused or not')
+        db.session.add_all([s_running, s_paused])
+        db.session.commit()
+
 # 2. model definition
 
 class tb_device_type(db.Model):
-    __tablename__ = 'tb_device_type'
+    __bind_key__ = 'main'
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
     code = db.Column(db.Integer, nullable=False, unique=True)
     type = db.Column('type', db.String(100), nullable=False)
@@ -39,6 +56,7 @@ class tb_device_type(db.Model):
         db.session.commit()
 
 class tb_factory(db.Model):
+    __bind_key__ = 'main'
     __tablename__ = 'tb_factory'
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
     name = db.Column(db.String(100), unique=True, nullable=False)
@@ -57,6 +75,7 @@ class tb_factory(db.Model):
         db.session.commit()
 
 class tb_data_aging(db.Model):
+    __bind_key__ = 'main'
     __tablename__ = 'tb_data_aging'
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
     device_type = db.Column(db.Integer, db.ForeignKey('tb_device_type.code'), nullable=False)
@@ -84,11 +103,12 @@ class tb_data_aging(db.Model):
     def seed():
         a1 = tb_data_aging(5, 2, '3.1', -65, -33, 'd74d38dabcf1', '88:50:F6:04:62:31', True, False, datetime.datetime.now())
         a2 = tb_data_aging(1, 3, '3.2', -65, -33, 'd74d38dabcf5', '88:50:F6:04:62:35', True, False, datetime.datetime.now())
-        a3 = tb_data_aging(17, 1, '3.40', -65, -33, 'd74d38dabcf7', '88:50:F6:04:62:37', True, False, datetime.datetime.now())
+        a3 = tb_data_aging(17, 1, '3.40', -65, -33, 'd74d38dabcf7', '88:50:F6:04:62:37', False, False, datetime.datetime.now())
         db.session.add_all([a1, a2, a3])
         db.session.commit()
 
 class tb_data_aging_stage(db_stage.Model):
+    __bind_key__ = 'main'
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
     # device_type = db.Column(db.Integer, db.ForeignKey('tb_device_type.code'), nullable=False)
     # factory = db.Column(db.Integer, db.ForeignKey('tb_factory.id'), nullable=False) 
@@ -126,6 +146,7 @@ class tb_data_aging_stage(db_stage.Model):
         self.datetime = age_obj.datetime
 
 class tb_data_aging_archive(db_archive.Model):
+    __bind_key__ = 'main'
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
     # device_type = db.Column(db.Integer, db.ForeignKey('tb_device_type.code'), nullable=False)
     # factory = db.Column(db.Integer, db.ForeignKey('tb_factory.id'), nullable=False) 

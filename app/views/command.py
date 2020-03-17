@@ -19,7 +19,6 @@ def cmd_start():
     cleanup_temp()
     errno = start(pipe2_recv, pipe1_send, devicecode, factoryid)
     # flash('Started!')
-    # return redirect(url_for('blue_database.info_aging', refresh=True, started=True))
     return redirect(url_for('blue_nav.testing'))
 
 @blue_command.route('/cmd_stop/', methods=['POST'])
