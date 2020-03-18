@@ -3,9 +3,6 @@ import datetime
 
 view = SQLAlchemy(use_native_unicode='utf8')
 
-def init_views(app):
-    view.init_app(app)
-
 class view_data_aging(view.Model):
     __bind_key__ = 'main'
     __tablename__ = 'view_data_aging'

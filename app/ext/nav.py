@@ -8,6 +8,4 @@ nav.register_element('top', Navbar(u'老化测试工具',
                                     View(u'关于', 'blue_nav.about'),
                                     ))
 
-def init_nav(app):
-    nav.init_app(app)
 

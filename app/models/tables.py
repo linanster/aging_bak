@@ -8,11 +8,6 @@ db = SQLAlchemy(use_native_unicode='utf8')
 db_stage = SQLAlchemy(use_native_unicode='utf8')
 db_archive = SQLAlchemy(use_native_unicode='utf8')
 
-def init_tables(app):
-    db.init_app(app)
-    db_stage.init_app(app)
-    db_archive.init_app(app)
-
 class tb_state(db.Model):
     __bind_key__ = 'state'
     __tablename__ = 'tb_state'
