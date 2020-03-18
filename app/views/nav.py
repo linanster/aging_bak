@@ -21,9 +21,6 @@ def testing():
     # results = tb_data_aging.query.all()
     results = view_data_aging.query.all()
     control_index = request.args.get('control_index')
-    print("==control_index==", control_index)
-    print("==type(control_index)==", type(control_index))
-    
     # pagination code
     # PER_PAGE = 30
     # page = request.args.get(get_page_parameter(), type=int, default=1) #获取页码，默认为第一页

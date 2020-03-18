@@ -24,6 +24,7 @@ class tb_state(db.Model):
         self.metric = metric
         self.state = state
         self.description = description
+    @staticmethod
     def seed():
         s_stopped = tb_state('s_stopped', True, 'Indicate stopped or not, default is True.')
         a_stop = tb_state('a_stop', False, 'Indicate if stop command send out, default is False.')
