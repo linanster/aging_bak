@@ -7,11 +7,6 @@
     <title>{% block title %}GE Lighting Aging Test{% endblock %}</title>
 {% endblock %}
 
-{% block navbar %}
-    {# {{ nav.top.render() }} #}
-    {% include '_navbar.html' %}
-{% endblock %}
-
 {% block styles %}
     {{ super() }}
     <link rel="stylesheet"
@@ -19,13 +14,24 @@
       href="{{ url_for('static',filename='cdn.css') }}">
 {% endblock %}
 
+{% block body%}
+
+{% block navbar %}
+    {# {{ nav.top.render() }} #}
+    {% include '_navbar.html' %}
+{% endblock %}
+
 {% block content %}
 <header>{% block header %}{% endblock %}</header>
 {% endblock content %}
 
 {% block footer %}
-    <footer>
+    <footer class="bottom-right">
         Copyright 2020 by <a href="https://www.ge.com/cn/">GE Lighting</a>
     </footer>
 {% endblock %}
 
+{% block scripts%}
+  {{ super() }}
+{% endblock %}
+{% endblock body %}
