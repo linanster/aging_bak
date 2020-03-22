@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 #
+workdir=$(cd "$(dirname $0)" && pwd)
+cd "$workdir
+
 if [ "$1" == '--start' ]; then
     echo "gunicorn --daemon --workers 4 --bind 0.0.0.0:5000 wsgi:application"
     gunicorn --daemon --workers 4 --bind 0.0.0.0:5000 wsgi:application
