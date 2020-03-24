@@ -5,8 +5,6 @@ import datetime
 
 # 1. lasy init
 db = SQLAlchemy(use_native_unicode='utf8')
-db_stage = SQLAlchemy(use_native_unicode='utf8')
-db_archive = SQLAlchemy(use_native_unicode='utf8')
 
 class tb_state(db.Model):
     __bind_key__ = 'state'
@@ -105,78 +103,3 @@ class tb_data_aging(db.Model):
         db.session.add_all([a1, a2, a3])
         db.session.commit()
 
-class tb_data_aging_stage(db_stage.Model):
-    __bind_key__ = 'main'
-    id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
-    # device_type = db.Column(db.Integer, db.ForeignKey('tb_device_type.code'), nullable=False)
-    # factory = db.Column(db.Integer, db.ForeignKey('tb_factory.id'), nullable=False) 
-    device_type = db.Column(db.Integer, nullable=False)
-    factory = db.Column(db.Integer, nullable=False) 
-    fw_version = db.Column(db.String(100))
-    rssi_ble = db.Column(db.Integer)
-    rssi_wifi = db.Column(db.Integer)
-    mac_ble = db.Column(db.String(100))
-    mac_wifi = db.Column(db.String(100))
-    is_qualified = db.Column(db.Boolean)
-    is_sync = db.Column(db.Boolean)
-    datetime = db.Column(db.DateTime)
-    def __init__(self, device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime):
-        self.device_type = device_type
-        self.factory = factory
-        self.fw_version = fw_version
-        self.rssi_ble = rssi_ble
-        self.rssi_wifi = rssi_wifi
-        self.mac_ble = mac_ble
-        self.mac_wifi = mac_wifi
-        self.is_qualified = is_qualified
-        self.is_sync = is_sync
-        self.datetime = datetime
-    def __init__(self, age_obj):
-        self.device_type = age_obj.device_type
-        self.factory = age_obj.factory
-        self.fw_version = age_obj.fw_version
-        self.rssi_ble = age_obj.rssi_ble
-        self.rssi_wifi = age_obj.rssi_wifi
-        self.mac_ble = age_obj.mac_ble
-        self.mac_wifi = age_obj.mac_wifi
-        self.is_qualified = age_obj.is_qualified
-        self.is_sync = age_obj.is_sync
-        self.datetime = age_obj.datetime
-
-class tb_data_aging_archive(db_archive.Model):
-    __bind_key__ = 'main'
-    id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
-    # device_type = db.Column(db.Integer, db.ForeignKey('tb_device_type.code'), nullable=False)
-    # factory = db.Column(db.Integer, db.ForeignKey('tb_factory.id'), nullable=False) 
-    device_type = db.Column(db.Integer, nullable=False)
-    factory = db.Column(db.Integer, nullable=False) 
-    fw_version = db.Column(db.String(100))
-    rssi_ble = db.Column(db.Integer)
-    rssi_wifi = db.Column(db.Integer)
-    mac_ble = db.Column(db.String(100))
-    mac_wifi = db.Column(db.String(100))
-    is_qualified = db.Column(db.Boolean)
-    is_sync = db.Column(db.Boolean)
-    datetime = db.Column(db.DateTime)
-    def __init__(self, device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime=None):
-        self.device_type = device_type
-        self.factory = factory
-        self.fw_version = fw_version
-        self.rssi_ble = rssi_ble
-        self.rssi_wifi = rssi_wifi
-        self.mac_ble = mac_ble
-        self.mac_wifi = mac_wifi
-        self.is_qualified = is_qualified
-        self.is_sync = is_sync
-        self.datetime = datetime
-    def __init__(self, age_obj):
-        self.device_type = age_obj.device_type
-        self.factory = age_obj.factory
-        self.fw_version = age_obj.fw_version
-        self.rssi_ble = age_obj.rssi_ble
-        self.rssi_wifi = age_obj.rssi_wifi
-        self.mac_ble = age_obj.mac_ble
-        self.mac_wifi = age_obj.mac_wifi
-        self.is_qualified = age_obj.is_qualified
-        self.is_sync = age_obj.is_sync
-        self.datetime = age_obj.datetime

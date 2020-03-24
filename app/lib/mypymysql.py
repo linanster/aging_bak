@@ -3,7 +3,7 @@ from multiprocessing import Process
 # import datetime
 import pymysql
 
-from app.models import db, db_stage, db_archive, tb_device_type, tb_factory, tb_data_aging, tb_data_aging_stage, tb_data_aging_archive
+from app.models import db, tb_device_type, tb_factory, tb_data_aging
 # from models import view, view_data_aging
 
 def async_call(fn):
@@ -45,13 +45,6 @@ sql_delete_tb_data_aging = '''
     DELETE FROM tb_data_aging;
 '''
 
-sql_truncate_tb_data_aging_stage = '''
-    TRUNCATE table tb_data_aging_stage;
-'''
-
-sql_truncate_tb_data_aging_archive = '''
-    TRUNCATE table tb_data_aging_archive;
-'''
 
 def create_view():
     conn = pymysql.Connect(host=db_addr, port=db_port, user=db_user, passwd=db_passwd, db=db_name)
@@ -67,30 +60,6 @@ def delete_view():
     cursor.close()
     conn.close()    
 
-@async_call
-def migrate_to_stage():
-    records_session1 = tb_data_aging.query.all()
-    # print('==records_session1==',records_session1)
-    records_session2 = []
-    for record_session1 in records_session1:
-        record_session2 = tb_data_aging_stage(record_session1)
-        records_session2.append(record_session2)
-    # print('==records_session2==',records_session2)
-    db_stage.session.add_all(records_session2)
-    db_stage.session.commit()
-    # cleanup_temp()
-
-
-def migrate_to_archive():
-    records_session1 = tb_data_aging_stage.query.all()
-    print('==records_session1==',records_session1)
-    records_session2 = []
-    for record_session1 in records_session1:
-        record_session2 = tb_data_aging_archive(record_session1)
-        records_session2.append(record_session2)
-    print('==records_session2==',records_session2)
-    db_archive.session.add_all(records_session2)
-    db_archive.session.commit()
 
 def cleanup_temp():
     conn = pymysql.Connect(host=db_addr, port=db_port, user=db_user, passwd=db_passwd, db=db_name)
@@ -100,10 +69,3 @@ def cleanup_temp():
     conn.commit()
     conn.close()
 
-def cleanup_stage():
-    conn = pymysql.Connect(host=db_addr, port=db_port, user=db_user, passwd=db_passwd, db=db_name)
-    cursor = conn.cursor()
-    cursor.execute(sql_delete_tb_data_aging_stage)
-    cursor.close()
-    conn.commit()
-    conn.close()

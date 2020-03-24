@@ -6,7 +6,7 @@ import os
 import subprocess
 from multiprocessing import Process
 from flask import flash, redirect, url_for
-from .mypymysql import migrate_to_stage, migrate_to_archive, cleanup_temp, cleanup_stage
+from .mypymysql import cleanup_temp
 
 from .tools import get_stopped_state, set_stopped_state, reset_stopped_state
 from .tools import get_stop_action, set_stop_action, reset_stop_action
