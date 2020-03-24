@@ -1,11 +1,8 @@
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<html>
-<head>
-  <title>
-    GE Lighting Aging Test Tool
-  </title>
-</head>
-<body>
+{% extends '_mybase.html' %}
+
+{% block content %}
+  {{ super() }}
+
   <h4>查看厂家信息 </h4>
   <table class="table table-striped table-hover">
     <tr>
@@ -24,5 +21,7 @@
     {% else %}
     {% endfor %}
   </table>
-</body>
-</html>
+
+
+{% endblock %}
+

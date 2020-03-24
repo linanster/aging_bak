@@ -2,7 +2,7 @@
 
 
 {% block content %}
-  <form action="/cmd_start/" method="post" class="form-horizontal">
+  <form action="{{ url_for('blue_test.vf_cmd_start') }}" method="post" class="form-horizontal">
   <fieldset>
     <legend>测试准备</legend> 
     <div class="form-group" style="width:50%">

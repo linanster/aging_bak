@@ -12,20 +12,20 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li id='test' {% if request.path in ['/index/', '/testing/'] %}class='active'{% endif %}><a href="{{url_for('blue_nav.index')}}">开始测试<span class="sr-only">(current)</span></a></li>        
-        <li id='manage' {% if request.path in ['/info_aging/', '/info_device/', '/info_factory/'] %}class="active"{% endif %} class="dropdown" >
+        <li id='test' {% if request.path in [url_for('blue_test.vf_start'), url_for('blue_test.vf_running'), url_for('blue_test.vf_finished')] %}class='active'{% endif %}><a href="{{url_for('blue_test.vf_start')}}">开始测试<span class="sr-only">(current)</span></a></li>        
+        <li id='manage' {% if request.path in [url_for('blue_manage.vf_data'), url_for('blue_manage.vf_factory'), url_for('blue_manage.vf_device')] %}class="active"{% endif %} class="dropdown" >
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">管理 <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="{{url_for('blue_database.info_aging')}}">查看测试数据</a></li>
-            <li><a href="{{url_for('blue_database.info_factory')}}">查看厂家信息</a></li>
-            <li><a href="{{url_for('blue_database.info_device')}}">查看设备类型</a></li>
+            <li><a href="{{url_for('blue_manage.vf_data')}}">查看测试数据</a></li>
+            <li><a href="{{url_for('blue_manage.vf_factory')}}">查看厂家信息</a></li>
+            <li><a href="{{url_for('blue_manage.vf_device')}}">查看设备类型</a></li>
             <li class="divider"></li>
             <li><a href="#">todo</a></li>
             <li class="divider"></li>
             <li><a href="#">todo</a></li>
           </ul>
         </li>
-	<li id='about' {% if '/about/' == request.path %}class='active'{% endif %}><a href="{{url_for('blue_nav.about')}}">关于</a></li>
+	<li id='about' {% if request.path in [url_for('blue_about.about'),] %}class='active'{% endif %}><a href="{{url_for('blue_about.about')}}">关于</a></li>
       </ul>
     </div>
   </div>

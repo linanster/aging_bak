@@ -1,18 +1,15 @@
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<html>
-<head>
-  <title>
-    Aging Test Tool
-  </title>
-</head>
-<body>
+{% extends '_mybase.html' %}
+
+{% block content %}
+  {{ super() }}
+
 <h4>查看测试数据</h4>
 <div>
 {{ pagination.info }}
 {{ pagination.links }}
 </div>
 <div>
-  <a href="{{ url_for('blue_database.info_aging') }}" class="btn btn-default">刷新</a>
+  <a href="{{ url_for('blue_manage.vf_data') }}" class="btn btn-default">刷新</a>
 </div>
 
   {%- for message in get_flashed_messages() %}
@@ -60,7 +57,7 @@
       <td>{{result.is_sync}}</td>
       <td>{{result.datetime}}</td>
       <td>
-        <form action = "{{url_for('blue_command.cmd_on_off')}}" method = "post">
+        <form action = "{{url_for('blue_test.vf_cmd_on_off')}}" method = "post">
           <input type = "hidden" name = "index" value= {{loop.index + pagination.skip}} />
           <input type = "hidden" name = "mac" value="{{result.mac_ble}}" />
           <input type = "hidden" name = "on_off" value="on" />
@@ -68,7 +65,7 @@
         </form>
       </td>
       <td>
-        <form action = "{{url_for('blue_command.cmd_on_off')}}" method = "post">
+        <form action = "{{url_for('blue_test.vf_cmd_on_off')}}" method = "post">
           <input type = "hidden" name = "index" value= {{loop.index+pagination.skip}} />
           <input type = "hidden" name = "mac" value="{{result.mac_ble}}" />
           <input type = "hidden" name = "on_off" value="off" />
@@ -95,5 +92,8 @@
 <div>
   <br>
   <br>
-</body>
-</html>
+
+
+{% endblock %}
+
+

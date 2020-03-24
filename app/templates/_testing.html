@@ -2,18 +2,18 @@
 <html>
 <head>
 {% if not paused() %}
-  <meta http-equiv="refresh" content="5;url={{ url_for('blue_nav.testing') }}">
+  <meta http-equiv="refresh" content="5;url={{ url_for('blue_test.vf_running') }}">
 {% endif %}
   <title>
     Aging Test Tool
   </title>
 </head>
 <body>
-  <a href="/cmd_stop/" class="btn btn-default">停止</a>
+  <a href="{{ url_for('blue_test.vf_cmd_stop') }}" class="btn btn-default">停止</a>
 {% if paused() %}
-  <a href="/cmd_resume/" class="btn btn-default">继续</a>
+  <a href="{{ url_for('blue_test.vf_cmd_resume') }}" class="btn btn-default">继续</a>
 {% else %}
-  <a href="/cmd_pause/" class="btn btn-default">暂停</a>
+  <a href="{{ url_for('blue_test.vf_cmd_pause') }}" class="btn btn-default">暂停</a>
 {% endif %}
 
 
@@ -55,7 +55,7 @@
       <td>{{result.is_sync}}</td>
       <td>{{result.datetime}}</td>
       <td>
-        <form action = "{{url_for('blue_command.cmd_on_off')}}" method = "post">
+        <form action = "{{url_for('blue_test.vf_cmd_on_off')}}" method = "post">
           <input type = "hidden" name = "is_testing" value=True />
           <input type = "hidden" name = "index" value= {{loop.index}} />
           <input type = "hidden" name = "mac" value="{{result.mac_ble}}" />
@@ -68,7 +68,7 @@
         </form>
       </td>
       <td>
-        <form action = "{{url_for('blue_command.cmd_on_off')}}" method = "post">
+        <form action = "{{url_for('blue_test.vf_cmd_on_off')}}" method = "post">
           <input type = "hidden" name = "is_testing" value=True />
           <input type = "hidden" name = "index" value= {{loop.index}} />
           <input type = "hidden" name = "mac" value="{{result.mac_ble}}" />

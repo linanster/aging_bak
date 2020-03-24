@@ -1,8 +1,9 @@
 def init_views(app):
-    from .command import blue_command
-    from .database import blue_database
-    from .nav import blue_nav
-    app.register_blueprint(blue_command)
-    app.register_blueprint(blue_database)
-    app.register_blueprint(blue_nav)
-
+    from .blue_index import blue_index
+    from .blue_test import blue_test
+    from .blue_manage import blue_manage
+    from .blue_about import blue_about
+    app.register_blueprint(blue_index)
+    app.register_blueprint(blue_test)
+    app.register_blueprint(blue_manage)
+    app.register_blueprint(blue_about)
