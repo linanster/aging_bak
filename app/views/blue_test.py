@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for
 from flask_paginate import Pagination, get_page_parameter
 
-from app.models import view_data_aging, tb_data_aging
+from app.models import TestdataView, Testdata
 from app.lib import start, stop, pause, resume, turn_on_off, cleanup_temp
 
 blue_test = Blueprint('blue_test', __name__, url_prefix='/test')
@@ -14,8 +14,8 @@ def vf_start():
 
 @blue_test.route('/running')
 def vf_running():
-    # results = tb_data_aging.query.all()
-    results = view_data_aging.query.all()
+    # results = Testdata.query.all()
+    results = TestdataView.query.all()
     control_index = request.args.get('control_index')
     # pagination code
     # PER_PAGE = 30
@@ -23,15 +23,15 @@ def vf_running():
     # start = (page-1)*PER_PAGE
     # end = page * PER_PAGE if len(results) > page * PER_PAGE else len(results)
     # pagination = Pagination(page=page, total=len(results), per_page=PER_PAGE, bs_version=3)
-    # ret = view_data_aging.query.slice(start, end)
+    # ret = TestdataView.query.slice(start, end)
     # return render_template('testing.html', pagination=pagination, results=ret)
     return render_template('testing.html', results=results, control_index=control_index)
 
 
 @blue_test.route('/finished')
 def vf_finished():
-    # results = tb_data_aging.query.all()
-    results = view_data_aging.query.all()
+    # results = Testdata.query.all()
+    results = TestdataView.query.all()
     control_index = request.args.get('control_index')
 
     # pagination code
@@ -40,7 +40,7 @@ def vf_finished():
     start = (page-1)*PER_PAGE
     end = page * PER_PAGE if len(results) > page * PER_PAGE else len(results)
     pagination = Pagination(page=page, total=len(results), per_page=PER_PAGE, bs_version=3)
-    ret = view_data_aging.query.slice(start, end)
+    ret = TestdataView.query.slice(start, end)
 
     return render_template('xxx.html', pagination=pagination, results=ret, control_index=control_index)
 
@@ -50,9 +50,9 @@ def vf_finished():
 @blue_test.route('/cmd_start', methods=['POST'])
 def vf_cmd_start():
     devicecode = request.form.get('devicecode')
-    factoryid = request.form.get('factoryid')
+    factorycode = request.form.get('factorycode')
     cleanup_temp()
-    errno = start(devicecode, factoryid)
+    errno = start(devicecode, factorycode)
     # flash('Started!')
     return redirect(url_for('blue_test.vf_running'))
 

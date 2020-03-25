@@ -14,32 +14,26 @@ def hello():
 
 @manager.command
 def createdb():
-    from app.models import db, tb_device_type, tb_factory, tb_state
-    db.create_all(bind='main')
-    db.create_all(bind='state')
-    tb_device_type.seed()
-    tb_factory.seed()
-    tb_state.seed()
+    from app.models import db, Device, Factory, RunningState
+    from app.lib import create_view
+    db.create_all(bind='mysql')
+    db.create_all(bind='sqlite')
+    create_view()
+    Device.seed()
+    Factory.seed()
+    RunningState.seed()
 
 @manager.command
 def deletedb():
     from app.models import db
+    from app.lib import delete_view
+    delete_view()
     db.drop_all()
 
 @manager.command
-def createview():
-    from app.lib import create_view
-    create_view()
-
-@manager.command
-def deleteview():
-    from app.lib import delete_view
-    delete_view()
-
-@manager.command
 def testdata():
-    from app.models import tb_data_aging
-    tb_data_aging.seed()
+    from app.models import Testdata
+    Testdata.seed()
 
 @app.template_global('running')
 def running():

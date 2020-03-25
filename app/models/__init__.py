@@ -1,8 +1,8 @@
 from .tables import db
-from .tables import tb_device_type, tb_factory, tb_data_aging
-from .tables import tb_state
+from .tables import Device, Factory, Testdata
+from .tables import RunningState
 
-from .views import view, view_data_aging
+from .views import view, TestdataView
 
 def init_models(app):
     db.init_app(app)

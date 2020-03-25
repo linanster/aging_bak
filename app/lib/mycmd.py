@@ -26,7 +26,7 @@ def async_call(fn):
     return wrapper
 
 @async_call
-def start(devicecode, factoryid):
+def start(devicecode, factorycode):
     reset_stopped_state()
     reset_stop_action()
     reset_paused_state()
@@ -47,7 +47,7 @@ def start(devicecode, factoryid):
             break
         else:
             cleanup_temp()
-            _scan(devicecode, factoryid)
+            _scan(devicecode, factorycode)
             time.sleep(10)
     return 0
 
@@ -115,9 +115,9 @@ def _changemesh():
         return 0
     
 @async_call
-def _scan(devicecode, factoryid):
+def _scan(devicecode, factorycode):
     print('scan start...')
-    p = subprocess.Popen("{} -command=scan -devicecode={} -factoryid={}".format(program, devicecode, factoryid), shell=True, cwd=gofolder)
+    p = subprocess.Popen("{} -command=scan -devicecode={} -factorycode={}".format(program, devicecode, factorycode), shell=True, cwd=gofolder)
     # p.wait()
 
     

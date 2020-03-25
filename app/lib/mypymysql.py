@@ -1,15 +1,4 @@
-from flask import Blueprint, request, render_template, flash, redirect, url_for
-from multiprocessing import Process
-# import datetime
 import pymysql
-
-from app.models import db, tb_device_type, tb_factory, tb_data_aging
-# from models import view, view_data_aging
-
-def async_call(fn):
-    def wrapper(*args, **kwargs):
-        Process(target=fn, args=args, kwargs=kwargs).start()
-    return wrapper
 
 db_addr = 'localhost'
 db_port = 3306
@@ -18,7 +7,7 @@ db_passwd = '123456'
 db_name = 'ge'
 
 sql_create_view = '''
-    CREATE VIEW view_data_aging AS 
+    CREATE VIEW testdatasview AS 
         SELECT a.id AS "id", 
             d.type AS "device_type", 
             f.name AS 'factory', 
@@ -30,19 +19,16 @@ sql_create_view = '''
             a.is_qualified,
             a.is_sync,
             a.datetime 
-        FROM tb_data_aging AS a, tb_device_type AS d, tb_factory AS f 
-        WHERE a.device_type=d.code AND a.factory=f.id;
+        FROM testdatas AS a, devices AS d, factories AS f 
+        WHERE a.device_type=d.code AND a.factory=f.code;
 '''
 
 sql_delete_view = '''
-    DROP VIEW view_data_aging;
+    DROP VIEW testdatasview;
 '''
 
-sql_truncate_tb_data_aging = '''
-    TRUNCATE table tb_data_aging;
-'''
-sql_delete_tb_data_aging = '''
-    DELETE FROM tb_data_aging;
+sql_truncate_testdatas = '''
+    TRUNCATE table testdatas;
 '''
 
 
@@ -64,7 +50,7 @@ def delete_view():
 def cleanup_temp():
     conn = pymysql.Connect(host=db_addr, port=db_port, user=db_user, passwd=db_passwd, db=db_name)
     cursor = conn.cursor()
-    cursor.execute(sql_truncate_tb_data_aging)
+    cursor.execute(sql_truncate_testdatas)
     cursor.close()
     conn.commit()
     conn.close()
