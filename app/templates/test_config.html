@@ -2,7 +2,8 @@
 
 
 {% block content %}
-  <form action="{{ url_for('blue_test.vf_cmd_start') }}" method="post" class="form-horizontal">
+  <!-- <form action="{{ url_for('blue_test.vf_cmd_start') }}" method="post" class="form-horizontal"> -->
+  <form action="{{ url_for('blue_test.vf_cmd_saveconfig') }}" method="post" class="form-horizontal">
   <fieldset>
     <legend>测试准备</legend> 
     <div class="form-group" style="width:50%">
@@ -31,7 +32,7 @@
     <div class="form-group">
       <div class="col-lg-10 col-lg-offset-2">
         <button type="reset" class="btn btn-default">取消</button>
-        <button type="submit" class="btn btn-primary">开始</button>
+        <button type="submit" class="btn btn-primary">保存</button>
       </div>
     </div>
   </fieldset>

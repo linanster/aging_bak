@@ -1,59 +1,37 @@
-from app.models import db
-from app.models import RunningState
+from app.models import db,RunningState,Systeminfo
 
-def get_stopped_state():
-    r = RunningState.query.filter_by(metric='s_stopped').first()
-    return r.state
+def get_running_state():
+    r = RunningState.query.filter_by(key='s_running').first()
+    return r.value1
 
-def set_stopped_state():
-    r = RunningState.query.filter_by(metric='s_stopped').first()
-    r.state = True
+def set_running_state():
+    r = RunningState.query.filter_by(key='s_running').first()
+    r.value1 = True
     db.session.commit()
 
-def reset_stopped_state():
-    r = RunningState.query.filter_by(metric='s_stopped').first()
-    r.state = False
+def reset_running_state():
+    r = RunningState.query.filter_by(key='s_running').first()
+    r.value1 = False
     db.session.commit()
 
-def get_stop_action():
-    r = RunningState.query.filter_by(metric='a_stop').first()
-    return r.state
-
-def set_stop_action():
-    r = RunningState.query.filter_by(metric='a_stop').first()
-    r.state = True
-    db.session.commit()
-
-def reset_stop_action():
-    r = RunningState.query.filter_by(metric='a_stop').first()
-    r.state = False
-    db.session.commit()
-
-def get_paused_state():
-    r = RunningState.query.filter_by(metric='s_paused').first()
-    return r.state
-
-def set_paused_state():
-    r = RunningState.query.filter_by(metric='s_paused').first()
-    r.state = True
-    db.session.commit()
-
-def reset_paused_state():
-    r = RunningState.query.filter_by(metric='s_paused').first()
-    r.state = False
+def set_factorycode(code):
+    s = Systeminfo.query.filter_by(key='s_factorycode').first()
+    s.value2 = code
     db.session.commit()
 
 
-def get_pause_action():
-    r = RunningState.query.filter_by(metric='a_pause').first()
-    return r.state
+def get_factorycode():
+    s = Systeminfo.query.filter_by(key='s_factorycode').first()
+    return r.value2
 
-def set_pause_action():
-    r = RunningState.query.filter_by(metric='a_pause').first()
-    r.state = True
+
+def set_devicecode(code):
+    r = RunningState.query.filter_by(key='s_devicecode').first()
+    r.value2 = code
     db.session.commit()
 
-def reset_pause_action():
-    r = RunningState.query.filter_by(metric='a_pause').first()
-    r.state = False
-    db.session.commit()
+
+def get_devicecode():
+    r = RunningState.query.filter_by(key='s_devicecode').first()
+    return r.value2
+

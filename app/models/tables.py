@@ -2,6 +2,10 @@ from flask import Flask, request, flash, url_for, redirect, render_template
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 
+# 1 -- Leedarson
+# 2 -- Innotech
+# 3 -- Tonly
+F = 1
 
 # 1. lasy init
 db = SQLAlchemy(use_native_unicode='utf8')
@@ -10,21 +14,45 @@ class RunningState(db.Model):
     __bind_key__ = 'sqlite'
     __tablename__ = 'runningstates'
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key=True)
-    metric = db.Column(db.String(100))
-    state = db.Column(db.Boolean)
+    key = db.Column(db.String(100))
+    value1 = db.Column(db.Boolean)
+    value2 = db.Column(db.Integer)
     description = db.Column(db.String(100))
-    def __init__(self, metric, state=False, description=''):
-        self.metric = metric
-        self.state = state
+    def __init__(self, key, value1=False, value2=-100, description=''):
+        self.key = key
+        self.value1 = value1
+        self.value2 = value2
         self.description = description
     @staticmethod
     def seed():
-        s_stopped = RunningState('s_stopped', True, 'Indicate stopped or not, default is True.')
-        a_stop = RunningState('a_stop', False, 'Indicate if stop command send out, default is False.')
-        s_paused = RunningState('s_paused', False, 'Indicate paused or not, default is False')
-        a_pause = RunningState('a_pause', False, 'Indicate if pause commend send out, default is False')
-        db.session.add_all([s_stopped, a_stop, s_paused, a_pause])
+        r_running = RunningState('r_running', description='Indicate running or not, default is False.')
+        r_factorycode = RunningState('r_factorycode')
+        r_devicecode = RunningState('r_devicecode')
+        seeds = [r_running, r_factorycode, r_devicecode]
+        db.session.add_all(seeds)
         db.session.commit()
+
+class Systeminfo(db.Model):
+    __bind_key__ = 'sqlite'
+    __tablename__ = 'systeminfo'
+    id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key=True)
+    key = db.Column(db.String(100))
+    value1 = db.Column(db.Boolean)
+    value2 = db.Column(db.Integer)
+    description = db.Column(db.String(100))
+    def __init__(self, key, value1=False, value2=-100, description=''):
+        self.key = key
+        self.value1 = value1
+        self.value2 = value2
+        self.description = description
+    @staticmethod
+    def seed():
+        s_factorycode = Systeminfo('s_factorycode')
+        seeds = [s_factorycode,]
+        db.session.add_all(seeds)
+        db.session.commit()
+
+
 
 # 2. model definition
 
@@ -72,12 +100,13 @@ class Factory(db.Model):
         db.session.add_all([f1, f2, f3])
         db.session.commit()
 
+
 class Testdata(db.Model):
     __bind_key__ = 'mysql'
     __tablename__ = 'testdatas'
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
     device_type = db.Column(db.Integer, db.ForeignKey('devices.code'), nullable=False)
-    factory = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=False) 
+    factory = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=True, server_default=str(F)) 
     fw_version = db.Column(db.String(100))
     rssi_ble = db.Column(db.Integer)
     rssi_wifi = db.Column(db.Integer)
@@ -104,4 +133,5 @@ class Testdata(db.Model):
         a3 = Testdata(17, 1, '3.40', -65, -33, 'd74d38dabcf7', '88:50:F6:04:62:37', False, False, datetime.datetime.now())
         db.session.add_all([a1, a2, a3])
         db.session.commit()
+
 

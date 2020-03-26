@@ -1,6 +1,6 @@
 from .tables import db
+from .tables import RunningState, Systeminfo
 from .tables import Device, Factory, Testdata
-from .tables import RunningState
 
 from .views import view, TestdataView
 

@@ -28,17 +28,14 @@ while [ $# -gt 0 ]; do
     # --scan)
     -command=scan)
       echo "**scan**"
-      shift
-      devicecode=$(echo "$1" | awk -F= '{print $2}')
-      shift
-      factorycode=$(echo "$1" | awk -F= '{print $2}')
-      echo "devicecode: ${devicecode}"
-      echo "factorycode: ${factorycode}"
-      for i in {1..50}; do
-      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(${devicecode}, ${factorycode}, '3.1', -65, -33, 'scantest', 'scantest', true, false, now())"
-      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(${devicecode}, ${factorycode}, '3.1', -65, -33, 'scantest', 'scantest', true, false, now())"
+      # shift
+      # devicecode=$(echo "$1" | awk -F= '{print $2}')
+      # shift
+      # factorycode=$(echo "$1" | awk -F= '{print $2}')
+      for i in {1..100}; do
+      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(1, 1, '3.1', -65, -33, 'scantest', 'scantest', true, false, now())"
       if [ $i -eq 5 ]; then
-      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(${devicecode}, ${factorycode}, '3.1', -65, -33, 'scantest', 'scantest', false, false, now())"
+      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(1, 1, '3.1', -65, -33, 'scantest', 'scantest', false, false, now())"
       fi
       done
       sleep 5

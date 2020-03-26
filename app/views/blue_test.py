@@ -2,19 +2,19 @@ from flask import Blueprint, request, render_template, flash, redirect, url_for
 from flask_paginate import Pagination, get_page_parameter
 
 from app.models import TestdataView, Testdata
-from app.lib import start, stop, pause, resume, turn_on_off, cleanup_temp
+from app.lib import start, turn_on_off, cleanup_temp
+from app.lib import set_factorycode, set_devicecode
 
 blue_test = Blueprint('blue_test', __name__, url_prefix='/test')
 
 
 
-@blue_test.route('/start')
-def vf_start():
-    return render_template('index.html')
+@blue_test.route('/config')
+def vf_config():
+    return render_template('test_config.html')
 
 @blue_test.route('/running')
 def vf_running():
-    # results = Testdata.query.all()
     results = TestdataView.query.all()
     control_index = request.args.get('control_index')
     # pagination code
@@ -25,7 +25,7 @@ def vf_running():
     # pagination = Pagination(page=page, total=len(results), per_page=PER_PAGE, bs_version=3)
     # ret = TestdataView.query.slice(start, end)
     # return render_template('testing.html', pagination=pagination, results=ret)
-    return render_template('testing.html', results=results, control_index=control_index)
+    return render_template('test_test.html', results=results, control_index=control_index)
 
 
 @blue_test.route('/finished')
@@ -47,27 +47,27 @@ def vf_finished():
 
 
 # button & command
-@blue_test.route('/cmd_start', methods=['POST'])
+
+@blue_test.route('/cmd_start', methods=['GET'])
 def vf_cmd_start():
-    devicecode = request.form.get('devicecode')
-    factorycode = request.form.get('factorycode')
+    # devicecode = request.form.get('devicecode')
+    # factorycode = request.form.get('factorycode')
     cleanup_temp()
-    errno = start(devicecode, factorycode)
-    # flash('Started!')
+    start()
     return redirect(url_for('blue_test.vf_running'))
 
-@blue_test.route('/cmd_stop', methods=['GET'])
-def vf_cmd_stop():
-    print("[debug] press stop")
-    errno = stop()
-    if 0 == errno:
-        # flash('Stopped!')
-        pass
-    else:
-        # flash('stop error')
-        pass
-    return redirect(url_for('blue_manage.vf_data'))
 
+@blue_test.route('/cmd_saveconfig', methods=['POST'])
+def vf_cmd_saveconfig():
+    devicecode = request.form.get('devicecode')
+    factorycode = request.form.get('factorycode')
+    if not check_input_save():
+         flash('保存失败')
+         return redirect(url_for('blue_test.vf_config'))
+    set_factorycode(factorycode)
+    set_devicecode(devicecode) 
+    flash('保存成功')
+    return redirect(url_for('blue_test.vf_config'))
 
 @blue_test.route('/cmd_on_off', methods=['POST'])
 def vf_cmd_on_off():
@@ -78,18 +78,12 @@ def vf_cmd_on_off():
     print("[debug] press turn {} #{} with Mac {}".format(on_off, index, mac))
     errno = turn_on_off(mac, on_off)
     if is_testing:
-        endpoint = 'blue_test.vf_running'
+        endpoint = 'blue_test.vf_config'
     else:
         endpoint = 'blue_manage.vf_data'
         flash('Turn {} #{} with mac {}'.format(on_off, index, mac))
     return redirect(url_for(endpoint, control_index=index))
 
-@blue_test.route('/cmd_pause', methods=['GET'])
-def vf_cmd_pause():
-    pause()
-    return redirect(url_for('blue_test.vf_running'))
 
-@blue_test.route('/cmd_resume', methods=['GET'])
-def vf_cmd_resume():
-    resume()
-    return redirect(url_for('blue_test.vf_running'))
+def check_input_save():
+     return True
