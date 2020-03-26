@@ -1,16 +1,16 @@
 from app.models import db,RunningState,Systeminfo
 
 def get_running_state():
-    r = RunningState.query.filter_by(key='s_running').first()
+    r = RunningState.query.filter_by(key='r_running').first()
     return r.value1
 
 def set_running_state():
-    r = RunningState.query.filter_by(key='s_running').first()
+    r = RunningState.query.filter_by(key='r_running').first()
     r.value1 = True
     db.session.commit()
 
 def reset_running_state():
-    r = RunningState.query.filter_by(key='s_running').first()
+    r = RunningState.query.filter_by(key='r_running').first()
     r.value1 = False
     db.session.commit()
 
@@ -25,13 +25,22 @@ def get_factorycode():
     return r.value2
 
 
-def set_devicecode(code):
-    r = RunningState.query.filter_by(key='s_devicecode').first()
-    r.value2 = code
+def set_devicecode(num):
+    r = RunningState.query.filter_by(key='r_devicecode').first()
+    r.value2 = num
     db.session.commit()
 
 
 def get_devicecode():
-    r = RunningState.query.filter_by(key='s_devicecode').first()
+    r = RunningState.query.filter_by(key='r_devicecode').first()
     return r.value2
 
+def set_totalcount(num):
+    r = RunningState.query.filter_by(key='r_totalcount').first()
+    r.value2 = num
+    db.session.commit()
+
+
+def get_totalcount():
+    r = RunningState.query.filter_by(key='r_totalcount').first()
+    return r.value2

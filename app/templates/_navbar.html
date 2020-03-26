@@ -12,13 +12,13 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li id='test' {% if request.path in [url_for('blue_test.vf_config'), url_for('blue_test.vf_running'), url_for('blue_test.vf_finished')] %}class='active'{% endif %} class="dropdown" >
+        <li id='test' {% if request.path in [url_for('blue_test.vf_config'), url_for('blue_test.vf_finished'), url_for('blue_test.vf_finished')] %}class='active'{% endif %} class="dropdown" >
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">测试 <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li><a href="{{url_for('blue_test.vf_config')}}">配置测试</a></li>
-            <li><a href="{{url_for('blue_test.vf_running')}}">开始测试</a></li>
+            <li><a href="{{url_for('blue_test.vf_start')}}">开始测试</a></li>
             <li class="divider"></li>
-            <li><a href="#">todo</a></li>
+            <li><a href="{{url_for('blue_test.vf_finished')}}">查看上次结果</a></li>
             <li class="divider"></li>
             <li><a href="#">todo</a></li>
           </ul>

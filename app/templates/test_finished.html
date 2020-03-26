@@ -3,12 +3,6 @@
 {% block content %}
   {{ super() }}
 
-<div>
-</div>
-<div>
-  <a href="{{ url_for('blue_test.vf_cmd_start') }}" class="btn btn-default">开始</a>
-</div>
-
   {%- for message in get_flashed_messages() %}
 <div class="alert alert-dismissible alert-success">
   <button type="button" class="close" data-dismiss="alert">&times;</button>

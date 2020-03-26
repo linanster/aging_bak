@@ -26,9 +26,9 @@ class RunningState(db.Model):
     @staticmethod
     def seed():
         r_running = RunningState('r_running', description='Indicate running or not, default is False.')
-        r_factorycode = RunningState('r_factorycode')
         r_devicecode = RunningState('r_devicecode')
-        seeds = [r_running, r_factorycode, r_devicecode]
+        r_totalcount = RunningState('r_totalcount') 
+        seeds = [r_running, r_devicecode, r_totalcount]
         db.session.add_all(seeds)
         db.session.commit()
 
