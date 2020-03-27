@@ -2,7 +2,7 @@ from flask import Blueprint, request, render_template, flash, redirect, url_for
 from flask_paginate import Pagination, get_page_parameter
 
 from app.models import TestdataView, Testdata
-from app.lib import start, turn_on_off, cleanup_temp
+from app.lib import start, blink_single, blink_all, blink_stop, cleanup_temp
 from app.lib import set_factorycode, set_devicecode, set_totalcount
 
 blue_test = Blueprint('blue_test', __name__, url_prefix='/test')
@@ -34,10 +34,8 @@ def vf_finished():
 
 # button & command
 
-@blue_test.route('/cmd_start', methods=['GET'])
+@blue_test.route('/cmd_start', methods=['POST'])
 def vf_cmd_start():
-    # devicecode = request.form.get('devicecode')
-    # factorycode = request.form.get('factorycode')
     cleanup_temp()
     start()
     return redirect(url_for('blue_test.vf_finished'))
@@ -45,32 +43,36 @@ def vf_cmd_start():
 
 @blue_test.route('/cmd_saveconfig', methods=['POST'])
 def vf_cmd_saveconfig():
-    devicecode = request.form.get('devicecode')
-    factorycode = request.form.get('factorycode')
+    # devicecode = request.form.get('devicecode')
+    # factorycode = request.form.get('factorycode')
     totalcount = request.form.get('totalcount')
     if not check_input_save():
          flash('保存失败')
          return redirect(url_for('blue_test.vf_config'))
-    set_factorycode(factorycode)
-    set_devicecode(devicecode) 
+    # set_factorycode(factorycode)
+    # set_devicecode(devicecode) 
     set_totalcount(totalcount) 
     return redirect(url_for('blue_test.vf_start'))
 
-@blue_test.route('/cmd_on_off', methods=['POST'])
-def vf_cmd_on_off():
-    is_testing = request.form.get('is_testing')
-    index = request.form.get('index')
+@blue_test.route('/cmd_blink_single', methods=['POST'])
+def vf_cmd_blink_single():
     mac = request.form.get('mac')
-    on_off = request.form.get('on_off')
-    print("[debug] press turn {} #{} with Mac {}".format(on_off, index, mac))
-    errno = turn_on_off(mac, on_off)
-    if is_testing:
-        endpoint = 'blue_test.vf_config'
-    else:
-        endpoint = 'blue_manage.vf_data'
-        flash('Turn {} #{} with mac {}'.format(on_off, index, mac))
-    return redirect(url_for(endpoint, control_index=index))
+    index = request.form.get('index')
+    print("==blink mac==",mac)
+    blink_single(mac)
+    return redirect(url_for('blue_test.vf_finished', control_index=index))
 
+@blue_test.route('/cmd_blink_all', methods=['POST'])
+def vf_cmd_blink_all():
+    print("==blink all==")
+    blink_all()
+    return redirect(url_for('blue_test.vf_finished'))
+
+@blue_test.route('/cmd_blink_stop', methods=['POST'])
+def vf_cmd_blink_stop():
+    print("==blink stop==")
+    blink_stop()
+    return redirect(url_for('blue_test.vf_finished'))
 
 def check_input_save():
      return True

@@ -8,11 +8,8 @@ from multiprocessing import Process
 from flask import flash, redirect, url_for
 from .mypymysql import cleanup_temp
 
-from .tools import get_running_state, set_running_state, reset_running_state
+from .tools import get_totalcount
 
-
-TEST = True
-program = "./ble-backend-nan" if TEST else "./ble-backend"
 
 gofolder = os.path.join(os.getcwd(), 'go')
 
@@ -24,38 +21,30 @@ def async_call(fn):
 
 # @async_call
 def start():
-    _start()
-    time.sleep(1)
-    _changemesh()
-    time.sleep(1)
-    _scan()
-    time.sleep(1)
-
-    return 0
-
-
-# @async_call
-def turn_on_off(mac, on_off):
-    print('turn {} {} start'.format(on_off, mac))
-    p = subprocess.Popen("{} -command={} -mac={}".format(program, on_off, mac), shell=True, cwd=gofolder)
-    # wait till on/off command finished
+    num = get_totalcount()
+    p = subprocess.Popen("./ble-backend -command=start ", shell=True, cwd=gofolder)
     p.wait()
-
-# @async_call
-def _start():
-    print('start start...')
-    p = subprocess.Popen("{} -command=start".format(program), shell=True, cwd=gofolder)
+    p = subprocess.Popen("./ble-backend -command=changemesh", shell=True, cwd=gofolder)
+    p.wait()
+    p = subprocess.Popen("./ble-backend -command=scan -totalcount={}".format(num), shell=True, cwd=gofolder)
+    p.wait()
     return 0
 
-# @async_call
-def _changemesh():
-    print('changemesh start...')
-    p = subprocess.Popen("{} -command=changemesh".format(program), shell=True, cwd=gofolder)
-    
-# @async_call
-def _scan():
-    print('scan start...')
-    p = subprocess.Popen("{} -command=scan".format(program), shell=True, cwd=gofolder)
-    # p.wait()
 
+def blink_single(mac):
+    segments = mac.split(':')
+    maclist = segments[4] + segments[5]
+    p = subprocess.Popen("./ble-backend -command=nok_ident -maclist={}".format(maclist), shell=True, cwd=gofolder)
+    p.wait()
+    return 0
+
+
+def blink_all():
+    p = subprocess.Popen("./ble-backend -command=nok_ident -maclist=ffff", shell=True, cwd=gofolder)
+    p.wait()
+    return 0
     
+def blink_stop():
+    p = subprocess.Popen("./ble-backend -command=nok_ident -maclist=stop", shell=True, cwd=gofolder)
+    p.wait()
+    return 0

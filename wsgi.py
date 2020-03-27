@@ -4,6 +4,11 @@ from app import create_app
 
 application = create_app()
 
+@application.template_global('totalcount')
+def totalcount():
+    from app.lib import get_totalcount
+    return get_totalcount()
+
 @application.template_global('running')
 def running():
     from app.lib import get_running_state

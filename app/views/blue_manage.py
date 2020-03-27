@@ -17,7 +17,6 @@ blue_manage = Blueprint('blue_manage', __name__, url_prefix='/manage')
 def vf_data():
     # results = Testdata.query.all()
     results = TestdataView.query.all()
-    control_index = request.args.get('control_index')
 
     # pagination code
     PER_PAGE = 30
@@ -27,7 +26,7 @@ def vf_data():
     pagination = Pagination(page=page, total=len(results), per_page=PER_PAGE, bs_version=3)
     ret = TestdataView.query.slice(start, end)
 
-    return render_template('manage_data.html', pagination=pagination, results=ret, control_index=control_index)
+    return render_template('manage_data.html', pagination=pagination, results=ret)
 
 
 @blue_manage.route('/device', methods=['GET'])
