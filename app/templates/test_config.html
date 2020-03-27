@@ -4,7 +4,7 @@
 {% block content %}
   <form action="{{ url_for('blue_test.vf_cmd_saveconfig') }}" method="post" class="form-horizontal">
   <fieldset>
-    <legend>测试准备</legend> 
+    <legend>测试配置</legend> 
     <!-- <div class="form-group" style="width:50%">
       <label for="factorycode" class="col-lg-2 control-label">选择厂家</label>
       <div class="col-lg-10">
@@ -30,13 +30,27 @@
       </div>
     </div> -->
 
+    <div class="form-group" style="width:50%">
+      <label for="totalcount" class="col-lg-2 control-label">数量</label>
+      <div class="col-lg-10">
+        <select class="form-control" id="totalcount" name="totalcount">
+          <option value="" style='display: none'>-</option>
+          {% for i in range(1,200) %}
+          <option value={{i}}>{{i}}</option>
+          {% endfor %}
+        </select>
+        <br>
+      </div>
+    </div>
+
+    <!--
     <div class="form-group" style="width:50%"> 
       <label for="totalcount" class="col-lg-2 control-label">数量</label>
       <div class="col-lg-10">
         <input type="text" class="form-control" id="totalcount" name="totalcount" placeholder="">
       </div>
     </div>
-
+    -->
 
     <div class="form-group">
       <div class="col-lg-10 col-lg-offset-2">

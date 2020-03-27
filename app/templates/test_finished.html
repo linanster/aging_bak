@@ -3,12 +3,13 @@
 {% block content %}
   {{ super() }}
 
+
 <div class="btn-group">
-<form action = "{{url_for('blue_test.vf_cmd_blink_all')}}" method = "post">
-  <button type="submit" class="btn btn-default">全部闪烁</button>
+<form style="display: inline" action = "{{url_for('blue_test.vf_cmd_blink_all')}}" method = "post">
+  <button type="submit" class="btn btn-success "{% if results|count == 0 %}disabled{% endif %}>全部闪烁</button>
 </form>
-<form action = "{{url_for('blue_test.vf_cmd_blink_stop')}}" method = "post">
-  <button type="submit" class="btn btn-default">关闭闪烁</button>
+<form style="display: inline" action = "{{url_for('blue_test.vf_cmd_blink_stop')}}" method = "post">
+  <button type="submit" class="btn btn-danger" {% if results|count == 0 %}disabled{% endif %}>停止</button>
 </form>
 </div>
 
@@ -53,7 +54,7 @@
         <form action = "{{url_for('blue_test.vf_cmd_blink_single')}}" method = "post">
           <input type = "hidden" name = "index" value= {{loop.index }} />
           <input type = "hidden" name = "mac" value="{{result.mac_ble}}" />
-          <button type="submit" >闪烁</button>
+          <button type="submit" class="btn btn-primary btn-xs">闪烁</button>
         </form>
       </td>
     </tr>

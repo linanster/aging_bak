@@ -21,13 +21,11 @@ def async_call(fn):
 
 # @async_call
 def start():
-    num = get_totalcount()
-    p = subprocess.Popen("./ble-backend -command=start ", shell=True, cwd=gofolder)
-    p.wait()
-    p = subprocess.Popen("./ble-backend -command=changemesh", shell=True, cwd=gofolder)
-    p.wait()
-    p = subprocess.Popen("./ble-backend -command=scan -totalcount={}".format(num), shell=True, cwd=gofolder)
-    p.wait()
+    cmdlist = [_start, _changemesh, _scan, _bulb_cmd_set]
+    for cmd in cmdlist:
+        errno = cmd()
+        if errno != 0:
+            return errno
     return 0
 
 
@@ -47,4 +45,36 @@ def blink_all():
 def blink_stop():
     p = subprocess.Popen("./ble-backend -command=nok_ident -maclist=stop", shell=True, cwd=gofolder)
     p.wait()
+    return 0
+
+def _start():
+    loop = 1
+    while 0 != subprocess.call("./ble-backend -command=start ", shell=True, cwd=gofolder):
+        if loop==3:
+            return -1
+        loop+=1
+    return 0
+    
+def _changemesh():
+    loop = 1
+    while 0 != subprocess.call("./ble-backend -command=changemesh", shell=True, cwd=gofolder):
+        if loop==3:
+            return -2
+        loop+=1
+    return 0
+
+def _scan():
+    num = get_totalcount()
+    loop = 1
+    while 0 != subprocess.call("./ble-backend -command=scan -totalcount={}".format(num), shell=True, cwd=gofolder):
+        if loop==3:
+            return -3
+        loop+=1
+    return 0
+
+def _bulb_cmd_set():
+    while 0 != subprocess.call("./ble-backend -command=bulb_cmd_set1", shell=True, cwd=gofolder):
+        if loop==3:
+            return -4
+        loop+=1
     return 0

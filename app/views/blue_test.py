@@ -8,6 +8,10 @@ from app.lib import set_factorycode, set_devicecode, set_totalcount
 blue_test = Blueprint('blue_test', __name__, url_prefix='/test')
 
 
+@blue_test.route('/error')
+def vf_error():
+    errno = request.args.get('errno')
+    return render_template('test_error.html', errno=errno)
 
 @blue_test.route('/config')
 def vf_config():
@@ -37,8 +41,11 @@ def vf_finished():
 @blue_test.route('/cmd_start', methods=['POST'])
 def vf_cmd_start():
     cleanup_temp()
-    start()
-    return redirect(url_for('blue_test.vf_finished'))
+    errno = start()
+    if errno == 0:
+        return redirect(url_for('blue_test.vf_finished'))
+    else:
+        return redirect(url_for('blue_test.vf_error', errno=errno))
 
 
 @blue_test.route('/cmd_saveconfig', methods=['POST'])
