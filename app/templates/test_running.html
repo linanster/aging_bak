@@ -1,0 +1,42 @@
+{% extends '_mybase.html' %}
+
+{% block head %}
+  {{super()}}
+  <meta http-equiv="refresh" content="5;url={{ url_for('blue_test.vf_running') }}">
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+<!--<form style="display: inline" action = "{{url_for('blue_test.vf_cmd_start')}}" method = "post">
+  <button type="submit" class="btn btn-success">开始</button>
+</form>-->
+  
+<p style="display: inline" ><strong>数量</strong>:</span> <span class="text-success" > {{ totalcount() }}</p>
+
+<table class="table table-striped table-hover ">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>设备类型</th>
+      <th>工厂</th>
+      <th>固件版本</th>
+      <th>RSSI_BLE</th>
+      <th>RSSI_WIFI</th>
+      <th>MAC_BLE</th>
+      <th>MAC_WIFI</th>
+      <th>合格</th>
+      <!-- <th>云同步</th> -->
+      <th>时间</th>
+      <th colspan="2">控制</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table> 
+
+{{ progress() }}
+
+{% endblock %}
+
+

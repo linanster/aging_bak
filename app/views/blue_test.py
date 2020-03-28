@@ -21,6 +21,10 @@ def vf_config():
 def vf_start():
     return render_template('test_start.html')
 
+@blue_test.route('/running')
+def vf_running():
+    return render_template('test_running.html')
+
 @blue_test.route('/finished')
 def vf_finished():
     results = TestdataView.query.all()

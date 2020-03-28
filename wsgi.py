@@ -9,13 +9,7 @@ def totalcount():
     from app.lib import get_totalcount
     return get_totalcount()
 
-@application.template_global('running')
-def running():
-    from app.lib import get_running_state
-    return get_running_state()
-
-@application.template_global('paused')
-def paused():
-    from app.lib import get_paused_state
-    return get_paused_state()
-
+@application.template_global('progress')
+def progress():
+    from app.lib import get_progress
+    return get_progress()

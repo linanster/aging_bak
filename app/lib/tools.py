@@ -44,3 +44,23 @@ def set_totalcount(num):
 def get_totalcount():
     r = RunningState.query.filter_by(key='r_totalcount').first()
     return r.value2
+
+def set_progress(num):
+    r = RunningState.query.filter_by(key='r_progress').first()
+    r.value2 = num
+    db.session.commit()
+
+
+def get_progress():
+    r = RunningState.query.filter_by(key='r_progress').first()
+    return r.value2
+
+def add_progress():
+    r = RunningState.query.filter_by(key='r_progress').first()
+    r.value2 += 25
+    db.session.commit()
+    
+def reset_progress():
+    r = RunningState.query.filter_by(key='r_progress').first()
+    r.value2 = 0
+    db.session.commit()

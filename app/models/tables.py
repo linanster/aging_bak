@@ -27,8 +27,9 @@ class RunningState(db.Model):
     def seed():
         r_running = RunningState('r_running', description='Indicate running or not, default is False.')
         r_devicecode = RunningState('r_devicecode')
-        r_totalcount = RunningState('r_totalcount') 
-        seeds = [r_running, r_devicecode, r_totalcount]
+        r_totalcount = RunningState('r_totalcount', value2=0) 
+        r_progress = RunningState('r_progress', value2=0) 
+        seeds = [r_running, r_devicecode, r_totalcount, r_progress]
         db.session.add_all(seeds)
         db.session.commit()
 

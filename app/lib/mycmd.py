@@ -8,7 +8,7 @@ from multiprocessing import Process
 from flask import flash, redirect, url_for
 from .mypymysql import cleanup_temp
 
-from .tools import get_totalcount
+from .tools import get_totalcount, reset_progress, add_progress
 
 
 gofolder = os.path.join(os.getcwd(), 'go')
@@ -21,11 +21,15 @@ def async_call(fn):
 
 # @async_call
 def start():
+    reset_progress()
     cmdlist = [_start, _changemesh, _scan, _bulb_cmd_set]
     for cmd in cmdlist:
         errno = cmd()
         if errno != 0:
             return errno
+        else:
+            add_progress()
+        
     return 0
 
 
