@@ -1,5 +1,7 @@
 import os
 
+FCODE=2
+
 
 class Config():
     SECRET_KEY = "EjpNVSNQTyGi1VvWECj9TvC/+kq3oujee2kTfQUs8yCM6xX9Yjq52v54g+HVoknA"

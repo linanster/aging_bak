@@ -2,10 +2,12 @@ from flask import Flask, request, flash, url_for, redirect, render_template
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 
+
 # 1 -- Leedarson
 # 2 -- Innotech
 # 3 -- Tonly
-F = 1
+# factory code customization predefned in settings.py
+from app.settings import FCODE
 
 # 1. lasy init
 db = SQLAlchemy(use_native_unicode='utf8')
@@ -107,7 +109,7 @@ class Testdata(db.Model):
     __tablename__ = 'testdatas'
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
     device_type = db.Column(db.Integer, db.ForeignKey('devices.code'), nullable=False)
-    factory = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=True, server_default=str(F)) 
+    factory = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=True, server_default=str(FCODE)) 
     fw_version = db.Column(db.String(100))
     rssi_ble = db.Column(db.Integer)
     rssi_wifi = db.Column(db.Integer)
