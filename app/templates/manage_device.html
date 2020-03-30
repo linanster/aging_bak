@@ -9,8 +9,7 @@
     <tr>
       <th>序号</th>
       <th>类型代码</th>
-      <th>设备类型</th>
-      <th>详细信息</th>
+      <th>设备名称</th>
       <th>其他信息</th>
     </tr>
   </thead>
@@ -20,7 +19,6 @@
       <td>{{ loop.index }}</td>
       <td>{{result.code}}</td>
       <td>{{result.type}}</td>
-      <td>{{result.detail}}</td>
       <td>{{result.description}}</td>
     </tr>
     {% else %}

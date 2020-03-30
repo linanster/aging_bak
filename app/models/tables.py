@@ -6,11 +6,15 @@ import datetime
 # 1 -- Leedarson
 # 2 -- Innotech
 # 3 -- Tonly
-# factory code customization predefned in settings.py
+# 4 -- Changhong
 from app.settings import FCODE
 
 # 1. lasy init
 db = SQLAlchemy(use_native_unicode='utf8')
+
+
+
+# 2. model definition
 
 class RunningState(db.Model):
     __bind_key__ = 'sqlite'
@@ -56,39 +60,6 @@ class Systeminfo(db.Model):
         db.session.commit()
 
 
-
-# 2. model definition
-
-class Device(db.Model):
-    __bind_key__ = 'mysql'
-    __tablename__ = 'devices'
-    id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
-    code = db.Column(db.Integer, nullable=False, unique=True)
-    type = db.Column('type', db.String(100), nullable=False)
-    detail = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text, nullable=True)
-    Testdata = db.relationship('Testdata', backref='Device')
-    def __init__(self, code, type, detail, description=''):
-        self.code = code
-        self.type = type
-        self.detail = detail
-        self.description = description
-    @staticmethod
-    def seed():
-        d1 = Device(1, 'C-Life', 'Gen1/Gen2 ST C-Life(Ox01)')
-        d2 = Device(17, 'C-Life', 'Gen2 Andromeda C-Life(0x11)')
-        d3 = Device(18, 'C-Life', 'Gen2 MFG C-Life(0x12)')
-        d4 = Device(5, 'C-Sleep', 'Gen1/Gen2 ST C-Sleep(0x05)')
-        d5 = Device(19, 'C-Sleep', 'Gen2 MFG C-Sleep(0x13)')
-        d6 = Device(6, 'device type 6', '')
-        d7 = Device(7, 'device type 7', '')
-        d8 = Device(30, 'device type 30', '')
-        d9 = Device(31, 'device type31', '')
-        d10 = Device(32, 'device type32', '')
-        d11 = Device(55, 'device type55', '')
-        db.session.add_all([d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11])
-        db.session.commit()
-
 class Factory(db.Model):
     __bind_key__ = 'mysql'
     __tablename__ = 'factories'
@@ -97,6 +68,7 @@ class Factory(db.Model):
     name = db.Column(db.String(100), unique=True, nullable=False)
     description = db.Column(db.Text)
     Testdata = db.relationship('Testdata', backref='Factory')
+    Device = db.relationship('Device', backref='Factory')
     def __init__(self, code, name, description=''):
         self.code = code
         self.name = name
@@ -106,8 +78,101 @@ class Factory(db.Model):
         f1 = Factory(1, 'Leedarson', '立达信')
         f2 = Factory(2, 'Innotech', 'Smart LED Light Bulbs')
         f3 = Factory(3, 'Tonly', '通力')
-        db.session.add_all([f1, f2, f3])
+        f4 = Factory(4, 'Changhong', '长虹')
+        db.session.add_all([f1, f2, f3, f4])
         db.session.commit()
+
+
+class Device(db.Model):
+    __bind_key__ = 'mysql'
+    __tablename__ = 'devices'
+    id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
+    code = db.Column(db.Integer, nullable=False, unique=True)
+    factory = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=False) 
+    type = db.Column('type', db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    Testdata = db.relationship('Testdata', backref='Device')
+    def __init__(self, code, factory, type, description=''):
+        self.code = code
+        self.factory = factory
+        self.type = type
+        self.description = description
+    @staticmethod
+    def seed():
+        d_leedarson_13 = Device(13, 1, 'Gen2 TCO C-Life A19 ST')
+        d_leedarson_27 = Device(27, 1, 'Gen2 TCO C-Life A19 MFG')
+        d_leedarson_14 = Device(14, 1, 'Gen2 TCO C-Sleep A19 ST')
+        d_leedarson_28 = Device(28, 1, 'Gen2 TCO C-Sleep A19 MFG')
+        d_leedarson_15 = Device(15, 1, 'Gen2 TCO C-Sleep BR30 ST')
+        d_leedarson_29 = Device(29, 1, 'Gen2 TCO C-Sleep BR30 MFG')
+        d_leedarson_128 = Device(128, 1, 'Dual mode Soft White A19')
+        d_leedarson_129 = Device(129, 1, 'Dual mode Tunable White A19')
+        d_leedarson_130 = Device(130, 1, 'Dual mode Tunable White BR30')
+        d_leedarson_67 = Device(67, 1, 'Out door Plug')
+
+        d_innotech_30 = Device(30, 2, 'Gen2 TCO Full Color A19 ST')
+        d_innotech_31 = Device(31, 2, 'Gen2 TCO Full Color A19 MFG')
+        d_innotech_32 = Device(32, 2, 'Gen2 TCO Full Color BR30 ST')
+        d_innotech_33 = Device(33, 2, 'Gen2 TCO Full Color BR30 MFG')
+        d_innotech_34 = Device(34, 2, 'Gen2 TCO Full Color Strip ST')
+        d_innotech_35 = Device(35, 2, 'Gen2 TCO Full Color Strip MFG')
+        d_innotech_131 = Device(131, 2, 'Dual mode Full Color A19')
+        d_innotech_132 = Device(132, 2, 'Dual mode Full Color BR30')
+        d_innotech_133 = Device(133, 2, 'Dual mode Full Color Strip')
+        d_innotech_49 = Device(49, 2, 'Motion dimmer switch')
+        d_innotech_48 = Device(48, 2, 'Dimmer switch')
+        d_innotech_61 = Device(61, 2, 'Paddle switch TCO')
+        d_innotech_62 = Device(62, 2, 'Toggle switch TCO')
+        d_innotech_63 = Device(63, 2, 'Button switch TCO')
+        d_innotech_65 = Device(65, 2, 'GEN 1 Plug TCO')
+    
+        d_tonly_55 = Device(55, 3, 'Dimmer Switch(0x37)')
+        d_tonly_56 = Device(56, 3, 'Dimmer Switch(Premium)(0x38)')
+        d_tonly_57 = Device(57, 3, 'Switch Toggle(0x3A)')
+        d_tonly_58 = Device(58, 3, 'Switch Paddle(0x39)')
+        d_tonly_59 = Device(59, 3, 'Switch Centre Button(0x3B)')
+        d_tonly_81 = Device(81, 3, 'Fan Speed Switch')
+
+        d_changhong_66 = Device(66, 4, 'Indoor Plug GEN2')
+
+        devices_all = [
+            d_leedarson_13,
+            d_leedarson_27,
+            d_leedarson_14,
+            d_leedarson_28,
+            d_leedarson_15,
+            d_leedarson_29,
+            d_leedarson_128,
+            d_leedarson_129,
+            d_leedarson_130,
+            d_leedarson_67,
+            d_innotech_30,
+            d_innotech_31,
+            d_innotech_32,
+            d_innotech_33,
+            d_innotech_34,
+            d_innotech_35,
+            d_innotech_131,
+            d_innotech_132,
+            d_innotech_133,
+            d_innotech_49,
+            d_innotech_48,
+            d_innotech_61,
+            d_innotech_62,
+            d_innotech_63,
+            d_innotech_65,
+            d_tonly_55,
+            d_tonly_56,
+            d_tonly_57,
+            d_tonly_58,
+            d_tonly_59,
+            d_tonly_81,
+            d_changhong_66
+        ]
+
+        db.session.add_all(devices_all)
+        db.session.commit()
+
 
 
 class Testdata(db.Model):

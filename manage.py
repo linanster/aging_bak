@@ -34,8 +34,8 @@ def createdb():
     from app.lib import create_view
     db.create_all(bind='mysql')
     create_view()
-    Device.seed()
     Factory.seed()
+    Device.seed()
 
 @manager.command
 def deletedb():
