@@ -10,8 +10,11 @@ from .mypymysql import cleanup_temp
 
 from .tools import get_totalcount, reset_progress, add_progress
 
+Timeout = 5
 
-gofolder = os.path.join(os.getcwd(), 'go')
+# gofolder = os.path.join(os.getcwd(), 'go')
+topdir = os.path.abspath(os.path.join(os.path.dirname(__file__),"..",".."))
+gofolder = os.path.abspath(os.path.join(topdir, "go"))
 
 
 def async_call(fn):
@@ -36,54 +39,68 @@ def start():
 def blink_single(mac):
     segments = mac.split(':')
     maclist = segments[4] + segments[5]
-    p = subprocess.Popen("./ble-backend -command=nok_ident -maclist={}".format(maclist), shell=True, cwd=gofolder)
-    p.wait()
+    loop = 1
+    while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist={}".format(maclist), shell=True, cwd=gofolder):
+        time.sleep(Timeout)
+        if loop==3:
+            return -1
+        loop+=1
     return 0
 
 
 def blink_all():
-    p = subprocess.Popen("./ble-backend -command=nok_ident -maclist=ffff", shell=True, cwd=gofolder)
-    p.wait()
+    loop = 1
+    while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=ffff", shell=True, cwd=gofolder):
+        time.sleep(Timeout)
+        if loop==3:
+            return -1
+        loop+=1
     return 0
     
 def blink_stop():
-    p = subprocess.Popen("./ble-backend -command=nok_ident -maclist=stop", shell=True, cwd=gofolder)
-    p.wait()
+    loop = 1
+    while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=stop", shell=True, cwd=gofolder):
+        time.sleep(Timeout)
+        if loop==3:
+            return -1
+        loop+=1
     return 0
 
 def _start():
     loop = 1
-    while 0 != subprocess.call("./ble-backend -command=start -meshname=telink_mesh7 -meshpass=123", shell=True, cwd=gofolder):
+    # todo
+    # while 0 != subprocess.call("./ble-backend -command=start -meshname=telink_mesh7 -meshpass=123", shell=True, cwd=gofolder):
+    while 0 != subprocess.call("./ble-backend -command=start", shell=True, cwd=gofolder):
+        time.sleep(Timeout)
         if loop==3:
             return -1
         loop+=1
-    time.sleep(5)
     return 0
     
 def _changemesh():
     loop = 1
-    while 0 != subprocess.call("./ble-backend -command=changemesh  -meshname=telink_mesh7 -meshpass=123", shell=True, cwd=gofolder):
+    # todo
+    # while 0 != subprocess.call("./ble-backend -command=changemesh -meshname=telink_mesh7 -meshpass=123", shell=True, cwd=gofolder):
+    while 0 != subprocess.call("./ble-backend -command=changemesh", shell=True, cwd=gofolder):
+        time.sleep(Timeout)
         if loop==3:
             return -2
         loop+=1
-    time.sleep(5)
     return 0
 
 def _scan():
     num = get_totalcount()
     errno = subprocess.call("./ble-backend -command=scan -totalcount={}".format(num), shell=True, cwd=gofolder)
-    return errno
-    # loop = 1
-    # while 0 != subprocess.call("./ble-backend -command=scan -totalcount={}".format(num), shell=True, cwd=gofolder):
-    #     if loop==3:
-    #         return -3
-    #     loop+=1
-    # return 0
+    if errno != 0:
+        return -3
+    time.sleep(Timeout)
+    return 0
 
 @async_call
 def _bulb_cmd_set():
     loop = 1
     while 0 != subprocess.call("./ble-backend -command=bulb_cmd_set1", shell=True, cwd=gofolder):
+        time.sleep(Timeout)
         if loop==3:
             return -4
         loop+=1
