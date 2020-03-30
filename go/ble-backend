@@ -1,4 +1,4 @@
-#! /usr/bin/env sh
+#! /usr/bin/env bash
 #
 usage="Usage: ble-backend [-command=start/changemesh/scan] [-command=on/off -mac=d74d38dabcf7]\n"
 
