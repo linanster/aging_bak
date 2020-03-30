@@ -22,15 +22,14 @@ def async_call(fn):
 # @async_call
 def start():
     reset_progress()
-    cmdlist = [_start, _changemesh, _scan, _bulb_cmd_set]
+    cmdlist = [_start, _changemesh, _scan]
     for cmd in cmdlist:
         errno = cmd()
         if errno != 0:
             return errno
         else:
             add_progress()
-            time.sleep(5)
-        
+    _bulb_cmd_set()    
     return 0
 
 
@@ -58,6 +57,7 @@ def _start():
         if loop==3:
             return -1
         loop+=1
+    time.sleep(5)
     return 0
     
 def _changemesh():
@@ -66,11 +66,13 @@ def _changemesh():
         if loop==3:
             return -2
         loop+=1
+    time.sleep(5)
     return 0
 
 def _scan():
     num = get_totalcount()
-    return subprocess.call("./ble-backend -command=scan -totalcount={}".format(num), shell=True, cwd=gofolder)
+    errno = subprocess.call("./ble-backend -command=scan -totalcount={}".format(num), shell=True, cwd=gofolder)
+    return errno
     # loop = 1
     # while 0 != subprocess.call("./ble-backend -command=scan -totalcount={}".format(num), shell=True, cwd=gofolder):
     #     if loop==3:
@@ -78,7 +80,9 @@ def _scan():
     #     loop+=1
     # return 0
 
+@async_call
 def _bulb_cmd_set():
+    loop = 1
     while 0 != subprocess.call("./ble-backend -command=bulb_cmd_set1", shell=True, cwd=gofolder):
         if loop==3:
             return -4
