@@ -29,6 +29,7 @@ def start():
             return errno
         else:
             add_progress()
+            time.sleep(5)
         
     return 0
 
@@ -69,12 +70,13 @@ def _changemesh():
 
 def _scan():
     num = get_totalcount()
-    loop = 1
-    while 0 != subprocess.call("./ble-backend -command=scan -totalcount={}".format(num), shell=True, cwd=gofolder):
-        if loop==3:
-            return -3
-        loop+=1
-    return 0
+    return subprocess.call("./ble-backend -command=scan -totalcount={}".format(num), shell=True, cwd=gofolder)
+    # loop = 1
+    # while 0 != subprocess.call("./ble-backend -command=scan -totalcount={}".format(num), shell=True, cwd=gofolder):
+    #     if loop==3:
+    #         return -3
+    #     loop+=1
+    # return 0
 
 def _bulb_cmd_set():
     while 0 != subprocess.call("./ble-backend -command=bulb_cmd_set1", shell=True, cwd=gofolder):

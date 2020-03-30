@@ -80,7 +80,13 @@ class Device(db.Model):
         d3 = Device(18, 'C-Life', 'Gen2 MFG C-Life(0x12)')
         d4 = Device(5, 'C-Sleep', 'Gen1/Gen2 ST C-Sleep(0x05)')
         d5 = Device(19, 'C-Sleep', 'Gen2 MFG C-Sleep(0x13)')
-        db.session.add_all([d1, d2, d3, d4, d5])
+        d6 = Device(6, 'device type 6', '')
+        d7 = Device(7, 'device type 7', '')
+        d8 = Device(30, 'device type 30', '')
+        d9 = Device(31, 'device type31', '')
+        d10 = Device(32, 'device type32', '')
+        d11 = Device(55, 'device type55', '')
+        db.session.add_all([d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11])
         db.session.commit()
 
 class Factory(db.Model):
@@ -110,14 +116,15 @@ class Testdata(db.Model):
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
     device_type = db.Column(db.Integer, db.ForeignKey('devices.code'), nullable=False)
     factory = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=True, server_default=str(FCODE)) 
-    fw_version = db.Column(db.String(100))
+    fw_version = db.Column(db.String(20))
     rssi_ble = db.Column(db.Integer)
     rssi_wifi = db.Column(db.Integer)
-    mac_ble = db.Column(db.String(100))
-    mac_wifi = db.Column(db.String(100))
+    mac_ble = db.Column(db.String(18))
+    mac_wifi = db.Column(db.String(18))
     is_qualified = db.Column(db.Boolean)
     is_sync = db.Column(db.Boolean)
     datetime = db.Column(db.DateTime, default=datetime.datetime.now())
+    status_cmd_check = db.Column(db.Integer, nullable=True)
     def __init__(self, device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime=None):
         self.device_type = device_type
         self.factory = factory
