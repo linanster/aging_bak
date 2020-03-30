@@ -1,0 +1,78 @@
+#! /usr/bin/env sh
+#
+usage="Usage: ble-backend [-command=start/changemesh/scan] [-command=on/off -mac=d74d38dabcf7]\n"
+
+if [ $# -eq 0 ]; then
+  printf "${usage}"
+  exit 1
+fi
+
+while [ $# -gt 0 ]; do
+  case $1 in
+    --help|-h)
+      printf "${usage}"
+      exit 0
+      ;;
+    # --start)
+    -command=start)
+      echo '**start**'
+      sleep 5
+      exit 0
+      ;;
+    # --changemesh)
+    -command=changemesh)
+      echo '**changemesh**'
+      sleep 5
+      exit 0
+      ;;
+    # --scan)
+    -command=scan)
+      echo "**scan $2**"
+      # shift
+      # devicecode=$(echo "$1" | awk -F= '{print $2}')
+      # shift
+      # factorycode=$(echo "$1" | awk -F= '{print $2}')
+      for i in {1..100}; do
+      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(1, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:20', 'scantest', true, false, now())"
+      if [ $i -eq 5 ]; then
+      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(1, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:21', 'scantest', false, false, now())"
+      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(1, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:22', 'scantest', false, false, now())"
+      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(1, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:23', 'scantest', false, false, now())"
+      fi
+      done
+      sleep 5
+      exit 0
+      ;;
+    -command=bulb_cmd_set1)
+      echo '**bulb_cmd_set1**'
+      sleep 5
+      exit 0
+      ;;
+    -command=nok_ident)
+      shift
+      if [ "$1" == "-maclist=ffff" ]; then
+          echo "**blink all**"
+          sleep 1
+          exit 0
+      fi
+      if [ "$1" == "-maclist=ffff" ]; then
+          echo "**blink stop**"
+          sleep 1
+          exit 0
+      fi
+      maclist=$(echo "$1" | awk -F= '{print $2}')
+      echo "**blink $maclist**"
+      sleep 1
+      exit 0
+      ;;
+    *)
+      # continue
+      shift
+      ;;
+  esac
+  shift || true
+done
+
+printf "Invalid input\n"
+printf "${usage}"
+exit 1

@@ -1,8 +1,8 @@
 **/*.py[cdo]
 **/*.bak
 **/*.swp
-**/ble-backend
 **/*.sqlite3
 **/*.sqlite
 **/__pycache__
 venv
+ignore
