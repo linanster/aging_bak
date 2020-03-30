@@ -77,13 +77,11 @@
       <!-- <td>{{result.is_sync}}</td> -->
       <td>{{result.datetime}}</td>
       <td>
-        <!--
         <form action = "{{url_for('blue_test.vf_cmd_blink_single')}}" method = "post">
+          <input type = "hidden" name = "index" value= {{loop.index }} />
           <input type = "hidden" name = "mac" value="{{result.mac_ble}}" />
-          <button type="submit" >闪烁</button>
+          <button type="submit" class="btn btn-primary btn-xs">闪烁</button>
         </form>
-        -->
-        -
       </td>
     </tr>
     {% endif %}
