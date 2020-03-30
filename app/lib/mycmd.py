@@ -54,7 +54,7 @@ def blink_stop():
 
 def _start():
     loop = 1
-    while 0 != subprocess.call("./ble-backend -command=start ", shell=True, cwd=gofolder):
+    while 0 != subprocess.call("./ble-backend -command=start -meshname=telink_mesh7 -meshpass=123", shell=True, cwd=gofolder):
         if loop==3:
             return -1
         loop+=1
@@ -62,7 +62,7 @@ def _start():
     
 def _changemesh():
     loop = 1
-    while 0 != subprocess.call("./ble-backend -command=changemesh", shell=True, cwd=gofolder):
+    while 0 != subprocess.call("./ble-backend -command=changemesh  -meshname=telink_mesh7 -meshpass=123", shell=True, cwd=gofolder):
         if loop==3:
             return -2
         loop+=1
