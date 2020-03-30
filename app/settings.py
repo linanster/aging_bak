@@ -1,6 +1,9 @@
 import os
 
-FCODE=2
+# 1 -- Leedarson
+# 2 -- Innotech
+# 3 -- Tonly
+FCODE=1
 
 
 class Config():

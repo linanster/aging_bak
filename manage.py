@@ -19,16 +19,14 @@ def init():
     db.create_all(bind='sqlite')
     Systeminfo.seed()
     RunningState.seed()
+    from app.lib import set_factorycode
+    from app.settings import FCODE
+    set_factorycode(FCODE)
 
 @manager.command
 def uninit():
     from app.models import db
     db.drop_all(bind='sqlite')
-
-@manager.option('--factory', dest="code")
-def customize(code):
-    from app.lib import set_factorycode
-    set_factorycode(code)
 
 @manager.command
 def createdb():
