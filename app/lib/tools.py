@@ -64,3 +64,32 @@ def reset_progress():
     r = RunningState.query.filter_by(key='r_progress').first()
     r.value2 = 0
     db.session.commit()
+
+
+
+def get_phase():
+    r = RunningState.query.filter_by(key='r_phase').first()
+    return r.value3
+
+def set_phase(step):
+    r = RunningState.query.filter_by(key='r_phase').first()
+    r.value3 = step
+    db.session.commit()
+
+def reset_phase():
+    r = RunningState.query.filter_by(key='r_phase').first()
+    r.value3 = ''
+    db.session.commit()
+
+
+def get_errno():
+    r = RunningState.query.filter_by(key='r_errno').first()
+    return r.value2
+def set_errno(num):
+    r = RunningState.query.filter_by(key='r_errno').first()
+    r.value2 = num
+    db.session.commit() 
+def reset_errno():
+    r = RunningState.query.filter_by(key='r_errno').first()
+    r.value2 = 0
+    db.session.commit() 

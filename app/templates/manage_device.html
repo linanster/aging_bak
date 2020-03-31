@@ -8,8 +8,9 @@
   <thead>
     <tr>
       <th>序号</th>
-      <th>类型代码</th>
       <th>设备名称</th>
+      <th>类型代码</th>
+      <th>类型代码</th>
       <th>其他信息</th>
     </tr>
   </thead>
@@ -17,8 +18,9 @@
     {% for result in results %}
     <tr>
       <td>{{ loop.index }}</td>
+      <td>{{result.name}}</td>
       <td>{{result.code}}</td>
-      <td>{{result.type}}</td>
+      <td>{{result.code_hex}}</td>
       <td>{{result.description}}</td>
     </tr>
     {% else %}

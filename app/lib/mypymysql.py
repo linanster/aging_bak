@@ -9,7 +9,7 @@ db_name = 'ge'
 sql_create_view = '''
     CREATE VIEW testdatasview AS 
         SELECT a.id AS "id", 
-            d.type AS "device_type", 
+            d.name AS "device_type", 
             f.name AS 'factory', 
             a.fw_version,
             a.rssi_ble,

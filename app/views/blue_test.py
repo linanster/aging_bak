@@ -1,9 +1,11 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for
 from flask_paginate import Pagination, get_page_parameter
+import time
 
 from app.models import TestdataView, Testdata
-from app.lib import start, blink_single, blink_all, blink_stop, cleanup_temp
+from app.lib import start, blink_single, blink_all, blink_stop
 from app.lib import set_factorycode, set_devicecode, set_totalcount
+from app.lib import get_errno
 
 blue_test = Blueprint('blue_test', __name__, url_prefix='/test')
 
@@ -44,22 +46,27 @@ def vf_finished():
 
 @blue_test.route('/cmd_start', methods=['POST'])
 def vf_cmd_start():
-    cleanup_temp()
+    time.sleep(1)
+    # errno saved at sqlite, instead of return value here.
+    # errno = start()
+    start()
+    # wait a second for start initializing sqlite running states
+    time.sleep(1)
+    return redirect(url_for('blue_test.vf_running')) 
+
+@blue_test.route('/cmd_start_bak', methods=['POST'])
+def vf_cmd_start_bak():
     errno = start()
     if errno == 0:
         return redirect(url_for('blue_test.vf_finished'))
     else:
         return redirect(url_for('blue_test.vf_error', errno=errno))
 
-
 @blue_test.route('/cmd_saveconfig', methods=['POST'])
 def vf_cmd_saveconfig():
     # devicecode = request.form.get('devicecode')
     # factorycode = request.form.get('factorycode')
     totalcount = request.form.get('totalcount')
-    if not check_input_save():
-         flash('保存失败')
-         return redirect(url_for('blue_test.vf_config'))
     # set_factorycode(factorycode)
     # set_devicecode(devicecode) 
     set_totalcount(totalcount) 
@@ -69,21 +76,26 @@ def vf_cmd_saveconfig():
 def vf_cmd_blink_single():
     mac = request.form.get('mac')
     index = request.form.get('index')
-    print("==blink mac==",mac)
     blink_single(mac)
     return redirect(url_for('blue_test.vf_finished', control_index=index))
 
 @blue_test.route('/cmd_blink_all', methods=['POST'])
 def vf_cmd_blink_all():
-    print("==blink all==")
     blink_all()
     return redirect(url_for('blue_test.vf_finished'))
 
 @blue_test.route('/cmd_blink_stop', methods=['POST'])
 def vf_cmd_blink_stop():
-    print("==blink stop==")
     blink_stop()
     return redirect(url_for('blue_test.vf_finished'))
 
-def check_input_save():
-     return True
+@blue_test.route('/process_finished')
+def process_finished():
+    errno = get_errno()
+    if errno == 0:
+        return redirect(url_for('blue_test.vf_finished'))
+    else:
+        return redirect(url_for('blue_test.vf_error', errno=errno))
+
+
+

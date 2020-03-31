@@ -2,7 +2,11 @@
 
 {% block head %}
   {{super()}}
+  {% if running() %}
   <meta http-equiv="refresh" content="5;url={{ url_for('blue_test.vf_running') }}">
+  {% else %}
+  <meta http-equiv="refresh" content="5;url={{ url_for('blue_test.process_finished') }}">
+  {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -35,7 +39,12 @@
   </tbody>
 </table> 
 
-{{ progress() }}
+{{progress()}} | {{phase()}}
+
+<div class="progress progress-striped active">
+  <div class="progress-bar" style="width: {{5+progress()}}%"></div>
+</div>
+
 
 {% endblock %}
 
