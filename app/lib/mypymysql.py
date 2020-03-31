@@ -1,10 +1,12 @@
 import pymysql
 
-db_addr = 'localhost'
-db_port = 3306
-db_user = 'root'
-db_passwd = '123456'
-db_name = 'ge'
+# db_addr = 'localhost'
+# db_port = 3306
+# db_user = 'root'
+# db_passwd = '123456'
+# db_name = 'ge'
+
+from app.secret import db_addr, db_port, db_user, db_passwd, db_name
 
 sql_create_view = '''
     CREATE VIEW testdatasview AS 
