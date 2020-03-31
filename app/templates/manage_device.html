@@ -3,7 +3,7 @@
 {% block content %}
   {{ super() }}
 
-<h4>查看设备类型</h4>
+<legend>查看设备类型</legend>
 <table class="table table-striped table-hover">
   <thead>
     <tr>
@@ -19,8 +19,8 @@
     <tr>
       <td>{{ loop.index }}</td>
       <td>{{result.name}}</td>
-      <td>{{result.code}}</td>
       <td>{{result.code_hex}}</td>
+      <td>{{result.code}}</td>
       <td>{{result.description}}</td>
     </tr>
     {% else %}

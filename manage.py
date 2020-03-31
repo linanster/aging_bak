@@ -49,6 +49,11 @@ def testdata():
     from app.models import Testdata
     Testdata.seed()
 
+@manager.option('--fcode', dest="code")
+def set(code):
+    from app.lib import set_factorycode
+    set_factorycode(code)
+
 @app.template_global('running')
 def running():
     from app.lib import get_running_state

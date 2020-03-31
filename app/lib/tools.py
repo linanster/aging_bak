@@ -22,7 +22,7 @@ def set_factorycode(code):
 
 def get_factorycode():
     s = Systeminfo.query.filter_by(key='s_factorycode').first()
-    return r.value2
+    return s.value2
 
 
 def set_devicecode(num):

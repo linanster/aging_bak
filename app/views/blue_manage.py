@@ -8,6 +8,7 @@ from app.models import TestdataView
 # create_view and delete_view is actually two pymysql execute function
 # not that like typical models, such as db
 from app.lib import create_view, delete_view
+from app.lib import get_factorycode
 
 blue_manage = Blueprint('blue_manage', __name__, url_prefix='/manage')
 
@@ -31,12 +32,26 @@ def vf_data():
 
 @blue_manage.route('/device', methods=['GET'])
 def vf_device():
-    results = Device.query.all()
+    fcode = get_factorycode() 
+    if fcode == 0:
+        results = Device.query.all()
+    elif fcode in (1, 2, 3, 4, 5):
+        results = Device.query.filter_by(factory=fcode).all()
+    else:
+        results = list()
     return render_template('manage_device.html', results=results)
 
 @blue_manage.route('/factory', methods=['GET'])
 def vf_factory():
-    results = Factory.query.all()
+    fcode = get_factorycode() 
+    if fcode == 0:
+        results = Factory.query.all()
+    elif fcode in (1, 2, 3, 4, 5):
+        # results = Factory.query.filter_by(code=fcode).first()
+        result = Factory.query.filter_by(code=fcode).first()
+        results = [result,]
+    else:
+        results = list()
     return render_template('manage_factory.html', results=results)
 
 

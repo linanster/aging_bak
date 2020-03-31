@@ -3,13 +3,13 @@
 {% block content %}
   {{ super() }}
 
-<h4>查看测试数据</h4>
+<legend>查看测试数据</legend>
 <div>
 {{ pagination.info }}
 {{ pagination.links }}
 </div>
 <div>
-  <a href="{{ url_for('blue_manage.vf_data') }}" class="btn btn-default">刷新</a>
+  <a href="{{ url_for('blue_manage.vf_data') }}" class="btn btn-primary">刷新</a>
 </div>
 
 
@@ -31,7 +31,11 @@
   </thead>
   <tbody>
     {% for result in results %}
+    {% if result.is_qualified %}
     <tr class="default">
+    {% else%}
+    <tr class="warning">
+    {% endif %}
       <td>{{ loop.index + pagination.skip }}</td>
       <td>{{result.device_type}}</td>
       <td>{{result.factory}}</td>
