@@ -34,9 +34,9 @@ fi
 # cd "$workdir/app"
 
 if [ "$1" == '--start' ]; then
-    echo "gunicorn --daemon --workers 4 --bind 0.0.0.0:5000  --timeout 300 wsgi:application"
-    # gunicorn --daemon --workers 4 --bind 0.0.0.0:5000 --timeout 300 wsgi:application
-    gunicorn --workers 4 --bind 0.0.0.0:5000 --timeout 300 wsgi:application
+    echo "gunicorn --daemon --workers 4 --bind 0.0.0.0:5000 --user user1 --group user1 --timeout 300 wsgi:application"
+    # gunicorn --daemon --workers 4 --bind 0.0.0.0:5000 --user user1 --group user1 --timeout 300 wsgi:application
+    gunicorn --workers 4 --bind 0.0.0.0:5000 --user user1 --group user1 --timeout 300 wsgi:application
     ps -ef | fgrep "gunicorn" | grep "application" | awk '{if($3==1) print $2}'
     exit 0
 fi
