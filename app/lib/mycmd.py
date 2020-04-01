@@ -6,7 +6,7 @@ import os
 import subprocess
 from multiprocessing import Process
 from flask import flash, redirect, url_for
-from .mypymysql import cleanup_temp
+from .execsql import testdatas_cleanup
 
 from .tools import get_totalcount
 from .tools import reset_progress, add_progress
@@ -30,7 +30,7 @@ def async_call(fn):
 
 @async_call
 def start():
-    cleanup_temp()
+    testdatas_cleanup()
     set_running_state()
     reset_progress()
     reset_phase()

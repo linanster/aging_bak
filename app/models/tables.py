@@ -218,10 +218,36 @@ class Testdata(db.Model):
         self.datetime = datetime
     @staticmethod
     def seed():
-        a1 = Testdata(5, 2, '3.1', -65, -33, 'd74d38dabcf1', '88:50:F6:04:62:31', True, False, datetime.datetime.now())
-        a2 = Testdata(1, 3, '3.2', -65, -33, 'd74d38dabcf5', '88:50:F6:04:62:35', True, False, datetime.datetime.now())
-        a3 = Testdata(17, 1, '3.40', -65, -33, 'd74d38dabcf7', '88:50:F6:04:62:37', False, False, datetime.datetime.now())
+        a1 = Testdata(13, 2, '3.1', -65, -33, 'd74d38dabcf1', '88:50:F6:04:62:31', True, False, datetime.datetime.now())
+        a2 = Testdata(13, 3, '3.2', -65, -33, 'd74d38dabcf5', '88:50:F6:04:62:35', True, False, datetime.datetime.now())
+        a3 = Testdata(13, 1, '3.40', -65, -33, 'd74d38dabcf7', '88:50:F6:04:62:37', False, False, datetime.datetime.now())
         db.session.add_all([a1, a2, a3])
         db.session.commit()
 
 
+class TestdataArchive(db.Model):
+    __bind_key__ = 'mysql'
+    __tablename__ = 'testdatasarchive'
+    id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
+    device_type = db.Column(db.Integer, db.ForeignKey('devices.code'), nullable=False)
+    factory = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=True, server_default=str(FCODE)) 
+    fw_version = db.Column(db.String(20))
+    rssi_ble = db.Column(db.Integer)
+    rssi_wifi = db.Column(db.Integer)
+    mac_ble = db.Column(db.String(18))
+    mac_wifi = db.Column(db.String(18))
+    is_qualified = db.Column(db.Boolean)
+    is_sync = db.Column(db.Boolean)
+    datetime = db.Column(db.DateTime, default=datetime.datetime.now())
+    status_cmd_check = db.Column(db.Integer, nullable=True)
+    def __init__(self, device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime=None):
+        self.device_type = device_type
+        self.factory = factory
+        self.fw_version = fw_version
+        self.rssi_ble = rssi_ble
+        self.rssi_wifi = rssi_wifi
+        self.mac_ble = mac_ble
+        self.mac_wifi = mac_wifi
+        self.is_qualified = is_qualified
+        self.is_sync = is_sync
+        self.datetime = datetime

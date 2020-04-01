@@ -6,6 +6,7 @@ from app.models import TestdataView, Testdata
 from app.lib import start, blink_single, blink_all, blink_stop
 from app.lib import set_factorycode, set_devicecode, set_totalcount
 from app.lib import get_errno
+from app.lib import testdatas_archive
 
 blue_test = Blueprint('blue_test', __name__, url_prefix='/test')
 
@@ -93,6 +94,7 @@ def vf_cmd_blink_stop():
 def process_finished():
     errno = get_errno()
     if errno == 0:
+        testdatas_archive()
         return redirect(url_for('blue_test.vf_finished'))
     else:
         return redirect(url_for('blue_test.vf_error', errno=errno))

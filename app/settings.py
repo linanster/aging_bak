@@ -3,6 +3,7 @@ import os
 # 1.Global static variable definition
 
 # called by models.tables.py
+# called by manage.py init function
 # 1 -- Leedarson
 # 2 -- Innotech
 # 3 -- Tonly

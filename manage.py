@@ -31,17 +31,19 @@ def uninit():
 @manager.command
 def createdb():
     from app.models import db, Device, Factory
-    from app.lib import create_view
+    from app.lib import testdatasview_create, testdatasarchiveview_create
     db.create_all(bind='mysql')
-    create_view()
+    testdatasview_create()
+    testdatasarchiveview_create()
     Factory.seed()
     Device.seed()
 
 @manager.command
 def deletedb():
     from app.models import db
-    from app.lib import delete_view
-    delete_view()
+    from app.lib import testdatasview_delete, testdatasarchiveview_delete
+    testdatasview_delete()
+    testdatasarchiveview_delete()
     db.drop_all(bind='mysql')
 
 @manager.command
@@ -54,15 +56,6 @@ def set(code):
     from app.lib import set_factorycode
     set_factorycode(code)
 
-@app.template_global('running')
-def running():
-    from app.lib import get_running_state
-    return get_running_state()
-
-@app.template_global('paused')
-def paused():
-    from app.lib import get_paused_state
-    return get_paused_state()
 
 if __name__ == '__main__':
     manager.run()
