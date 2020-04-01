@@ -1,5 +1,4 @@
 **/*.py[cdo]
-!secret.pyc
 **/*.bak
 **/*.swp
 **/*.sqlite3
