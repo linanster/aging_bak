@@ -15,8 +15,8 @@ from .tools import reset_phase, set_phase
 from .tools import reset_errno, set_errno
 
 from app.settings import Debug
+from app.settings import Timeout
 
-Timeout = 5
 
 # gofolder = os.path.join(os.getcwd(), 'go')
 topdir = os.path.abspath(os.path.join(os.path.dirname(__file__),"..",".."))

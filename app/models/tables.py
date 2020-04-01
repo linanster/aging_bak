@@ -7,6 +7,7 @@ import datetime
 # 2 -- Innotech
 # 3 -- Tonly
 # 4 -- Changhong
+# 5 -- Test
 from app.settings import FCODE
 
 # 1. lasy init

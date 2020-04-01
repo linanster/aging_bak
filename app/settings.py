@@ -1,14 +1,22 @@
 import os
 
+# 1.Global static variable definition
+
+# called by models.tables.py
 # 1 -- Leedarson
 # 2 -- Innotech
 # 3 -- Tonly
 # 4 -- Changhong
 FCODE=1
 
-# debug
+# called by lib.mycmd.py
 Debug = True
+# called by lib.mycmd.py
+# timeout for go binary
+Timeout = 5
 
+
+# 2. Flask app configuration
 
 class Config():
     SECRET_KEY = "EjpNVSNQTyGi1VvWECj9TvC/+kq3oujee2kTfQUs8yCM6xX9Yjq52v54g+HVoknA"
