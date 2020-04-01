@@ -100,8 +100,8 @@ def _start():
     set_phase('_start')
     loop = 1
     # todo
-    # while 0 != subprocess.call("./ble-backend -command=start -meshname=telink_mesh7 -meshpass=123", shell=True, cwd=gofolder):
-    while 0 != subprocess.call("./ble-backend -command=start", shell=True, cwd=gofolder):
+    while 0 != subprocess.call("./ble-backend -command=start -meshname=telink_mesh7 -meshpass=123", shell=True, cwd=gofolder):
+    # while 0 != subprocess.call("./ble-backend -command=start", shell=True, cwd=gofolder):
         time.sleep(Timeout)
         if loop==3:
             if Debug:
@@ -117,8 +117,8 @@ def _changemesh():
     set_phase('_changemesh')
     loop = 1
     # todo
-    # while 0 != subprocess.call("./ble-backend -command=changemesh -meshname=telink_mesh7 -meshpass=123", shell=True, cwd=gofolder):
-    while 0 != subprocess.call("./ble-backend -command=changemesh", shell=True, cwd=gofolder):
+    while 0 != subprocess.call("./ble-backend -command=changemesh -meshname=telink_mesh7 -meshpass=123", shell=True, cwd=gofolder):
+    # while 0 != subprocess.call("./ble-backend -command=changemesh", shell=True, cwd=gofolder):
         time.sleep(Timeout)
         if loop==3:
             if Debug:
