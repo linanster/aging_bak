@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>index2</h1>
+
+<script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf-8">
+
+function jump(){
+window.location.replace("http://10.30.30.101:5001/index3");
+}
+function jump2(){
+window.location.replace("{{url_for('index3')}}");
+}
+
+
+    $(document).ready(function() {
+
+        namespace = '/test';
+        var socket = io(namespace);
+
+        socket.on('my_pong', function() {
+            $('#message').text("my_pong!")
+        });
+
+        socket.on('event1', function() {
+            $('#message').append("event1");
+            jump2();
+        });
+    });    
+</script>
+
+<span id="message"></span>
+
+</body>
+</html>
+
