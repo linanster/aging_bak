@@ -15,3 +15,5 @@ Werkzeug==1.0.0
 pipe-nonblock==0.4
 PyMySQL==0.9.3
 gunicorn==20.0.4
+Flask-SocketIO==4.2.1
+eventlet==0.25.1

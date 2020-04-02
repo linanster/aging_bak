@@ -20,7 +20,7 @@ def vf_data():
     results = TestdataArchiveView.query.all()
 
     # pagination code
-    PER_PAGE = 30
+    PER_PAGE = 50
     page = request.args.get(get_page_parameter(), type=int, default=1) #获取页码，默认为第一页
     start = (page-1)*PER_PAGE
     end = page * PER_PAGE if len(results) > page * PER_PAGE else len(results)
