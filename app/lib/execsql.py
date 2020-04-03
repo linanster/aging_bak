@@ -30,7 +30,7 @@ sql_create_testdatasview = '''
 '''
 
 sql_delete_testdatasview = '''
-    DROP VIEW testdatasview;
+    DROP VIEW IF EXISTS testdatasview;
 '''
 sql_create_testdatasarchiveview = '''
     CREATE VIEW testdatasarchiveview AS 
@@ -50,7 +50,7 @@ sql_create_testdatasarchiveview = '''
 '''
 
 sql_delete_testdatasarchiveview = '''
-    DROP VIEW testdatasarchiveview;
+    DROP VIEW IF EXISTS testdatasarchiveview;
 '''
 
 sql_truncate_testdatas = '''
