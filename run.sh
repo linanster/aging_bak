@@ -34,7 +34,7 @@ fi
 # cd "$workdir/app"
 
 if [ "$1" == '--start' ]; then
-    echo "gunicorn --workers 4 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application"
+    echo "gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application"
     # todo --daemon
     # todo --user user1 --group user1
     gunicorn --workers 4 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application

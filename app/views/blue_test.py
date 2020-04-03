@@ -4,12 +4,21 @@ import time
 
 from app.models import TestdataView, Testdata
 from app.lib import start, blink_single, blink_all, blink_stop
-from app.lib import set_factorycode, set_devicecode, set_totalcount
+from app.lib import watch_to_jump, test
+from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state
 from app.lib import get_errno
 from app.lib import testdatas_archive
 
+
 blue_test = Blueprint('blue_test', __name__, url_prefix='/test')
 
+@blue_test.route('/event1')
+def event1():
+    print('event1')
+    ret = socketio.emit('event1', namespace='/ns1')
+    return 'socketio emit event1 ' + str(ret)
+
+ 
 
 @blue_test.route('/error')
 def vf_error():
@@ -26,6 +35,7 @@ def vf_start():
 
 @blue_test.route('/running')
 def vf_running():
+    watch_to_jump()
     return render_template('test_running.html')
 
 @blue_test.route('/finished')
@@ -45,8 +55,8 @@ def vf_finished():
 
 # button & command
 
-@blue_test.route('/cmd_start', methods=['POST'])
-def vf_cmd_start():
+@blue_test.route('/cmd_start_legacy', methods=['POST'])
+def vf_cmd_start_legacy():
     time.sleep(1)
     # errno saved at sqlite, instead of return value here.
     # errno = start()
@@ -55,13 +65,15 @@ def vf_cmd_start():
     time.sleep(1)
     return redirect(url_for('blue_test.vf_running')) 
 
-@blue_test.route('/cmd_start_bak', methods=['POST'])
-def vf_cmd_start_bak():
-    errno = start()
-    if errno == 0:
-        return redirect(url_for('blue_test.vf_finished'))
-    else:
-        return redirect(url_for('blue_test.vf_error', errno=errno))
+
+@blue_test.route('/cmd_start', methods=['POST'])
+def vf_cmd_start():
+    # set_running_state()
+    # watch_to_jump()
+    # test()
+    start()
+    time.sleep(1)
+    return redirect(url_for('blue_test.vf_running')) 
 
 @blue_test.route('/cmd_saveconfig', methods=['POST'])
 def vf_cmd_saveconfig():

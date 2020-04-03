@@ -1,5 +1,5 @@
 **/*.py[cdo]
-**/*.bak
+!**/*.bak
 **/*.swp
 **/*.sqlite3
 **/*.sqlite

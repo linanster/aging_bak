@@ -1,4 +1,6 @@
 import pymysql
+import sqlite3
+import os
 
 # db_addr = 'localhost'
 # db_port = 3306
@@ -11,6 +13,15 @@ from app.secret import db_port
 from app.secret import db_user
 from app.secret import db_passwd
 from app.secret import db_name
+
+
+topdir = os.path.abspath(os.path.join(os.path.dirname(__file__),"..",".."))
+sqldir = os.path.abspath(os.path.join(topdir, "app", "sqlite"))
+dbfile = os.path.abspath(os.path.join(sqldir, "system.sqlite3"))
+
+sql_get_running_state = '''
+    SELECT value1 FROM runningstates WHERE key='r_running';
+'''
 
 sql_create_testdatasview = '''
     CREATE VIEW testdatasview AS 
@@ -105,3 +116,8 @@ def testdatasarchive_cleanup():
     conn.commit()
     conn.close()
 
+def get_running_state_sql():
+    conn = sqlite3.connect(dbfile)
+    cursor = conn.execute(sql_get_running_state)
+    res = cursor.fetchone()
+    return res[0]

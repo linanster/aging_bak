@@ -7,6 +7,7 @@ from app.views import init_views
 from app.settings import config
 from app.ext import init_ext
 
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(config['nan1'])

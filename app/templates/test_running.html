@@ -1,53 +1,41 @@
-{% extends '_mybase.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
 
-{% block head %}
-  {{super()}}
-  {% if running() %}
-  <meta http-equiv="refresh" content="5;url={{ url_for('blue_test.vf_running') }}">
-  {% else %}
-  <meta http-equiv="refresh" content="5;url={{ url_for('blue_test.process_finished') }}">
-  {% endif %}
-{% endblock %}
+<h1>测试中...</h1>
 
-{% block content %}
-  {{ super() }}
+<script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf-8">
 
-<!--<form style="display: inline" action = "{{url_for('blue_test.vf_cmd_start')}}" method = "post">
-  <button type="submit" class="btn btn-success">开始</button>
-</form>-->
-  
-<p style="display: inline" ><strong>数量</strong>:</span> <span class="text-success" > {{ totalcount() }}</p>
-
-<table class="table table-striped table-hover ">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>设备类型</th>
-      <th>工厂</th>
-      <th>固件版本</th>
-      <th>RSSI_BLE</th>
-      <th>RSSI_WIFI</th>
-      <th>MAC_BLE</th>
-      <th>MAC_WIFI</th>
-      <th>合格</th>
-      <!-- <th>云同步</th> -->
-      <th>时间</th>
-      <th colspan="2">控制</th>
-    </tr>
-  </thead>
-  <tbody>
-  </tbody>
-</table> 
-
-<legend>测试中...</legend>
-
-{{progress()}} | {{phase()}}
-
-<div class="progress progress-striped active">
-  <div class="progress-bar" style="width: {{5+progress()}}%"></div>
-</div>
+function jump(){
+window.location.replace("http://10.30.30.101:5001/index3");
+}
+function jump2(){
+window.location.replace("{{url_for('blue_test.vf_finished')}}");
+}
 
 
-{% endblock %}
+    $(document).ready(function() {
 
+        namespace = '/test';
+        var socket = io(namespace);
+
+        socket.on('event_done', function() {
+            $('#message').append("event1");
+            jump2();
+        });
+    });    
+
+    
+</script>
+
+<span id="message"></span>
+
+</body>
+</html>
 
