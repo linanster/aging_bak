@@ -23,6 +23,16 @@ sql_get_running_state = '''
     SELECT value1 FROM runningstates WHERE key='r_running';
 '''
 
+sql_get_retried = '''
+    SELECT value1 FROM runningstates WHERE key='r_retried';
+'''
+sql_set_retried = '''
+    UPDATE runningstates SET value1=1 WHERE key='r_retried';
+'''
+sql_reset_retried = '''
+    UPDATE runningstates SET value1=0 WHERE key='r_retried';
+'''
+
 sql_create_testdatasview = '''
     CREATE VIEW testdatasview AS 
         SELECT a.id AS "id", 
@@ -121,3 +131,19 @@ def get_running_state_sql():
     cursor = conn.execute(sql_get_running_state)
     res = cursor.fetchone()
     return res[0]
+
+def get_retried_sql():
+    conn = sqlite3.connect(dbfile)
+    cursor = conn.execute(sql_get_retried)
+    res = cursor.fetchone()
+    return res[0]
+def set_retried_sql():
+    conn = sqlite3.connect(dbfile)
+    cursor = conn.execute(sql_set_retried)
+    conn.commit()
+    conn.close()
+def reset_retried_sql():
+    conn = sqlite3.connect(dbfile)
+    cursor = conn.execute(sql_reset_retried)
+    conn.commit()
+    conn.close()

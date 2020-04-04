@@ -40,7 +40,8 @@ class RunningState(db.Model):
         r_progress = RunningState('r_progress', value2=0) 
         r_phase = RunningState('r_phase') 
         r_errno = RunningState('r_errno', value2=0) 
-        seeds = [r_running, r_devicecode, r_totalcount, r_progress, r_phase, r_errno]
+        r_retried = RunningState('r_retried', value1=False) 
+        seeds = [r_running, r_devicecode, r_totalcount, r_progress, r_phase, r_errno, r_retried]
         db.session.add_all(seeds)
         db.session.commit()
 

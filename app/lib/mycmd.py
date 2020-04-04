@@ -9,6 +9,7 @@ from threading import Thread, Lock
 from flask import flash, redirect, url_for
 
 from .execsql import testdatas_cleanup, get_running_state_sql
+from .execsql import get_retried_sql, set_retried_sql, reset_retried_sql
 
 from .tools import get_totalcount
 from .tools import reset_progress, add_progress
@@ -53,17 +54,17 @@ def watch_to_jump():
     while True:
         if get_running_state_sql():
             print('wait')
-            socketio.sleep(2)
+            if get_retried_sql():
+                newline = 1
+                reset_retried_sql()
+            else:
+                newline = 0
+            socketio.emit('progress', {'data': '+', 'newline': newline}, namespace='/test', broadcast=True)
+            time.sleep(2)
         else:
             print('emit event_done')
             socketio.emit('event_done', namespace='/test', broadcast=True)
             break
-
-@ThreadMaker
-def watch_to_jump1():
-    time.sleep(3)
-    print('emit event_done')
-    socketio.emit('event_done', namespace='/test', broadcast=True)
     
 @async_call
 def start():
@@ -74,18 +75,24 @@ def start():
     loop = 1
     while loop <= 3:
         errno = subprocess.call("./ble-backend -command=starttest -totalcount={}".format(num), shell=True, cwd=gofolder)
+        loop += 1
         if errno == 0:
+            # todo
+            errno = 0
             if Debug:
                 print('==starttest success==') 
+                print('==errno==',errno)
             break
         else:
+            # todo
+            errno = -1
             time.sleep(Timeout)
             subprocess.call("./ble-backend -command=allkickout", shell=True, cwd=gofolder)
-            loop += 1
+            set_retried_sql()
             continue
     if Debug and loop > 3 :
         print('==starttest failed==') 
-    # todo
+        print('==errno==',errno)
     reset_running_state()
     set_errno(errno)
     return errno

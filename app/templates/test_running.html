@@ -1,12 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends '_mybase.html' %}
 
-<h1>测试中...</h1>
+
+{% block content %}
+  {{ super() }}
+
+<p style="display: inline" ><strong>数量</strong>:</span> <span class="text-success" > {{ totalcount() }}</p>
+
+<a style="display: inline" href="{{url_for('blue_test.vf_finished')}}" class="btn btn-link">手动跳转(test)</a>
+
+
+<table class="table table-striped table-hover ">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>设备类型</th>
+      <th>工厂</th>
+      <th>固件版本</th>
+      <th>RSSI_BLE</th>
+      <th>RSSI_WIFI</th>
+      <th>MAC_BLE</th>
+      <th>MAC_WIFI</th>
+      <th>合格</th>
+      <!-- <th>云同步</th> -->
+      <th>时间</th>
+      <th colspan="2">控制</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table> 
+
+<legend>测试中...</legend>
 
 <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
@@ -16,7 +40,8 @@ function jump(){
 window.location.replace("http://10.30.30.101:5001/index3");
 }
 function jump2(){
-window.location.replace("{{url_for('blue_test.vf_finished')}}");
+// window.location.replace("{{url_for('blue_test.vf_finished')}}");
+window.location.replace("{{url_for('blue_test.process_finished')}}");
 }
 
 
@@ -24,9 +49,16 @@ window.location.replace("{{url_for('blue_test.vf_finished')}}");
 
         namespace = '/test';
         var socket = io(namespace);
+        socket.on('progress', function(msg){
+            if(msg.newline==1) {
+                $('#message').append('<br>');
+            }
+            $('#message').append(msg.data);
+        });
 
         socket.on('event_done', function() {
-            $('#message').append("event1");
+            $('#message').append('<br>');
+            $('#message').append('done');
             jump2();
         });
     });    
@@ -34,8 +66,13 @@ window.location.replace("{{url_for('blue_test.vf_finished')}}");
     
 </script>
 
+<div class="progress progress-striped active">
+  <div class="progress-bar" style="width: 100%"></div>
+</div>
+
 <span id="message"></span>
 
-</body>
-</html>
+
+{% endblock %}
+
 
