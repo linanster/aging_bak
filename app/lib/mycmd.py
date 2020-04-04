@@ -16,7 +16,8 @@ from .tools import reset_running_state, set_running_state, get_running_state
 from .tools import reset_phase, set_phase
 from .tools import reset_errno, set_errno
 
-from app.ext import socketio
+from app.ext.mysocketio import socketio
+from flask_socketio import send
 
 from app.settings import Debug
 from app.settings import Timeout
@@ -54,11 +55,8 @@ def watch_to_jump():
             print('wait')
             socketio.sleep(2)
         else:
-            # socketio.emit('event_done', namespace='/test', broadcast=True)
-            for i in range(10):
-                print('emit event_done')
-                socketio.emit('event_done', namespace='/test', broadcast=True)
-                time.sleep(0.1)
+            print('emit event_done')
+            socketio.emit('event_done', namespace='/test', broadcast=True)
             break
 
 @ThreadMaker
