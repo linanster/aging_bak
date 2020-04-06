@@ -36,8 +36,8 @@ sql_reset_retried = '''
 sql_create_testdatasview = '''
     CREATE VIEW testdatasview AS 
         SELECT a.id AS "id", 
-            d.name AS "device_type", 
-            f.name AS 'factory', 
+            d.name AS "devicename", 
+            f.name AS 'factoryname', 
             a.fw_version,
             a.rssi_ble,
             a.rssi_wifi,
@@ -47,7 +47,7 @@ sql_create_testdatasview = '''
             a.is_sync,
             a.datetime 
         FROM testdatas AS a, devices AS d, factories AS f 
-        WHERE a.device_type=d.code AND a.factory=f.code;
+        WHERE a.devicecode=d.code AND a.factorycode=f.code;
 '''
 
 sql_delete_testdatasview = '''
@@ -56,8 +56,8 @@ sql_delete_testdatasview = '''
 sql_create_testdatasarchiveview = '''
     CREATE VIEW testdatasarchiveview AS 
         SELECT a.id AS "id", 
-            d.name AS "device_type", 
-            f.name AS 'factory', 
+            d.name AS "devicename", 
+            f.name AS 'factoryname', 
             a.fw_version,
             a.rssi_ble,
             a.rssi_wifi,
@@ -67,7 +67,7 @@ sql_create_testdatasarchiveview = '''
             a.is_sync,
             a.datetime 
         FROM testdatasarchive AS a, devices AS d, factories AS f 
-        WHERE a.device_type=d.code AND a.factory=f.code;
+        WHERE a.devicecode=d.code AND a.factorycode=f.code;
 '''
 
 sql_delete_testdatasarchiveview = '''

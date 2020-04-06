@@ -95,9 +95,9 @@ class Device(db.Model):
     __tablename__ = 'devices'
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
     code = db.Column(db.Integer, nullable=False, unique=True)
+    name = db.Column('name', db.String(100), nullable=False)
     code_hex = db.Column(db.String(10), nullable=False, unique=True)
     factory = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=False) 
-    name = db.Column('name', db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=True)
     Testdata = db.relationship('Testdata', backref='Device')
     def __init__(self, code, code_hex, factory, name, description=''):
@@ -195,8 +195,8 @@ class Testdata(db.Model):
     __bind_key__ = 'mysql'
     __tablename__ = 'testdatas'
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
-    device_type = db.Column(db.Integer, db.ForeignKey('devices.code'), nullable=False)
-    factory = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=True, server_default=str(FCODE)) 
+    devicecode = db.Column(db.Integer, db.ForeignKey('devices.code'), nullable=False)
+    factorycode = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=True, server_default=str(FCODE)) 
     fw_version = db.Column(db.String(20))
     rssi_ble = db.Column(db.Integer)
     rssi_wifi = db.Column(db.Integer)
@@ -206,9 +206,9 @@ class Testdata(db.Model):
     is_sync = db.Column(db.Boolean)
     datetime = db.Column(db.DateTime, default=datetime.datetime.now())
     status_cmd_check = db.Column(db.Integer, nullable=True)
-    def __init__(self, device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime=None):
-        self.device_type = device_type
-        self.factory = factory
+    def __init__(self, devicecode, factorycode, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime=None):
+        self.devicecode = devicecode
+        self.factorycode = factorycode
         self.fw_version = fw_version
         self.rssi_ble = rssi_ble
         self.rssi_wifi = rssi_wifi
@@ -230,8 +230,8 @@ class TestdataArchive(db.Model):
     __bind_key__ = 'mysql'
     __tablename__ = 'testdatasarchive'
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
-    device_type = db.Column(db.Integer, db.ForeignKey('devices.code'), nullable=False)
-    factory = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=True, server_default=str(FCODE)) 
+    devicecode = db.Column(db.Integer, db.ForeignKey('devices.code'), nullable=False)
+    factorycode = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=True, server_default=str(FCODE)) 
     fw_version = db.Column(db.String(20))
     rssi_ble = db.Column(db.Integer)
     rssi_wifi = db.Column(db.Integer)
@@ -241,9 +241,9 @@ class TestdataArchive(db.Model):
     is_sync = db.Column(db.Boolean)
     datetime = db.Column(db.DateTime, default=datetime.datetime.now())
     status_cmd_check = db.Column(db.Integer, nullable=True)
-    def __init__(self, device_type, factory, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime=None):
-        self.device_type = device_type
-        self.factory = factory
+    def __init__(self, devicecode, factorycode, fw_version, rssi_ble, rssi_wifi, mac_ble, mac_wifi, is_qualified, is_sync, datetime=None):
+        self.devicecode = devicecode
+        self.factorycode = factorycode
         self.fw_version = fw_version
         self.rssi_ble = rssi_ble
         self.rssi_wifi = rssi_wifi

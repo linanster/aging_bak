@@ -7,8 +7,8 @@ class TestdataView(view.Model):
     __bind_key__ = 'mysql'
     __tablename__ = 'testdatasview'
     id = view.Column(view.Integer, nullable=False, autoincrement=True, primary_key = True)
-    device_type = view.Column(view.String(100))
-    factory = view.Column(view.String(100))
+    devicename = view.Column(view.String(100))
+    factoryname = view.Column(view.String(100))
     fw_version = view.Column(view.String(100))
     rssi_ble = view.Column(view.Integer)
     rssi_wifi = view.Column(view.Integer)
@@ -23,8 +23,8 @@ class TestdataArchiveView(view.Model):
     __bind_key__ = 'mysql'
     __tablename__ = 'testdatasarchiveview'
     id = view.Column(view.Integer, nullable=False, autoincrement=True, primary_key = True)
-    device_type = view.Column(view.String(100))
-    factory = view.Column(view.String(100))
+    devicename = view.Column(view.String(100))
+    factoryname = view.Column(view.String(100))
     fw_version = view.Column(view.String(100))
     rssi_ble = view.Column(view.Integer)
     rssi_wifi = view.Column(view.Integer)
