@@ -30,7 +30,10 @@ def vf_device():
     if fcode == 0:
         results = Device.query.all()
     elif fcode in (1, 2, 3, 4, 5):
-        results = Device.query.filter_by(factorycode=fcode).all()
+        # results = Device.query.filter_by(factorycode=fcode).all()
+        # results = Device.query.filter_by(factorycode=fcode).all()
+        factory = Factory.query.get(fcode)
+        results = factory.devices
     else:
         results = list()
     return render_template('manage_device.html', results=results)
