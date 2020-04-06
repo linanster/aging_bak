@@ -15,6 +15,30 @@ blue_manage = Blueprint('blue_manage', __name__, url_prefix='/manage')
 
 # 1. view functions definition
 
+@blue_manage.route('/factory', methods=['GET'])
+def vf_factory():
+    fcode = get_factorycode() 
+    if fcode == 0:
+        results = Factory.query.all()
+    elif fcode in (1, 2, 3, 4, 5):
+        # results = Factory.query.filter_by(code=fcode).first()
+        result = Factory.query.filter_by(code=fcode).first()
+        results = [result,]
+    else:
+        results = list()
+    return render_template('manage_factory.html', results=results)
+
+@blue_manage.route('/device', methods=['GET'])
+def vf_device():
+    fcode = get_factorycode() 
+    if fcode == 0:
+        results = Device.query.all()
+    elif fcode in (1, 2, 3, 4, 5):
+        results = Device.query.filter_by(factorycode=fcode).all()
+    else:
+        results = list()
+    return render_template('manage_device.html', results=results)
+
 @blue_manage.route('/data', methods=['GET'])
 def vf_data():
     results = TestdataArchiveView.query.all()
@@ -28,31 +52,6 @@ def vf_data():
     ret = TestdataArchiveView.query.slice(start, end)
 
     return render_template('manage_data.html', pagination=pagination, results=ret)
-
-
-@blue_manage.route('/device', methods=['GET'])
-def vf_device():
-    fcode = get_factorycode() 
-    if fcode == 0:
-        results = Device.query.all()
-    elif fcode in (1, 2, 3, 4, 5):
-        results = Device.query.filter_by(factory=fcode).all()
-    else:
-        results = list()
-    return render_template('manage_device.html', results=results)
-
-@blue_manage.route('/factory', methods=['GET'])
-def vf_factory():
-    fcode = get_factorycode() 
-    if fcode == 0:
-        results = Factory.query.all()
-    elif fcode in (1, 2, 3, 4, 5):
-        # results = Factory.query.filter_by(code=fcode).first()
-        result = Factory.query.filter_by(code=fcode).first()
-        results = [result,]
-    else:
-        results = list()
-    return render_template('manage_factory.html', results=results)
 
 @blue_manage.route('/cmd_deletearchive', methods=['POST'])
 def cmd_deletearchive():

@@ -73,8 +73,8 @@ class Factory(db.Model):
     code = db.Column(db.Integer, nullable=False, unique=True)
     name = db.Column(db.String(100), unique=True, nullable=False)
     description = db.Column(db.Text)
-    Testdata = db.relationship('Testdata', backref='Factory')
-    Device = db.relationship('Device', backref='Factory')
+    testdatas = db.relationship('Testdata', backref='factory')
+    devices = db.relationship('Device', backref='factory')
     def __init__(self, code, name, description=''):
         self.code = code
         self.name = name
@@ -97,13 +97,14 @@ class Device(db.Model):
     code = db.Column(db.Integer, nullable=False, unique=True)
     name = db.Column('name', db.String(100), nullable=False)
     code_hex = db.Column(db.String(10), nullable=False, unique=True)
-    factory = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=False) 
+    # factorycode = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=False) 
+    factorycode = db.Column(db.Integer, db.ForeignKey(Factory.code), nullable=False) 
     description = db.Column(db.Text, nullable=True)
-    Testdata = db.relationship('Testdata', backref='Device')
-    def __init__(self, code, code_hex, factory, name, description=''):
+    testdatas = db.relationship('Testdata', backref='device')
+    def __init__(self, code, code_hex, factorycode, name, description=''):
         self.code = code
         self.code_hex = code_hex
-        self.factory = factory
+        self.factorycode = factorycode
         self.name = name
         self.description = description
     @staticmethod
@@ -195,8 +196,10 @@ class Testdata(db.Model):
     __bind_key__ = 'mysql'
     __tablename__ = 'testdatas'
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
-    devicecode = db.Column(db.Integer, db.ForeignKey('devices.code'), nullable=False)
-    factorycode = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=True, server_default=str(FCODE)) 
+    # devicecode = db.Column(db.Integer, db.ForeignKey('devices.code'), nullable=False)
+    # factorycode = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=True, server_default=str(FCODE)) 
+    devicecode = db.Column(db.Integer, db.ForeignKey(Device.code), nullable=False)
+    factorycode = db.Column(db.Integer, db.ForeignKey(Factory.code), nullable=True, server_default=str(FCODE)) 
     fw_version = db.Column(db.String(20))
     rssi_ble = db.Column(db.Integer)
     rssi_wifi = db.Column(db.Integer)
@@ -230,8 +233,10 @@ class TestdataArchive(db.Model):
     __bind_key__ = 'mysql'
     __tablename__ = 'testdatasarchive'
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
-    devicecode = db.Column(db.Integer, db.ForeignKey('devices.code'), nullable=False)
-    factorycode = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=True, server_default=str(FCODE)) 
+    # devicecode = db.Column(db.Integer, db.ForeignKey('devices.code'), nullable=False)
+    # factorycode = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=True, server_default=str(FCODE)) 
+    devicecode = db.Column(db.Integer, db.ForeignKey(Device.code), nullable=False)
+    factorycode = db.Column(db.Integer, db.ForeignKey(Factory.code), nullable=True, server_default=str(FCODE)) 
     fw_version = db.Column(db.String(20))
     rssi_ble = db.Column(db.Integer)
     rssi_wifi = db.Column(db.Integer)
