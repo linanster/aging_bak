@@ -2,13 +2,9 @@ from flask import Blueprint, request, render_template, flash, redirect, url_for
 from flask_paginate import Pagination, get_page_parameter
 import datetime
 
-from app.models import db, Device, Factory
-from app.models import TestdataArchiveView
+from app.models import db, Device, Factory, TestdataArchive
 from app.lib import testdatasarchive_cleanup
 
-# testdatasview_create and testdatasview_delete is actually two pymysql execute function
-# not that like typical models, such as db
-from app.lib import testdatasview_create, testdatasview_delete
 from app.lib import get_factorycode
 
 blue_manage = Blueprint('blue_manage', __name__, url_prefix='/manage')
@@ -41,7 +37,7 @@ def vf_device():
 
 @blue_manage.route('/data', methods=['GET'])
 def vf_data():
-    results = TestdataArchiveView.query.all()
+    results = TestdataArchive.query.all()
 
     # pagination code
     PER_PAGE = 50
@@ -49,7 +45,7 @@ def vf_data():
     start = (page-1)*PER_PAGE
     end = page * PER_PAGE if len(results) > page * PER_PAGE else len(results)
     pagination = Pagination(page=page, total=len(results), per_page=PER_PAGE, bs_version=3)
-    ret = TestdataArchiveView.query.slice(start, end)
+    ret = TestdataArchive.query.slice(start, end)
 
     return render_template('manage_data.html', pagination=pagination, results=ret)
 

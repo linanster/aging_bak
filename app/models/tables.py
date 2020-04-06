@@ -73,8 +73,9 @@ class Factory(db.Model):
     code = db.Column(db.Integer, nullable=False, unique=True)
     name = db.Column(db.String(100), unique=True, nullable=False)
     description = db.Column(db.Text)
-    testdatas = db.relationship('Testdata', backref='factory')
     devices = db.relationship('Device', backref='factory')
+    testdatas = db.relationship('Testdata', backref='factory')
+    testdatasarchive = db.relationship('TestdataArchive', backref='factory')
     def __init__(self, code, name, description=''):
         self.code = code
         self.name = name
@@ -101,6 +102,7 @@ class Device(db.Model):
     factorycode = db.Column(db.Integer, db.ForeignKey(Factory.code), nullable=False) 
     description = db.Column(db.Text, nullable=True)
     testdatas = db.relationship('Testdata', backref='device')
+    testdatasarchive = db.relationship('TestdataArchive', backref='device')
     def __init__(self, code, code_hex, factorycode, name, description=''):
         self.code = code
         self.code_hex = code_hex

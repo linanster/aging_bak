@@ -2,7 +2,7 @@ from flask import Blueprint, request, render_template, flash, redirect, url_for
 from flask_paginate import Pagination, get_page_parameter
 import time
 
-from app.models import TestdataView, Testdata
+from app.models import Testdata
 from app.lib import start, blink_single, blink_all, blink_stop
 from app.lib import watch_to_jump, test
 from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state
@@ -33,7 +33,7 @@ def vf_running():
 
 @blue_test.route('/finished')
 def vf_finished():
-    results = TestdataView.query.all()
+    results = Testdata.query.all()
     control_index = request.args.get('control_index')
     # pagination code
     # PER_PAGE = 30
@@ -41,7 +41,7 @@ def vf_finished():
     # start = (page-1)*PER_PAGE
     # end = page * PER_PAGE if len(results) > page * PER_PAGE else len(results)
     # pagination = Pagination(page=page, total=len(results), per_page=PER_PAGE, bs_version=3)
-    # ret = TestdataView.query.slice(start, end)
+    # ret = Testdata.query.slice(start, end)
     # return render_template('testing.html', pagination=pagination, results=ret)
     return render_template('test_finished.html', results=results, control_index=control_index)
 

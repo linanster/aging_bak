@@ -40,8 +40,8 @@
     <tr class="warning">
     {%  endif %}
       <td>{{ loop.index}}</td>
-      <td>{{result.devicename}}</td>
-      <td>{{result.factoryname}}</td>
+      <td>{{result.device.name}}</td>
+      <td>{{result.factory.name}}</td>
       <td>{{result.fw_version}}</td>
       <td>{{result.rssi_ble}}</td>
       <td>{{result.rssi_wifi}}</td>
@@ -66,8 +66,8 @@
     {% if result.is_qualified %}
     <tr class="default">
       <td>{{ loop.index}}</td>
-      <td>{{result.devicename}}</td>
-      <td>{{result.factoryname}}</td>
+      <td>{{result.device.name}}</td>
+      <td>{{result.factory.name}}</td>
       <td>{{result.fw_version}}</td>
       <td>{{result.rssi_ble}}</td>
       <td>{{result.rssi_wifi}}</td>
