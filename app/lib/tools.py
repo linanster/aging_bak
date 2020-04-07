@@ -1,9 +1,6 @@
 from app.models import db,RunningState,Systeminfo
 
 def get_running_state():
-    from app import create_app
-    app = create_app()
-    app.app_context().push()
     r = RunningState.query.filter_by(key='r_running').first()
     return r.value1
 

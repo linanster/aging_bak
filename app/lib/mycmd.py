@@ -44,12 +44,6 @@ def ThreadMaker(f):
     return runner
 
 @ThreadMaker
-def test():
-    time.sleep(5)
-    print('socketio emit event1')
-    socketio.emit('event_done', namespace='/ns2')
-
-@ThreadMaker
 def watch_to_jump():
     while True:
         if get_running_state_sql():

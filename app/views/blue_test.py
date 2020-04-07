@@ -4,7 +4,7 @@ import time
 
 from app.models import Testdata
 from app.lib import start, blink_single, blink_all, blink_stop
-from app.lib import watch_to_jump, test
+from app.lib import watch_to_jump
 from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state
 from app.lib import get_errno
 from app.lib import testdatas_archive
