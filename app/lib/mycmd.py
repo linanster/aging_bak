@@ -47,7 +47,7 @@ def ThreadMaker(f):
 def watch_to_jump():
     while True:
         if get_running_state_sql():
-            print('wait')
+            # print('.')
             if get_retried_sql():
                 newline = 1
                 reset_retried_sql()
@@ -56,7 +56,7 @@ def watch_to_jump():
             socketio.emit('progress', {'data': '+', 'newline': newline}, namespace='/test', broadcast=True)
             time.sleep(2)
         else:
-            print('emit event_done')
+            print('==emit event_done==')
             socketio.emit('event_done', namespace='/test', broadcast=True)
             break
     

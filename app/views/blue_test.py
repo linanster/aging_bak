@@ -6,7 +6,7 @@ from app.models import Testdata
 from app.lib import start, blink_single, blink_all, blink_stop
 from app.lib import watch_to_jump
 from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state
-from app.lib import get_errno
+from app.lib import get_errno, get_running_state
 from app.lib import testdatas_archive
 
 
@@ -95,6 +95,9 @@ def vf_cmd_blink_stop():
 
 @blue_test.route('/process_finished')
 def process_finished():
+    running = get_running_state()
+    if running:
+        return redirect(url_for('blue_test.vf_running'))
     errno = get_errno()
     if errno == 0:
         testdatas_archive()
