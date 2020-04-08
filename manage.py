@@ -31,19 +31,13 @@ def uninit():
 @manager.command
 def createdb():
     from app.models import db, Device, Factory
-    from app.lib import testdatasview_create, testdatasarchiveview_create
     db.create_all(bind='mysql')
-    testdatasview_create()
-    testdatasarchiveview_create()
     Factory.seed()
     Device.seed()
 
 @manager.command
 def deletedb():
     from app.models import db
-    from app.lib import testdatasview_delete, testdatasarchiveview_delete
-    testdatasview_delete()
-    testdatasarchiveview_delete()
     db.drop_all(bind='mysql')
 
 @manager.command
