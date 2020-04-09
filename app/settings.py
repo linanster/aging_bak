@@ -16,12 +16,15 @@ Debug = True
 # timeout for go binary
 Timeout = 5
 
-
+topdir = os.path.abspath(os.path.join(os.path.dirname(__file__),".."))
+gofolder = os.path.abspath(os.path.join(topdir, "go"))
+logfolder = os.path.abspath(os.path.join(topdir, "log"))
 # 2. Flask app configuration
 
 class Config():
     SECRET_KEY = "EjpNVSNQTyGi1VvWECj9TvC/+kq3oujee2kTfQUs8yCM6xX9Yjq52v54g+HVoknA"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    UPLOAD_FOLDER = gofolder
     DEBUG = False
     HOST = '0.0.0.0'
     PORT = 4000

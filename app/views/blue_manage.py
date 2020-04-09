@@ -1,11 +1,13 @@
-from flask import Blueprint, request, render_template, flash, redirect, url_for
+from flask import Blueprint, request, render_template, flash, redirect, url_for, send_from_directory
 from flask_paginate import Pagination, get_page_parameter
 import datetime
+import os
 
 from app.models import db, Device, Factory, TestdataArchive
 from app.lib import testdatasarchive_cleanup
 
 from app.lib import get_factorycode
+from app.settings import logfolder
 
 blue_manage = Blueprint('blue_manage', __name__, url_prefix='/manage')
 
@@ -49,12 +51,33 @@ def vf_data():
     end = page * PER_PAGE if len(results) > page * PER_PAGE else len(results)
     pagination = Pagination(page=page, total=len(results), per_page=PER_PAGE, bs_version=3)
     ret = TestdataArchive.query.slice(start, end)
-
     return render_template('manage_data.html', pagination=pagination, results=ret)
+
+@blue_manage.route('/log')
+def vf_log():
+    invisibles = ['.keep',]
+    filelist = os.listdir(logfolder)
+    for f in invisibles:
+        if f in filelist:
+            filelist.remove(f)
+        else:
+            continue
+    return render_template('manage_log.html', filelist=filelist)
 
 @blue_manage.route('/cmd_deletearchive', methods=['POST'])
 def cmd_deletearchive():
     testdatasarchive_cleanup()
     return redirect(url_for('blue_manage.vf_data'))
+
+@blue_manage.route('/view')
+def cmd_view():
+    filename = request.args.get('filename')
+    return send_from_directory(logfolder, filename, as_attachment=False)
+
+@blue_manage.route('/download')
+def cmd_download():
+    filename = request.args.get('filename')
+    return send_from_directory(logfolder, filename, as_attachment=True)
+
 
 
