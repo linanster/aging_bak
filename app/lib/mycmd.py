@@ -1,6 +1,8 @@
 #! /usr/bin/env python3
 # coding: utf8
 #
+import logging
+from logging.handlers import RotatingFileHandler
 import time
 import os
 import subprocess
@@ -27,10 +29,28 @@ from app.settings import Timeout
 # gofolder = os.path.join(os.getcwd(), 'go')
 topdir = os.path.abspath(os.path.join(os.path.dirname(__file__),"..",".."))
 gofolder = os.path.abspath(os.path.join(topdir, "go"))
-
+logfile = os.path.abspath(os.path.join(topdir, "log", "log_mycmd.txt"))
 
 thread = None
 thread_lock = Lock()
+
+# logger init
+logger = logging.getLogger(__name__)
+logger.setLevel(level = logging.INFO)
+# formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+
+# handler = logging.FileHandler(logfile)
+handler = RotatingFileHandler(logfile, maxBytes = 1*1024, backupCount=3)
+handler.setLevel(logging.INFO)
+handler.setFormatter(formatter)
+ 
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+console.setFormatter(formatter)
+ 
+logger.addHandler(handler)
+logger.addHandler(console)
 
 
 def async_call(fn):
@@ -43,16 +63,19 @@ def ThreadMaker(f):
         Thread(target=f, args=args, kwargs=argv).start()
     return runner
 
-def _mysubprocess(cmd):
+def _mysubprocess(cmd, logfile):
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gofolder)
         while p.poll() is None:
             output = p.stdout.readline().decode('utf-8')[0:-1]
-            print(output)
+            # print(output)
+            logger.info(output)
         errno = p.poll()
         if errno != 0:
             errmsg = p.stderr.read().decode('utf-8')[:-1]
-            print(errmsg)
-            print(errno)
+            # print(errmsg)
+            # print(errno)
+            logger.error(errmsg)
+            logger.error('errno: ', str(errno))
         p.stdout.close()
         p.stderr.close()
         return errno
@@ -70,12 +93,16 @@ def watch_to_jump():
             socketio.emit('progress', {'data': '+', 'newline': newline}, namespace='/test', broadcast=True)
             time.sleep(2)
         else:
-            print('==emit event_done==')
+            logger.info('==emit event_done==')
             socketio.emit('event_done', namespace='/test', broadcast=True)
             break
     
 @async_call
 def start():
+    logger.info('')
+    logger.info('')
+    logger.info('')
+    logger.info('==starttest begin==')
     testdatas_cleanup()
     reset_errno()
     set_running_state()
@@ -108,15 +135,14 @@ def start():
         # p.stderr.close()        
 
         # METHOD-4
-        errno = _mysubprocess("./ble-backend -command=starttest -totalcount={}".format(num))
+        errno = _mysubprocess("./ble-backend -command=starttest -totalcount={}".format(num), logfile)
 
         loop += 1
         if errno == 0:
             # todo
             errno = 0
-            if Debug:
-                print('==starttest success==') 
-                print('==errno==',errno)
+            logger.info('==starttest success==') 
+            logger.info("==errno:{}==".format(errno))
             break
         else:
             # todo
@@ -125,9 +151,9 @@ def start():
             subprocess.call("./ble-backend -command=allkickout", shell=True, cwd=gofolder)
             set_retried_sql()
             continue
-    if Debug and loop > 3 :
-        print('==starttest failed==') 
-        print('==errno==',errno)
+    if loop > 3 :
+        logger.error('==starttest failed==') 
+        logger.info("==errno:{}==".format(errno))
     reset_running_state()
     set_errno(errno)
     return errno
@@ -166,12 +192,10 @@ def blink_single(mac):
     while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist={} -meshname=telink_mesh1 -meshpass=123".format(maclist), shell=True, cwd=gofolder):
         time.sleep(Timeout)
         if loop==3:
-            if Debug:
-                print('==blink_single failed==') 
+            logger.error('==blink_single failed==') 
             return -1
         loop+=1
-    if Debug:
-        print('==blink_single success==')
+    logger.info('==blink_single success==')
     return 0
 
 
@@ -180,12 +204,10 @@ def blink_all():
     while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=ffff -meshname=telink_mesh1 -meshpass=123", shell=True, cwd=gofolder):
         time.sleep(Timeout)
         if loop==3:
-            if Debug:
-                print('==blink_all failed==') 
+            logger.error('==blink_all failed==') 
             return -1
         loop+=1
-    if Debug:
-        print('==blink_all success==')
+    logger.info('==blink_all success==')
     return 0
     
 def blink_stop():
@@ -193,12 +215,10 @@ def blink_stop():
     while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=stop -meshname=telink_mesh1 -meshpass=123", shell=True, cwd=gofolder):
         time.sleep(Timeout)
         if loop==3:
-            if Debug:
-                print('==blink_stop failed==') 
+            logger.error('==blink_stop failed==') 
             return -1
         loop+=1
-    if Debug:
-        print('==blink_stop success==')
+    logger.info('==blink_stop success==')
     return 0
 
 def _start():
