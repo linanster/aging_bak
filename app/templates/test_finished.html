@@ -35,9 +35,9 @@
     {% for result in results %}
     {% if not result.is_qualified %}
     {% if loop.index|string == control_index %}
-    <tr class="info"> 
+    <tr class="warning"> 
     {% else %}
-    <tr class="warning">
+    <tr class="info">
     {%  endif %}
       <td>{{ loop.index}}</td>
       <td>{{result.device.name}}</td>
