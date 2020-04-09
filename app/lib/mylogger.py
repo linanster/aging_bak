@@ -1,11 +1,11 @@
 import logging
 from logging.handlers import RotatingFileHandler
-
 import os
 
+from  app.settings import logfolder
 
-topdir = os.path.abspath(os.path.join(os.path.dirname(__file__),"..",".."))
-logfile = os.path.abspath(os.path.join(topdir, "log", "log.txt"))
+
+logfile = os.path.abspath(os.path.join(logfolder, "log.txt"))
 
 # logger init
 logger = logging.getLogger(__name__)
@@ -17,7 +17,7 @@ logger.setLevel(level = logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 
 # handler = logging.FileHandler(logfile)
-handler = RotatingFileHandler(logfile, maxBytes = 1*1024, backupCount=3)
+handler = RotatingFileHandler(logfile, maxBytes = 1*1024*1024, backupCount=3)
 handler.setLevel(logging.INFO)
 handler.setFormatter(formatter)
 

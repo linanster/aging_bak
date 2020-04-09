@@ -19,6 +19,7 @@ Timeout = 5
 topdir = os.path.abspath(os.path.join(os.path.dirname(__file__),".."))
 gofolder = os.path.abspath(os.path.join(topdir, "go"))
 logfolder = os.path.abspath(os.path.join(topdir, "log"))
+sqlitefolder = os.path.abspath(os.path.join(topdir, "app", "sqlite"))
 # 2. Flask app configuration
 
 class Config():

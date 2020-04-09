@@ -2,12 +2,14 @@ from flask import Blueprint, request, render_template, flash, redirect, url_for,
 from flask_paginate import Pagination, get_page_parameter
 import datetime
 import os
+import stat
 
 from app.models import db, Device, Factory, TestdataArchive
 from app.lib import testdatasarchive_cleanup
 
 from app.lib import get_factorycode
 from app.settings import logfolder
+from app.settings import gofolder
 
 blue_manage = Blueprint('blue_manage', __name__, url_prefix='/manage')
 
@@ -64,6 +66,10 @@ def vf_log():
             continue
     return render_template('manage_log.html', filelist=filelist)
 
+@blue_manage.route('/upgrade')
+def vf_upgrade():
+    return render_template('manage_upgrade.html')
+
 @blue_manage.route('/cmd_deletearchive', methods=['POST'])
 def cmd_deletearchive():
     testdatasarchive_cleanup()
@@ -79,5 +85,17 @@ def cmd_download():
     filename = request.args.get('filename')
     return send_from_directory(logfolder, filename, as_attachment=True)
 
-
+@blue_manage.route('/upload', methods=['POST'])
+def cmd_upload():
+    file = request.files['file']
+    if file.filename == '':
+        flash('请选择文件!')
+    if file:
+        # filename = secure_filename(file.filename)            
+        filename = 'ble-backend'
+        destfile = os.path.join(gofolder, filename)
+        file.save(destfile)
+        os.chmod(destfile, stat.S_IXOTH)
+        flash('文件导入成功，升级完成!')
+    return redirect(url_for('blue_manage.vf_upgrade'))
 

@@ -22,14 +22,12 @@ from flask_socketio import send
 
 from app.settings import Debug
 from app.settings import Timeout
+from app.settings import gofolder
+from app.settings import logfolder
 
 from .mylogger import logger
 
 
-# gofolder = os.path.join(os.getcwd(), 'go')
-topdir = os.path.abspath(os.path.join(os.path.dirname(__file__),"..",".."))
-gofolder = os.path.abspath(os.path.join(topdir, "go"))
-logfile = os.path.abspath(os.path.join(topdir, "log", "log_mycmd.txt"))
 
 thread = None
 thread_lock = Lock()
@@ -45,7 +43,8 @@ def ThreadMaker(f):
         Thread(target=f, args=args, kwargs=argv).start()
     return runner
 
-def _mysubprocess(cmd, logfile):
+# logfile = os.path.abspath(os.path.join(logfolder, "log_mycmd.txt"))
+def _mysubprocess(cmd):
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gofolder)
         while p.poll() is None:
             output = p.stdout.readline().decode('utf-8')[0:-1]
@@ -117,7 +116,7 @@ def start():
         # p.stderr.close()        
 
         # METHOD-4
-        errno = _mysubprocess("./ble-backend -command=starttest -totalcount={}".format(num), logfile)
+        errno = _mysubprocess("./ble-backend -command=starttest -totalcount={}".format(num))
 
         loop += 1
         if errno == 0:
@@ -172,7 +171,7 @@ def blink_single(mac):
     maclist = segments[4] + segments[5]
     loop = 1
     # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist={} -meshname=telink_mesh1 -meshpass=123".format(maclist), shell=True, cwd=gofolder):
-    while 0 != _mysubprocess("./ble-backend -command=nok_ident -maclist={} -meshname=telink_mesh1 -meshpass=123".format(maclist), logfile):
+    while 0 != _mysubprocess("./ble-backend -command=nok_ident -maclist={} -meshname=telink_mesh1 -meshpass=123".format(maclist)):
         time.sleep(Timeout)
         if loop==3:
             logger.error('==blink_single failed==') 
@@ -185,7 +184,7 @@ def blink_single(mac):
 def blink_all():
     loop = 1
     # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=ffff -meshname=telink_mesh1 -meshpass=123", shell=True, cwd=gofolder):
-    while 0 != _mysubprocess("./ble-backend -command=nok_ident -maclist=ffff -meshname=telink_mesh1 -meshpass=123", logfile):
+    while 0 != _mysubprocess("./ble-backend -command=nok_ident -maclist=ffff -meshname=telink_mesh1 -meshpass=123"):
         time.sleep(Timeout)
         if loop==3:
             logger.error('==blink_all failed==') 
@@ -197,7 +196,7 @@ def blink_all():
 def blink_stop():
     loop = 1
     # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=stop -meshname=telink_mesh1 -meshpass=123", shell=True, cwd=gofolder):
-    while 0 != _mysubprocess("./ble-backend -command=nok_ident -maclist=stop -meshname=telink_mesh1 -meshpass=123", logfile):
+    while 0 != _mysubprocess("./ble-backend -command=nok_ident -maclist=stop -meshname=telink_mesh1 -meshpass=123"):
         time.sleep(Timeout)
         if loop==3:
             logger.error('==blink_stop failed==') 

@@ -14,10 +14,9 @@ from app.secret import db_user
 from app.secret import db_passwd
 from app.secret import db_name
 
+from app.settings import sqlitefolder
 
-topdir = os.path.abspath(os.path.join(os.path.dirname(__file__),"..",".."))
-sqldir = os.path.abspath(os.path.join(topdir, "app", "sqlite"))
-dbfile = os.path.abspath(os.path.join(sqldir, "system.sqlite3"))
+dbfile = os.path.abspath(os.path.join(sqlitefolder, "system.sqlite3"))
 
 sql_get_running_state = '''
     SELECT value1 FROM runningstates WHERE key='r_running';

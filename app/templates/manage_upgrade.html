@@ -1,0 +1,23 @@
+{% extends '_mybase.html' %}
+
+{% block content %}
+  {{ super() }}
+
+<div style="padding-left: 10px">
+
+<form action={{ url_for('blue_manage.cmd_upload') }} method="post" enctype=multipart/form-data>
+    <input type="file" name="file">
+    <input type="submit" value='导入升级文件'>
+</form>
+</div>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <p class="text-warning">{{ message }}</p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+
+{% endblock %}

@@ -24,7 +24,7 @@
             <li><a href="#">todo</a></li>
           </ul>
         </li>
-        <li id='manage' {% if request.path in [url_for('blue_manage.vf_data'), url_for('blue_manage.vf_factory'), url_for('blue_manage.vf_device'), url_for('blue_manage.vf_log')] %}class="active"{% endif %} class="dropdown" >
+        <li id='manage' {% if request.path in [url_for('blue_manage.vf_data'), url_for('blue_manage.vf_factory'), url_for('blue_manage.vf_device'), url_for('blue_manage.vf_log'), url_for('blue_manage.vf_upgrade')] %}class="active"{% endif %} class="dropdown" >
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">管理 <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li><a href="{{url_for('blue_manage.vf_data')}}">查看历史数据</a></li>
@@ -33,7 +33,7 @@
             <li class="divider"></li>
             <li><a href="{{url_for('blue_manage.vf_log')}}">运行日志</a></li>
             <li class="divider"></li>
-            <li><a href="#">todo</a></li>
+            <li><a href="{{url_for('blue_manage.vf_upgrade')}}">系统升级</a></li>
           </ul>
         </li>
 	<li id='about' {% if request.path in [url_for('blue_about.about'),] %}class='active'{% endif %}><a href="{{url_for('blue_about.about')}}">关于</a></li>
