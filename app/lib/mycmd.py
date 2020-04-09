@@ -43,6 +43,20 @@ def ThreadMaker(f):
         Thread(target=f, args=args, kwargs=argv).start()
     return runner
 
+def _mysubprocess(cmd):
+        p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gofolder)
+        while p.poll() is None:
+            output = p.stdout.readline().decode('utf-8')[0:-1]
+            print(output)
+        errno = p.poll()
+        if errno != 0:
+            errmsg = p.stderr.read().decode('utf-8')[:-1]
+            print(errmsg)
+            print(errno)
+        p.stdout.close()
+        p.stderr.close()
+        return errno
+
 @ThreadMaker
 def watch_to_jump():
     while True:
@@ -68,7 +82,34 @@ def start():
     num = get_totalcount()
     loop = 1
     while loop <= 3:
-        errno = subprocess.call("./ble-backend -command=starttest -totalcount={}".format(num), shell=True, cwd=gofolder)
+        # METHOD-1
+        # errno = subprocess.call("./ble-backend -command=starttest -totalcount={}".format(num), shell=True, cwd=gofolder)
+
+        # METHOD-2
+        # p = subprocess.Popen("./ble-backend -command=starttest -totalcount={}".format(num), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gofolder)
+        # output = p.communicate()
+        # output_stdout = output[0].decode('utf-8')
+        # output_stderr = output[1].decode('utf-8')
+        # errno = p.poll()
+        # print(output_stdout)
+        # print(output_stderr)
+
+        # METHOD-3
+        # p = subprocess.Popen("./ble-backend -command=starttest -totalcount={}".format(num), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gofolder)
+        # while p.poll() is None:
+        #     output = p.stdout.readline().decode('utf-8')[0:-1]
+        #     print(output)
+        # errno = p.poll()
+        # if errno != 0:
+        #     errmsg = p.stderr.read().decode('utf-8')[:-1]
+        #     print(errmsg)
+        #     print(errno)
+        # p.stdout.close()
+        # p.stderr.close()        
+
+        # METHOD-4
+        errno = _mysubprocess("./ble-backend -command=starttest -totalcount={}".format(num))
+
         loop += 1
         if errno == 0:
             # todo
@@ -122,7 +163,7 @@ def blink_single(mac):
     segments = mac.split(':')
     maclist = segments[4] + segments[5]
     loop = 1
-    while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist={}".format(maclist), shell=True, cwd=gofolder):
+    while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist={} -meshname=telink_mesh1 -meshpass=123".format(maclist), shell=True, cwd=gofolder):
         time.sleep(Timeout)
         if loop==3:
             if Debug:
@@ -136,7 +177,7 @@ def blink_single(mac):
 
 def blink_all():
     loop = 1
-    while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=ffff", shell=True, cwd=gofolder):
+    while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=ffff -meshname=telink_mesh1 -meshpass=123", shell=True, cwd=gofolder):
         time.sleep(Timeout)
         if loop==3:
             if Debug:
@@ -149,7 +190,7 @@ def blink_all():
     
 def blink_stop():
     loop = 1
-    while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=stop", shell=True, cwd=gofolder):
+    while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=stop -meshname=telink_mesh1 -meshpass=123", shell=True, cwd=gofolder):
         time.sleep(Timeout)
         if loop==3:
             if Debug:
