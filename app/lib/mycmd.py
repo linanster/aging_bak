@@ -124,6 +124,7 @@ def start():
             errno = 0
             break
         else:
+            testdatas_cleanup()
             # todo
             errno = 1
             time.sleep(Timeout)
