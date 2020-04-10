@@ -14,7 +14,7 @@
   <button type="submit" class="btn btn-primary ">刷新</button>
 </form>
 <form style="display: inline" action = "{{url_for('blue_manage.cmd_deletearchive')}}" method = "post">
-  <button type="submit" class="btn btn-danger" >全部删除(test)</button>
+  <button type="submit" class="btn btn-danger" >清理(test)</button>
 </form>
 </div>
 
@@ -29,8 +29,8 @@
       <th>RSSI_WIFI</th>
       <th>MAC_BLE</th>
       <th>MAC_WIFI</th>
+      <th>状态检测</th>
       <th>合格</th>
-      <!-- <th>云同步</th> -->
       <th>时间</th>
     </tr>
   </thead>
@@ -49,8 +49,8 @@
       <td>{{result.rssi_wifi1}}</td>
       <td>{{result.mac_ble}}</td>
       <td>{{result.mac_wifi}}</td>
+      <td>{{result.status_cmd_check2|parse_status}}</td>
       <td>{{result.is_qualified}}</td>
-      <!-- <td>{{result.is_sync}}</td> -->
       <td>{{result.datetime}}</td>
     </tr>
     {% else %}

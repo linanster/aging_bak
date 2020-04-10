@@ -22,15 +22,15 @@ while [ $# -gt 0 ]; do
       ;;
     -command=starttest)
       echo "**$1 $2**"
-      sleep 10
+      sleep 5
       # act as failure
       # exit 1
       for i in {1..100}; do
-      mysql -p123456 -e "INSERT ge.testdatas(devicecode, factorycode, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:20', '010203040506', true, false, now())"
+      mysql -p123456 -e "INSERT ge.testdatas(devicecode, factorycode, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime, status_cmd_check2) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:20', '010203040506', true, false, now(), 20111)"
       if [ $i -eq 5 ]; then
-      mysql -p123456 -e "INSERT ge.testdatas(devicecode, factorycode, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:21', '010203040506', false, false, now())"
-      mysql -p123456 -e "INSERT ge.testdatas(devicecode, factorycode, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:22', '010203040506', false, false, now())"
-      mysql -p123456 -e "INSERT ge.testdatas(devicecode, factorycode, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:23', '010203040506', false, false, now())"
+      mysql -p123456 -e "INSERT ge.testdatas(devicecode, factorycode, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime, status_cmd_check2) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:21', '010203040506', false, false, now(), 10111)"
+      mysql -p123456 -e "INSERT ge.testdatas(devicecode, factorycode, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime, status_cmd_check2) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:22', '010203040506', false, false, now(), 10000)"
+      mysql -p123456 -e "INSERT ge.testdatas(devicecode, factorycode, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime, status_cmd_check2) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:23', '010203040506', false, false, now(), 01000)"
       fi
       done
       sleep 5
@@ -57,11 +57,11 @@ while [ $# -gt 0 ]; do
     -command=scan)
       echo "**$1 $2**"
       for i in {1..100}; do
-      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:20', '010203040506', true, false, now())"
+      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime, status_cmd_check2) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:20', '010203040506', true, false, now(), 20111)"
       if [ $i -eq 5 ]; then
-      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:21', '010203040506', false, false, now())"
-      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:22', '010203040506', false, false, now())"
-      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:23', '010203040506', false, false, now())"
+      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime, status_cmd_check2) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:21', '010203040506', false, false, now(), 20111)"
+      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime, status_cmd_check2) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:22', '010203040506', false, false, now(), 20111)"
+      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime, status_cmd_check2) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:23', '010203040506', false, false, now(), 20111)"
       fi
       done
       sleep 5

@@ -25,8 +25,8 @@
       <th>RSSI_WIFI</th>
       <th>MAC_BLE</th>
       <th>MAC_WIFI</th>
+      <th>状态检测</th>
       <th>合格</th>
-      <!-- <th>云同步</th> -->
       <th>时间</th>
       <th colspan="1">控制</th>
     </tr>
@@ -47,8 +47,8 @@
       <td>{{result.rssi_wifi1}}</td>
       <td>{{result.mac_ble}}</td>
       <td>{{result.mac_wifi}}</td>
+      <td>{{result.status_cmd_check2|parse_status}}</td>
       <td>{{result.is_qualified}}</td>
-      <!-- <td>{{result.is_sync}}</td> -->
       <td>{{result.datetime}}</td>
       <td>
         <form action = "{{url_for('blue_test.vf_cmd_blink_single')}}" method = "post">
@@ -73,8 +73,8 @@
       <td>{{result.rssi_wifi1}}</td>
       <td>{{result.mac_ble}}</td>
       <td>{{result.mac_wifi}}</td>
+      <td>{{result.status_cmd_check2|parse_status}}</td>
       <td>{{result.is_qualified}}</td>
-      <!-- <td>{{result.is_sync}}</td> -->
       <td>{{result.datetime}}</td>
       <td>
         <form action = "{{url_for('blue_test.vf_cmd_blink_single')}}" method = "post">

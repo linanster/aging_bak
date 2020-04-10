@@ -28,3 +28,11 @@ def phase():
 def errno():
     from app.lib import get_errno
     return get_errno()
+
+@application.template_filter('parse_status')
+def parseStatusCode(code):
+    if '2' in str(code):
+        plaintxt = '失败'
+    else:
+        plaintxt = '成功'
+    return '{}({})'.format(plaintxt,code)
