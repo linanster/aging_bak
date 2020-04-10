@@ -49,14 +49,14 @@ def _mysubprocess(cmd):
         while p.poll() is None:
             output = p.stdout.readline().decode('utf-8')[0:-1]
             # print(output)
-            logger.info(output)
+            logger.info('[ble-backend] {}'.format(output))
         errno = p.poll()
         if errno != 0:
             errmsg = p.stderr.read().decode('utf-8')[:-1]
             # print(errmsg)
             # print(errno)
-            logger.error(errmsg)
-            logger.error('errno: ', str(errno))
+            logger.error('[ble-backend] {}'.format(errmsg))
+            logger.error('[ble-backend] errno:{}'.format(errno))
         p.stdout.close()
         p.stderr.close()
         return errno
@@ -122,19 +122,22 @@ def start():
         if errno == 0:
             # todo
             errno = 0
-            logger.info('==starttest success==') 
-            logger.info("==errno:{}==".format(errno))
             break
         else:
             # todo
-            errno = -1
+            errno = 1
             time.sleep(Timeout)
-            subprocess.call("./ble-backend -command=allkickout", shell=True, cwd=gofolder)
+            # subprocess.call("./ble-backend -command=allkickout", shell=True, cwd=gofolder)
+            _mysubprocess("./ble-backend -command=allkickout")
             set_retried_sql()
             continue
-    if loop > 3 :
-        logger.error('==starttest failed==') 
+    # if loop > 3 :
+    if errno == 0:
+        logger.info('==starttest success==') 
         logger.info("==errno:{}==".format(errno))
+    else:
+        logger.error('==starttest failed==') 
+        logger.error("==errno:{}==".format(errno))
     reset_running_state()
     set_errno(errno)
     return errno

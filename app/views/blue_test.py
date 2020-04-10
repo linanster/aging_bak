@@ -8,30 +8,36 @@ from app.lib import watch_to_jump
 from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state
 from app.lib import get_errno, get_running_state
 from app.lib import testdatas_archive
+from app.lib import viewfunclog
 
 
 blue_test = Blueprint('blue_test', __name__, url_prefix='/test')
 
 
 @blue_test.route('/error')
+@viewfunclog
 def vf_error():
     errno = request.args.get('errno')
     return render_template('test_error.html', errno=errno)
 
 @blue_test.route('/config')
+@viewfunclog
 def vf_config():
     return render_template('test_config.html')
 
 @blue_test.route('/start')
+@viewfunclog
 def vf_start():
     return render_template('test_start.html')
 
 @blue_test.route('/running')
+@viewfunclog
 def vf_running():
     watch_to_jump()
     return render_template('test_running.html')
 
 @blue_test.route('/finished')
+@viewfunclog
 def vf_finished():
     results = Testdata.query.all()
     control_index = request.args.get('control_index')
@@ -49,6 +55,7 @@ def vf_finished():
 # button & command
 
 @blue_test.route('/cmd_start_legacy', methods=['POST'])
+@viewfunclog
 def vf_cmd_start_legacy():
     time.sleep(1)
     # errno saved at sqlite, instead of return value here.
@@ -60,6 +67,7 @@ def vf_cmd_start_legacy():
 
 
 @blue_test.route('/cmd_start', methods=['POST'])
+@viewfunclog
 def vf_cmd_start():
     set_running_state()
     start()
@@ -67,6 +75,7 @@ def vf_cmd_start():
 
 
 @blue_test.route('/cmd_saveconfig', methods=['POST'])
+@viewfunclog
 def vf_cmd_saveconfig():
     # devicecode = request.form.get('devicecode')
     # factorycode = request.form.get('factorycode')
@@ -77,6 +86,7 @@ def vf_cmd_saveconfig():
     return redirect(url_for('blue_test.vf_start'))
 
 @blue_test.route('/cmd_blink_single', methods=['POST'])
+@viewfunclog
 def vf_cmd_blink_single():
     mac = request.form.get('mac')
     index = request.form.get('index')
@@ -84,16 +94,19 @@ def vf_cmd_blink_single():
     return redirect(url_for('blue_test.vf_finished', control_index=index))
 
 @blue_test.route('/cmd_blink_all', methods=['POST'])
+@viewfunclog
 def vf_cmd_blink_all():
     blink_all()
     return redirect(url_for('blue_test.vf_finished'))
 
 @blue_test.route('/cmd_blink_stop', methods=['POST'])
+@viewfunclog
 def vf_cmd_blink_stop():
     blink_stop()
     return redirect(url_for('blue_test.vf_finished'))
 
 @blue_test.route('/process_finished')
+@viewfunclog
 def process_finished():
     running = get_running_state()
     if running:

@@ -8,14 +8,17 @@ from app.models import db, Device, Factory, TestdataArchive
 from app.lib import testdatasarchive_cleanup
 
 from app.lib import get_factorycode
+from app.lib import viewfunclog
 from app.settings import logfolder
 from app.settings import gofolder
 
 blue_manage = Blueprint('blue_manage', __name__, url_prefix='/manage')
 
+
 # 1. view functions definition
 
 @blue_manage.route('/factory', methods=['GET'])
+@viewfunclog
 def vf_factory():
     fcode = get_factorycode() 
     if fcode == 0:
@@ -29,6 +32,7 @@ def vf_factory():
     return render_template('manage_factory.html', results=results)
 
 @blue_manage.route('/device', methods=['GET'])
+@viewfunclog
 def vf_device():
     fcode = get_factorycode() 
     if fcode == 0:
@@ -43,6 +47,7 @@ def vf_device():
     return render_template('manage_device.html', results=results)
 
 @blue_manage.route('/data', methods=['GET'])
+@viewfunclog
 def vf_data():
     results = TestdataArchive.query.all()
 
@@ -56,6 +61,7 @@ def vf_data():
     return render_template('manage_data.html', pagination=pagination, results=ret)
 
 @blue_manage.route('/log')
+@viewfunclog
 def vf_log():
     invisibles = ['.keep',]
     filelist = os.listdir(logfolder)
@@ -67,25 +73,30 @@ def vf_log():
     return render_template('manage_log.html', filelist=filelist)
 
 @blue_manage.route('/upgrade')
+@viewfunclog
 def vf_upgrade():
     return render_template('manage_upgrade.html')
 
 @blue_manage.route('/cmd_deletearchive', methods=['POST'])
+@viewfunclog
 def cmd_deletearchive():
     testdatasarchive_cleanup()
     return redirect(url_for('blue_manage.vf_data'))
 
 @blue_manage.route('/view')
+@viewfunclog
 def cmd_view():
     filename = request.args.get('filename')
     return send_from_directory(logfolder, filename, as_attachment=False)
 
 @blue_manage.route('/download')
+@viewfunclog
 def cmd_download():
     filename = request.args.get('filename')
     return send_from_directory(logfolder, filename, as_attachment=True)
 
 @blue_manage.route('/upload', methods=['POST'])
+@viewfunclog
 def cmd_upload():
     file = request.files['file']
     if file.filename == '':
