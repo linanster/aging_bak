@@ -4,8 +4,6 @@
 import time
 import os
 import subprocess
-from multiprocessing import Process
-from threading import Thread, Lock
 from flask import flash, redirect, url_for
 
 from .execsql import testdatas_cleanup, get_running_state_sql
@@ -26,46 +24,28 @@ from app.settings import gofolder
 from app.settings import logfolder
 
 from .mylogger import logger
+from .mydecorator import processmaker, threadmaker
 
 
 
-thread = None
-thread_lock = Lock()
-
-
-def async_call(fn):
-    def wrapper(*args, **kwargs):
-        Process(target=fn, args=args, kwargs=kwargs).start()
-    return wrapper
-
-def ThreadMaker(f):
-    def runner(*args, **argv):
-        Thread(target=f, args=args, kwargs=argv).start()
-    return runner
-
-# logfile = os.path.abspath(os.path.join(logfolder, "log_mycmd.txt"))
 def _mysubprocess(cmd):
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gofolder)
         while p.poll() is None:
             output = p.stdout.readline().decode('utf-8')[0:-1]
-            # print(output)
             logger.info('[ble-backend] {}'.format(output))
         errno = p.poll()
         if errno != 0:
             errmsg = p.stderr.read().decode('utf-8')[:-1]
-            # print(errmsg)
-            # print(errno)
             logger.error('[ble-backend] {}'.format(errmsg))
             logger.error('[ble-backend] errno:{}'.format(errno))
         p.stdout.close()
         p.stderr.close()
         return errno
 
-@ThreadMaker
+@threadmaker
 def watch_to_jump():
     while True:
         if get_running_state_sql():
-            # print('.')
             if get_retried_sql():
                 newline = 1
                 reset_retried_sql()
@@ -78,7 +58,7 @@ def watch_to_jump():
             socketio.emit('event_done', namespace='/test', broadcast=True)
             break
     
-@async_call
+@processmaker
 def start():
     logger.info('')
     logger.info('')
@@ -144,7 +124,7 @@ def start():
     return errno
     
 
-@async_call
+@processmaker
 def start_legacy():
     testdatas_cleanup()
     set_running_state()
@@ -258,7 +238,7 @@ def _scan():
     return 0
 
 # regardless of _bulb_cmd_set
-@async_call
+@processmaker
 def _bulb_cmd_set():
     set_phase('_bulb_cmd_set')
     loop = 1
