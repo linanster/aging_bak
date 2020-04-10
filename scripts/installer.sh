@@ -5,6 +5,8 @@ set +e
 # set -o noglob
 #
 workdir=$(cd "$(dirname $0)" && pwd)
+topdir=$(cd "${workdir}" && cd .. && pwd)
+scriptdir=${workdir}
 cd "${workdir}"
 #
 # lib: color print
@@ -100,8 +102,7 @@ function init_mariadb_db(){
   if [ '' == "$user" ]; then user='root'; fi
   read -p "password[123456]: " password
   if [ "" == "$password" ]; then password='123456'; fi
-  read -p "script file path[./init.sql]: " path
-  if [ "" == "$path" ]; then path='./init.sql'; fi
+  sqlfile="${scriptdir}/init.sql"
   mysql -h${hostname} -u${user} -p${password} < ${path}
   echo
 }
@@ -138,8 +139,15 @@ eof
 }
 
 function chmod_dir(){
-  topdir=$(cd "${workdir}" && cd .. && pwd)
   chmod -R 700 "${topdir}"
+}
+
+function install_service(){
+  cd "${scriptdir}"
+  cp aging.service /usr/lib/systemd/system
+  systemctl enable aging.service
+  systemctl restart aging.service
+  systemctl status aging.service
 }
 
 function option1(){
@@ -147,11 +155,11 @@ function option1(){
   green "option1 done!"
 }
 function option2(){
-  install_python3
+  customize
   green "option2 done!"
 }
 function option3(){
-  install_mariadb
+  install_python3
   green "option3 done!"
 }
 function option4(){
@@ -160,7 +168,7 @@ function option4(){
   green "option4 done!"
 }
 function option5(){
-  # do something
+  install_mariadb
   green "option5 done!"
 }
 function option6(){
@@ -168,24 +176,25 @@ function option6(){
   green "option6 done!"
 }
 function option7(){
-  customize
+  chmod_dir 
   green "option7 done!"
 }
-
 function option8(){
-  chmod_dir 
+  install_service
   green "option8 done!"
 }
+
 
 cat << eof
 ====
 1) config apt source
-7) raspbian os customization
-2) install python3
-3) install mariadb
-4) config mariadb
+2) raspbian os customization
+3) install python3
+4) install mariadb
+5) config mariadb
 6) clone codes from github
-8) permission control
+7) permission control
+8) install service
 q) quit 
 ====
 eof
@@ -206,6 +215,10 @@ while echo; read -p "Enter your option: " option; do
       ;;
     4)
       option4
+      break
+      ;;
+    5)
+      option5
       break
       ;;
     6)
