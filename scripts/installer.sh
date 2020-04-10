@@ -4,6 +4,9 @@ set -u
 set +e
 # set -o noglob
 #
+workdir=$(cd "$(dirname $0)" && pwd)
+cd "${workdir}"
+#
 # lib: color print
 bold=$(tput bold)
 green=$(tput setf 2)
@@ -21,14 +24,14 @@ function red() {
 # red "hello"
 
 cat << eof
-   _____ ______   _      _       _     _   _                             _               _______        _     _______          _ 
-  / ____|  ____| | |    (_)     | |   | | (_)                 /\        (_)             |__   __|      | |   |__   __|        | |
- | |  __| |__    | |     _  __ _| |__ | |_ _ _ __   __ _     /  \   __ _ _ _ __   __ _     | | ___  ___| |_     | | ___   ___ | |
- | | |_ |  __|   | |    | |/ _  |  _ \| __| |  _ \ / _  |   / /\ \ / _  | |  _ \ / _  |    | |/ _ \/ __| __|    | |/ _ \ / _ \| |
- | |__| | |____  | |____| | (_| | | | | |_| | | | | (_| |  / ____ \ (_| | | | | | (_| |    | |  __/\__ \ |_     | | (_) | (_) | |
-  \_____|______| |______|_|\__  |_| |_|\__|_|_| |_|\__  | /_/    \_\__  |_|_| |_|\__  |    |_|\___||___/\__|    |_|\___/ \___/|_|
-                            __/ |                   __/ |           __/ |         __/ |                                          
-                           |___/                   |___/           |___/         |___/                                           
+
+   ____ _____   _     _       _     _   _                  _         _          _____         _     _____           _ 
+  / ___| ____| | |   (_) __ _| |__ | |_(_)_ __   __ _     / \  _   _| |_ ___   |_   _|__  ___| |_  |_   _|__   ___ | |
+ | |  _|  _|   | |   | |/ _  | '_ \| __| |  _ \ / _  |   / _ \| | | | __/ _ \    | |/ _ \/ __| __|   | |/ _ \ / _ \| |
+ | |_| | |___  | |___| | (_| | | | | |_| | | | | (_| |  / ___ \ |_| | || (_) |   | |  __/\__ \ |_    | | (_) | (_) | |
+  \____|_____| |_____|_|\__  |_| |_|\__|_|_| |_|\__  | /_/   \_\__ _|\__\___/    |_|\___||___/\__|   |_|\___/ \___/|_|
+                        |___/                   |___/                                                                 
+
 eof
 
 echo
@@ -70,7 +73,7 @@ function install_mariadb(){
   systemctl restart mariadb
 }
 
-function init_config_mariadb(){
+function init_mariadb_config(){
   read -p "Config MariaDB again(root password listening address, Y/n)?" opt
   if [ 'n' == "$opt" ]; then
     return 1
@@ -86,8 +89,8 @@ function init_config_mariadb(){
   echo
 }
 
-function init_mariadb_tables(){
-  read -p "Initialize MariaDB tables again(Note that this will empty your data, Y/n)?" opt
+function init_mariadb_db(){
+  read -p "Initialize MariaDB (Note that this will empty your data, Y/n)?" opt
   if [ 'n' == "$opt" ]; then
     return 1
   fi
@@ -97,18 +100,46 @@ function init_mariadb_tables(){
   if [ '' == "$user" ]; then user='root'; fi
   read -p "password[123456]: " password
   if [ "" == "$password" ]; then password='123456'; fi
-  read -p "script file path[.aging/mariadb/db1.sql]: " path
-  if [ "" == "$path" ]; then path='./aging/mariadb/db1.sql'; fi
+  read -p "script file path[./init.sql]: " path
+  if [ "" == "$path" ]; then path='./init.sql'; fi
   mysql -h${hostname} -u${user} -p${password} < ${path}
   echo
 }
 
-function config_flask(){
-  pip3 install flask flask-script flask-blueprint flask-sqlalchemy flask-migrate flask-session pymysql
-}
-
 function git_clone(){
   git clone https://github.com/linanster/aging.git
+}
+
+function customize(){
+  # 1. set alias
+  sed -i '/my_custom_start/, /my_custom_end/ d' /etc/bash.bashrc
+  cat << eof >> /etc/bash.bashrc
+alias ls="ls --color=auto'
+alias ll='ls -l'
+alias la='ls -A'
+alias l='ls -CF'
+alias l.='ls -d .*'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+eof
+
+  # 2. set up vim
+  apt remove vim-common
+  apt install vim
+
+  # 3. set up ssh.service
+  sed -i '/^PermitRootLogin/ s/^/# /' /etc/ssh/sshd_config
+  sed -i '/ PermitRootLogin/ a PermitRootLogin yes' /etc/ssh/sshd_config
+  systemctl enable ssh.service
+  systemctl restrat ssh.service  
+}
+
+function chmod_dir(){
+  topdir=$(cd "${workdir}" && cd .. && pwd)
+  chmod -R 700 "${topdir}"
 }
 
 function option1(){
@@ -124,12 +155,12 @@ function option3(){
   green "option3 done!"
 }
 function option4(){
-  init_config_mariadb
-  init_mariadb_tables
+  init_mariadb_config
+  init_mariadb_db
   green "option4 done!"
 }
 function option5(){
-  config_flask
+  # do something
   green "option5 done!"
 }
 function option6(){
@@ -137,18 +168,24 @@ function option6(){
   green "option6 done!"
 }
 function option7(){
+  customize
   green "option7 done!"
+}
+
+function option8(){
+  chmod_dir 
+  green "option8 done!"
 }
 
 cat << eof
 ====
 1) config apt source
+7) raspbian os customization
 2) install python3
 3) install mariadb
-4) config mariadb [applied only once]
-5) config flask framework
+4) config mariadb
 6) clone codes from github
-7) raspbian os customized configuration
+8) permission control
 q) quit 
 ====
 eof
@@ -171,12 +208,16 @@ while echo; read -p "Enter your option: " option; do
       option4
       break
       ;;
-    5)
-      option5
-      break
-      ;;
     6)
       option6
+      break
+      ;;
+    7)
+      option7
+      break
+      ;;
+    8)
+      option8
       break
       ;;
     q|Q)
