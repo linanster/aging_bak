@@ -135,9 +135,15 @@ eof
 
   # 3. set up ssh.service
   sed -i '/^PermitRootLogin/ s/^/# /' /etc/ssh/sshd_config
-  sed -i '/ PermitRootLogin/ a PermitRootLogin yes' /etc/ssh/sshd_config
-  systemctl enable ssh.service
-  systemctl restrat ssh.service  
+  sed -i '/PermitRootLogin/ a PermitRootLogin yes' /etc/ssh/sshd_config
+  systemctl enable sshd.service
+  systemctl restrat sshd.service
+
+  # 4. set up git client
+  git config --global user.name linan
+  git config --global user.email believelinan@aliyun.com
+  git config --global color.ui true
+  git config --global push.default simple
 }
 
 function chmod_dir(){
