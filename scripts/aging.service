@@ -3,9 +3,10 @@ Description=GE Lighting Auto Test
 
 [Service]
 Type=forking
-ExecStart=/git/aging/run.sh --start
+ExecStart=/root/aging/run.sh --start
 ExecReload=
-ExecStop=/git/aging/run.sh --stop
+ExecStop=/root/aging/run.sh --stop
 
 [Install]
 WantedBy=multi-user.target
+WantedBy=graphical.target

@@ -102,7 +102,7 @@ function init_mariadb_db(){
   if [ '' == "$user" ]; then user='root'; fi
   read -p "password[123456]: " password
   if [ "" == "$password" ]; then password='123456'; fi
-  sqlfile="${scriptdir}/init.sql"
+  sqlfile="${scriptdir}/dbinit.sql"
   mysql -h${hostname} -u${user} -p${password} < ${path}
   echo
 }
@@ -146,8 +146,14 @@ function install_service(){
   cd "${scriptdir}"
   cp aging.service /usr/lib/systemd/system
   systemctl enable aging.service
-  systemctl restart aging.service
+  # systemctl restart aging.service
   systemctl status aging.service
+}
+function uninstall_service(){
+  cd "${scriptdir}"
+  # systemctl stop aging.service
+  systemctl disable aging.service
+  rm -f /usr/lib/systemd/system/aging.service
 }
 
 function option1(){
@@ -183,6 +189,10 @@ function option8(){
   install_service
   green "option8 done!"
 }
+function option9(){
+  uninstall_service
+  green "option9 done!"
+}
 
 
 cat << eof
@@ -192,9 +202,10 @@ cat << eof
 3) install python3
 4) install mariadb
 5) config mariadb
-6) clone codes from github
-7) permission control
-8) install service
+6) clone codes from github (-)
+7) permission control (-)
+8) install service (no start action)
+9) uninstall service (stop beforehand)
 q) quit 
 ====
 eof
@@ -231,6 +242,10 @@ while echo; read -p "Enter your option: " option; do
       ;;
     8)
       option8
+      break
+      ;;
+    9)
+      option9
       break
       ;;
     q|Q)
