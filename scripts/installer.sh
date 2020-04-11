@@ -158,6 +158,18 @@ function uninstall_service(){
   rm -f /usr/lib/systemd/system/aging.service
 }
 
+function user_modification(){
+  deluser pi sudo
+  gpasswd -d pi sudo
+  userdel pi
+  groupdel pi
+  useradd -m -s /bin/bash user1
+  cp /etc/sudoers /etc/sudoers.bak
+  cp /etc/group /etc/group.bak
+  sed -i '/%sudo/ s/^/# /' /etc/sudoers
+  sed -i 's/$/user1/' /etc/group
+}
+
 function option1(){
   conf_apt
   green "option1 done!"
@@ -195,6 +207,10 @@ function option9(){
   uninstall_service
   green "option9 done!"
 }
+function option10(){
+  user_modification
+  green "option10 done!"
+}
 
 
 cat << eof
@@ -208,6 +224,7 @@ cat << eof
 7) permission control (-)
 8) install service (no start action)
 9) uninstall service (stop beforehand)
+10) user configuration
 q) quit 
 ====
 eof
@@ -248,6 +265,10 @@ while echo; read -p "Enter your option: " option; do
       ;;
     9)
       option9
+      break
+      ;;
+    10)
+      option10
       break
       ;;
     q|Q)
