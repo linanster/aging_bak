@@ -103,7 +103,7 @@ function init_mariadb_db(){
   read -p "password[123456]: " password
   if [ "" == "$password" ]; then password='123456'; fi
   sqlfile="${scriptdir}/dbinit.sql"
-  mysql -h${hostname} -u${user} -p${password} < ${path}
+  mysql -h${hostname} -u${user} -p${password} < ${sqlfile}
   echo
 }
 
@@ -161,12 +161,14 @@ function uninstall_service(){
 function user_modification(){
   deluser pi sudo
   gpasswd -d pi sudo
-  userdel pi
-  groupdel pi
+  # userdel pi
+  # groupdel pi
   useradd -m -s /bin/bash user1
+  echo "user1:a" | chpasswd -m
   cp /etc/sudoers /etc/sudoers.bak
   cp /etc/group /etc/group.bak
   sed -i '/%sudo/ s/^/# /' /etc/sudoers
+  sed -i 's/pi$//' /etc/group
   sed -i 's/$/user1/' /etc/group
 }
 
