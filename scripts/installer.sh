@@ -115,7 +115,8 @@ function customize(){
   # 1. set alias
   sed -i '/my_custom_start/, /my_custom_end/ d' /etc/bash.bashrc
   cat << eof >> /etc/bash.bashrc
-alias ls="ls --color=auto'
+# my_custom_start
+alias ls='ls --color=auto'
 alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
@@ -125,6 +126,7 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
+# my_custom_end
 eof
 
   # 2. set up vim
