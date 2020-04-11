@@ -136,6 +136,8 @@ eof
   # 3. set up ssh.service
   sed -i '/^PermitRootLogin/ s/^/# /' /etc/ssh/sshd_config
   sed -i '/PermitRootLogin/ a PermitRootLogin yes' /etc/ssh/sshd_config
+  sed -i '/^StrictModes/ s/^/# /' /etc/ssh/sshd_config
+  sed -i '/StrictModes/ a StrictModes no' /etc/ssh/sshd_config
   systemctl enable sshd.service
   systemctl restrat sshd.service
 
@@ -154,12 +156,12 @@ function install_service(){
   cd "${scriptdir}"
   cp aging.service /usr/lib/systemd/system
   systemctl enable aging.service
-  # systemctl restart aging.service
+  systemctl restart aging.service
   systemctl status aging.service
 }
 function uninstall_service(){
   cd "${scriptdir}"
-  # systemctl stop aging.service
+  systemctl stop aging.service
   systemctl disable aging.service
   rm -f /usr/lib/systemd/system/aging.service
 }
@@ -230,8 +232,8 @@ cat << eof
 5) config mariadb
 6) clone codes from github (-)
 7) permission control (-)
-8) install service (no start action)
-9) uninstall service (stop beforehand)
+8) install service (make sure run not --start)
+9) uninstall service
 10) user configuration
 q) quit 
 ====
