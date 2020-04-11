@@ -29,6 +29,10 @@ def errno():
     from app.lib import get_errno
     return get_errno()
 
+@application.template_filter('parse_is_qualified')
+def parseIsQualified(mybool):
+    return '成功' if mybool else '失败'
+
 @application.template_filter('parse_status')
 def parseStatusCode(code):
     if '2' in str(code):
@@ -36,3 +40,11 @@ def parseStatusCode(code):
     else:
         plaintxt = '成功'
     return '{}({})'.format(plaintxt,code)
+
+@application.template_filter('parse_status_boolean')
+def parseStatusCodeBoolean(code):
+    if '2' in str(code):
+        statusbool = False
+    else:
+        statusbool = True
+    return statusbool

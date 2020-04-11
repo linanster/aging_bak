@@ -5,8 +5,11 @@
 
 
 <div class="btn-group">
+<form style="display: inline" action = "{{url_for('blue_test.vf_finished')}}" method = "get">
+  <button type="submit" class="btn btn-default">刷新</button>
+</form>
 <form style="display: inline" action = "{{url_for('blue_test.vf_cmd_blink_all')}}" method = "post">
-  <button type="submit" class="btn btn-success "{% if results|count == 0 %}disabled{% endif %}>全部闪烁</button>
+  <button type="submit" class="btn btn-success"{% if results|count == 0 %}disabled{% endif %}>全部闪烁</button>
 </form>
 <form style="display: inline" action = "{{url_for('blue_test.vf_cmd_blink_stop')}}" method = "post">
   <button type="submit" class="btn btn-danger" {% if results|count == 0 %}disabled{% endif %}>停止</button>
@@ -25,15 +28,15 @@
       <th>RSSI_WIFI</th>
       <th>MAC_BLE</th>
       <th>MAC_WIFI</th>
-      <th>状态检测</th>
-      <th>合格</th>
+      <th>组合指令检测</th>
+      <th>信号强度检测</th>
       <th>时间</th>
       <th colspan="1">控制</th>
     </tr>
   </thead>
   <tbody>
     {% for result in results %}
-    {% if not result.is_qualified %}
+    {% if not result.is_qualified or not result.status_cmd_check2|parse_status_boolean %}
     {% if loop.index|string == control_index %}
     <tr class="warning"> 
     {% else %}
@@ -47,8 +50,8 @@
       <td>{{result.rssi_wifi1}}</td>
       <td>{{result.mac_ble}}</td>
       <td>{{result.mac_wifi}}</td>
-      <td>{{result.status_cmd_check2|parse_status}}</td>
-      <td>{{result.is_qualified}}</td>
+      <td>{{ result.status_cmd_check2|parse_status }}</td>
+      <td>{{ result.is_qualified|parse_is_qualified }}</td>
       <td>{{result.datetime}}</td>
       <td>
         <form action = "{{url_for('blue_test.vf_cmd_blink_single')}}" method = "post">
@@ -63,7 +66,7 @@
     {% endfor %}
 
     {% for result in results %}
-    {% if result.is_qualified %}
+    {% if result.is_qualified and result.status_cmd_check2|parse_status_boolean %}
     <tr class="default">
       <td>{{ loop.index}}</td>
       <td>{{result.device.name}}</td>
@@ -73,8 +76,8 @@
       <td>{{result.rssi_wifi1}}</td>
       <td>{{result.mac_ble}}</td>
       <td>{{result.mac_wifi}}</td>
-      <td>{{result.status_cmd_check2|parse_status}}</td>
-      <td>{{result.is_qualified}}</td>
+      <td>{{ result.status_cmd_check2|parse_status }}</td>
+      <td>{{ result.is_qualified|parse_is_qualified }}</td>
       <td>{{result.datetime}}</td>
       <td>
         <form action = "{{url_for('blue_test.vf_cmd_blink_single')}}" method = "post">
