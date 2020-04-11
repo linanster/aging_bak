@@ -92,7 +92,7 @@ function init_mariadb_config(){
 }
 
 function init_mariadb_db(){
-  read -p "Initialize MariaDB (Note that this will empty your data, Y/n)?" opt
+  read -p "Initialize ge database (Note that this will empty your data, Y/n)?" opt
   if [ 'n' == "$opt" ]; then
     return 1
   fi
@@ -169,12 +169,12 @@ function option3(){
   green "option3 done!"
 }
 function option4(){
-  init_mariadb_config
-  init_mariadb_db
+  install_mariadb
   green "option4 done!"
 }
 function option5(){
-  install_mariadb
+  init_mariadb_config
+  init_mariadb_db
   green "option5 done!"
 }
 function option6(){

@@ -7,3 +7,4 @@
 venv
 log/
 !log/.keep
+scripts/raspbian.public.key
