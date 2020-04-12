@@ -45,8 +45,11 @@
     <script src="{{ url_for('static',filename='jquery-1.12.4.min.js') }}"></script>
     <script type="text/javascript" charset="utf-8">
 
-        function jump() {
+        function _jump() {
             window.location.replace("{{url_for('blue_test.process_finished')}}");
+        }
+        function jump() {
+            setTimeout("_jump()", 4000)
         }
 
         $(document).ready(function () {
@@ -55,14 +58,18 @@
             var socket = io(namespace);
             socket.on('progress', function (msg) {
                 if (msg.newline == 1) {
-                    $('#message').append('!');
+                    $('#message').append(' retry ');
                 }
                 $('#message').append('#');
             });
 
             socket.on('event_done', function () {
-                // $('#message').append('<br>');
-                $('#message').append('done');
+                $('#message').append(' done');
+                $('#main').attr("class", "jumbotron alert-success");
+                $('#testing').text('测试完成!');
+                $('#loading').hide();
+                // $('#tip1').text('即将跳转至结果页面...');
+                // $('#tip2').text('');
                 jump();
             });
 
@@ -84,13 +91,13 @@
         var t
         function timedCount() {
             document.getElementById('timer').innerHTML = c
-            // document.getElementById('errno').innerHTML = {{ errno() }}
             c = c + 1
             t = setTimeout("timedCount()", 1000)
         }
         function stopCount() {
             clearTimeout(t)
         }
+        // window.onload = timedCount;
     </script>
 
     <script type="text/javascript" charset="utf-8">
@@ -100,12 +107,18 @@
             document.getElementById('loading').innerText = x;
             setTimeout("countSecond()", 1000);
         }
-        window.onload = countSecond;
+        // window.onload = countSecond;
     </script>
 
+    <script>
+        window.onload = function(){
+            timedCount();
+            countSecond();
+        }
+    </script>
 
     <script type="text/javascript" charset="utf-8">
-        function myscroll()
+        function scroll_log()
         {
             var div = document.getElementById('log');
             div.scrollTop = div.scrollHeight;
@@ -113,37 +126,39 @@
 
         $(document).ready(function () {
             $('#log').on('DOMNodeInserted',function(){
-                myscroll();
+                scroll_log();
             });
         });
     </script>
 
 
-    <div class="jumbotron alert-info" style="padding-left: 60px;padding-right: 30px">
-        <h2 id="testing" style="display: inline">测试中</h1>
-        <h2 id="loading" style="display: inline"></h1>
+    <div id="main" class="jumbotron alert-info" style="padding-left: 60px;padding-right: 30px">
+        <h1 id="testing" style="display: inline">测试中</h1>
+        <h1 id="loading" style="display: inline""></h1>
         <!--
         <div class="progress progress-striped active" >
             <div class="progress-bar" style="width: 100%"></div>
         </div>
         -->
         <br>
-        <p>程序运行中，请勿刷新或关闭此页面！</p>
-        <p>如果页面长时间未自动跳转，请<a style="display: inline" href="{{ url_for('blue_test.process_finished') }}"
-                            class="btn btn-link">手动转到</a>测试结果页面。</p>
+        <br>
+        <span id="tip1">1. 程序运行中，请勿刷新或关闭此页面！</span>
+        <br>
+        <span id="tip2">2. 如果页面长时间未自动跳转，请<a style="display: inline" href="{{ url_for('blue_test.process_finished') }}"
+                            class="btn btn-link">手动转到</a>测试结果页面。</span>
     </div>
 
 <p>Debug: </p>
-<p style="display: inline"><strong>1. Timer</strong></p>
-<form style="display: inline">
+<p style="display: inline"><strong>1. Timer: </strong></p>
+<!-- <form style="display: inline">
     <input type="button" value="计时" onClick="timedCount()">
     <input type="button" value="停止" onClick="stopCount()">
-</form>
+</form> -->
 <span id="timer"></span>
-<p><strong>2. Event Monitor:</strong></p>
-<p style="display: inline" id="message">!</p>
-<p><strong>3. Log Monitor</strong></p>
-<div id="log" style="overflow:auto; height: 250px; width: auto; border: 1px solid #999"></div>
+<p id="message"><strong>2. Event Monitor: </strong></p>
+<!-- <span "id="message">start</span> -->
+<p><strong>3. Log Monitor: </strong></p>
+<div id="log" style="overflow:auto; height: 270px; width: auto; border: 1px solid #999"></div>
 
 {% endblock %}
 
