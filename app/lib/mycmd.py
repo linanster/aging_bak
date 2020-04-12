@@ -28,7 +28,7 @@ from .mydecorator import processmaker, threadmaker
 
 
 
-def _mysubprocess(cmd):
+def _gosubprocess(cmd):
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gofolder)
         while p.poll() is None:
             output = p.stdout.readline().decode('utf-8')[0:-1]
@@ -41,6 +41,27 @@ def _mysubprocess(cmd):
         p.stdout.close()
         p.stderr.close()
         return errno
+
+@threadmaker
+def watch_log():
+        logfile = os.path.join(logfolder, 'log.txt')
+        p = subprocess.Popen("tail -f {}".format(logfile), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        while get_running_state_sql():
+            output = p.stdout.readline().decode('utf-8')[0:-1]
+            socketio.emit('logupdated', output, namespace='/log', broadcast=True)
+        # p.stdout.close()
+        # p.stderr.close()
+        p.kill()
+
+@threadmaker
+def watch_log_bak():
+    count = 0
+    while get_running_state_sql():
+        socketio.emit('logupdated',
+                      {'data': 'Server generated event', 'count': count},
+                      namespace='/log', broadcast=True)
+        count += 1
+        socketio.sleep(1)
 
 @threadmaker
 def watch_to_jump():
@@ -60,9 +81,6 @@ def watch_to_jump():
     
 @processmaker
 def start():
-    logger.info('')
-    logger.info('')
-    logger.info('')
     logger.info('==starttest begin==')
     testdatas_cleanup()
     reset_errno()
@@ -96,7 +114,7 @@ def start():
         # p.stderr.close()        
 
         # METHOD-4
-        errno = _mysubprocess("./ble-backend -command=starttest -totalcount={}".format(num))
+        errno = _gosubprocess("./ble-backend -command=starttest -totalcount={}".format(num))
 
         loop += 1
         if errno == 0:
@@ -109,7 +127,7 @@ def start():
             errno = 1
             time.sleep(Timeout)
             # subprocess.call("./ble-backend -command=allkickout", shell=True, cwd=gofolder)
-            _mysubprocess("./ble-backend -command=allkickout")
+            _gosubprocess("./ble-backend -command=allkickout")
             set_retried_sql()
             continue
     # if loop > 3 :
@@ -155,7 +173,7 @@ def blink_single(mac):
     maclist = segments[4] + segments[5]
     loop = 1
     # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist={} -meshname=telink_mesh1 -meshpass=123".format(maclist), shell=True, cwd=gofolder):
-    while 0 != _mysubprocess("./ble-backend -command=nok_ident -maclist={} -meshname=telink_mesh1 -meshpass=123".format(maclist)):
+    while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist={} -meshname=telink_mesh1 -meshpass=123".format(maclist)):
         time.sleep(Timeout)
         if loop==3:
             logger.error('==blink_single failed==') 
@@ -168,7 +186,7 @@ def blink_single(mac):
 def blink_all():
     loop = 1
     # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=ffff -meshname=telink_mesh1 -meshpass=123", shell=True, cwd=gofolder):
-    while 0 != _mysubprocess("./ble-backend -command=nok_ident -maclist=ffff -meshname=telink_mesh1 -meshpass=123"):
+    while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist=ffff -meshname=telink_mesh1 -meshpass=123"):
         time.sleep(Timeout)
         if loop==3:
             logger.error('==blink_all failed==') 
@@ -180,7 +198,7 @@ def blink_all():
 def blink_stop():
     loop = 1
     # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=stop -meshname=telink_mesh1 -meshpass=123", shell=True, cwd=gofolder):
-    while 0 != _mysubprocess("./ble-backend -command=nok_ident -maclist=stop -meshname=telink_mesh1 -meshpass=123"):
+    while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist=stop -meshname=telink_mesh1 -meshpass=123"):
         time.sleep(Timeout)
         if loop==3:
             logger.error('==blink_stop failed==') 
