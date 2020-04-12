@@ -10,6 +10,8 @@ from app.lib import get_errno, get_running_state
 from app.lib import testdatas_archive
 from app.lib import viewfunclog
 
+from app.lib import logger
+
 
 blue_test = Blueprint('blue_test', __name__, url_prefix='/test')
 
@@ -69,6 +71,7 @@ def vf_cmd_start_legacy():
 @blue_test.route('/cmd_start', methods=['POST'])
 @viewfunclog
 def vf_cmd_start():
+    logger.warn('click start button')
     set_running_state()
     start()
     return redirect(url_for('blue_test.vf_running')) 
@@ -88,6 +91,7 @@ def vf_cmd_saveconfig():
 @blue_test.route('/cmd_blink_single', methods=['POST'])
 @viewfunclog
 def vf_cmd_blink_single():
+    logger.warn('click blink single button')
     mac = request.form.get('mac')
     index = request.form.get('index')
     blink_single(mac)
@@ -96,12 +100,14 @@ def vf_cmd_blink_single():
 @blue_test.route('/cmd_blink_all', methods=['POST'])
 @viewfunclog
 def vf_cmd_blink_all():
+    logger.warn('click blink all button')
     blink_all()
     return redirect(url_for('blue_test.vf_finished'))
 
 @blue_test.route('/cmd_blink_stop', methods=['POST'])
 @viewfunclog
 def vf_cmd_blink_stop():
+    logger.warn('click blink stop button')
     blink_stop()
     return redirect(url_for('blue_test.vf_finished'))
 

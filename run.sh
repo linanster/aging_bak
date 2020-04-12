@@ -37,7 +37,11 @@ if [ "$1" == '--start' ]; then
     echo "gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application"
     # todo --daemon
     # todo --user user1 --group user1
-    gunicorn --daemon --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application
+    if [ "$2" == '--nodaemon' ]; then
+        gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application
+    else
+        gunicorn --daemon --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application
+    fi
     ps -ef | fgrep "gunicorn" | grep "application" | awk '{if($3==1) print $2}'
     exit 0
 fi
