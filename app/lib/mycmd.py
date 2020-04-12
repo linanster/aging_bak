@@ -54,7 +54,7 @@ def watch_log():
         p.kill()
 
 @threadmaker
-def watch_log_bak():
+def watch_log_test():
     count = 0
     while get_running_state_sql():
         socketio.emit('logupdated',
@@ -81,6 +81,8 @@ def watch_to_jump():
     
 @processmaker
 def start():
+    # reserve time for frontend to receive event message
+    time.sleep(3)
     logger.info('==starttest begin==')
     testdatas_cleanup()
     reset_errno()
@@ -137,6 +139,8 @@ def start():
     else:
         logger.error('==starttest failed==') 
         logger.error("==errno:{}==".format(errno))
+    # reserve time for frontend to receive event message
+    time.sleep(3)
     reset_running_state()
     set_errno(errno)
     return errno
