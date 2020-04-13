@@ -4,7 +4,11 @@ set -o errexit
 
 if [ $# -eq 0 ]; then
     echo "run.sh [--start] [--stop] [--status] [--init]"
-    exit 0
+    exit 1
+fi
+if [ "$1" != "--start" -a "$1" != "--stop" -a "$1" != "--status" -a "$1" != "--init" ]; then
+    echo "run.sh [--start] [--stop] [--status] [--init]"
+    exit 1
 fi
 
 workdir=$(cd "$(dirname $0)" && pwd)
