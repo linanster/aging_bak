@@ -138,8 +138,8 @@ eof
   sed -i '/PermitRootLogin/ a PermitRootLogin yes' /etc/ssh/sshd_config
   sed -i '/^StrictModes/ s/^/# /' /etc/ssh/sshd_config
   sed -i '/StrictModes/ a StrictModes no' /etc/ssh/sshd_config
-  systemctl enable sshd.service
-  systemctl restrat sshd.service
+  systemctl enable ssh.service
+  systemctl restrat ssh.service
 
   # 4. set up git client
   git config --global user.name linan

@@ -111,16 +111,17 @@ class Device(db.Model):
         self.description = description
     @staticmethod
     def seed():
-        d_leedarson_13 = Device(13, '0x0D', 1, 'Gen2 TCO C-Life A19 ST')
-        d_leedarson_27 = Device(27, '0x1B', 1, 'Gen2 TCO C-Life A19 MFG')
-        d_leedarson_14 = Device(14, '0x0E', 1, 'Gen2 TCO C-Sleep A19 ST')
-        d_leedarson_28 = Device(28, '0x1C', 1, 'Gen2 TCO C-Sleep A19 MFG')
-        d_leedarson_15 = Device(15, '0x0F', 1, 'Gen2 TCO C-Sleep BR30 ST')
-        d_leedarson_29 = Device(29, '0x1D', 1, 'Gen2 TCO C-Sleep BR30 MFG')
-        d_leedarson_128 = Device(128, '0x80', 1, 'Dual mode Soft White A19')
-        d_leedarson_129 = Device(129, '0x81', 1, 'Dual mode Tunable White A19')
-        d_leedarson_130 = Device(130, '0x82', 1, 'Dual mode Tunable White BR30')
-        d_leedarson_67 = Device(67, '0x43', 1, 'Out door Plug')
+        d_leedarson_11 = Device(11, '0x0B', 1, 'Gen2 Tier2 Sleep-BR30 Standalone(Ox0B)')
+        d_leedarson_13 = Device(13, '0x0D', 1, 'Gen2 TCO C-Life A19 ST(Ox0D)')
+        d_leedarson_27 = Device(27, '0x1B', 1, 'Gen2 TCO C-Life A19 MFG(0x1B)')
+        d_leedarson_14 = Device(14, '0x0E', 1, 'Gen2 TCO C-Sleep A19 ST(0x0E)')
+        d_leedarson_28 = Device(28, '0x1C', 1, 'Gen2 TCO C-Sleep A19 MFG(0x1C)')
+        d_leedarson_15 = Device(15, '0x0F', 1, 'Gen2 TCO C-Sleep BR30 ST(0x0F)')
+        d_leedarson_29 = Device(29, '0x1D', 1, 'Gen2 TCO C-Sleep BR30 MFG(0x1D)')
+        d_leedarson_128 = Device(128, '0x80', 1, 'Dual mode Soft White A19(0x80)')
+        d_leedarson_129 = Device(129, '0x81', 1, 'Dual mode Tunable White A19(0x81)')
+        d_leedarson_130 = Device(130, '0x82', 1, 'Dual mode Tunable White BR30(0x82)')
+        d_leedarson_67 = Device(67, '0x43', 1, 'Out door Plug(0x43)')
 
         d_innotech_30 = Device(30, '0x1E', 2, 'Gen2 TCO Full Color A19 ST')
         d_innotech_31 = Device(31, '0x1F', 2, 'Gen2 TCO Full Color A19 MFG')
