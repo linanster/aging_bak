@@ -70,7 +70,8 @@ function install_mariadb(){
       return 1
     fi
   fi
-  apt install mariadb-server mariadb-client
+  # yum install yum install mariadb-server-5.5.64 mariadb-5.5.64
+  apt install mariadb-server-10.3 mariadb-client-10.3
   systemctl enable mariadb
   systemctl restart mariadb
 }

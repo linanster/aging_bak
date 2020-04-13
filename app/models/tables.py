@@ -111,8 +111,8 @@ class Device(db.Model):
         self.description = description
     @staticmethod
     def seed():
-        d_leedarson_11 = Device(11, '0x0B', 1, 'Gen2 Tier2 Sleep-BR30 Standalone(Ox0B)')
-        d_leedarson_13 = Device(13, '0x0D', 1, 'Gen2 TCO C-Life A19 ST(Ox0D)')
+        d_leedarson_11 = Device(11, '0x0B', 1, 'Gen2 Tier2 Sleep-BR30 Standalone(0x0B)')
+        d_leedarson_13 = Device(13, '0x0D', 1, 'Gen2 TCO C-Life A19 ST(0x0D)')
         d_leedarson_27 = Device(27, '0x1B', 1, 'Gen2 TCO C-Life A19 MFG(0x1B)')
         d_leedarson_14 = Device(14, '0x0E', 1, 'Gen2 TCO C-Sleep A19 ST(0x0E)')
         d_leedarson_28 = Device(28, '0x1C', 1, 'Gen2 TCO C-Sleep A19 MFG(0x1C)')
@@ -153,6 +153,7 @@ class Device(db.Model):
         d_test_6 = Device(6, '0x06', 5, 'Test2')
 
         devices_all = [
+            d_leedarson_11,
             d_leedarson_13,
             d_leedarson_27,
             d_leedarson_14,

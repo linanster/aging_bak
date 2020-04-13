@@ -6,8 +6,8 @@
     <div style="padding-left: 10px">
 
         <form action={{ url_for('blue_manage.cmd_upload') }} method="post" enctype=multipart/form-data>
-            <input type="file" name="file">
-            <input type="submit" value='导入升级文件'>
+            <input type="file" name="file" value="请选择升级文件" style="display: inline">
+            <input type="submit" value='导入'>
         </form>
     </div>
 
