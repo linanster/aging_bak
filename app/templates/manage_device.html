@@ -1,34 +1,32 @@
 {% extends '_mybase.html' %}
 
 {% block content %}
-  {{ super() }}
+    {{ super() }}
 
-<legend>查看设备类型</legend>
-<table class="table table-striped table-hover">
-  <thead>
-    <tr>
-      <th>序号</th>
-      <th>设备名称</th>
-      <th>类型代码</th>
-      <th>类型代码</th>
-      <th>其他信息</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for result in results %}
-    <tr>
-      <td>{{ loop.index }}</td>
-      <td>{{result.name}}</td>
-      <td>{{result.code_hex}}</td>
-      <td>{{result.code}}</td>
-      <td>{{result.description}}</td>
-    </tr>
-    {% else %}
-    {% endfor %}
-  </tbody>
-</table>
-
+    <legend>查看设备类型</legend>
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>设备名称</th>
+            <th>类型代码</th>
+            <th>类型代码</th>
+            <th>其他信息</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for result in results %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ result.name }}</td>
+                <td>{{ result.code_hex }}</td>
+                <td>{{ result.code }}</td>
+                <td>{{ result.description }}</td>
+            </tr>
+        {% else %}
+        {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}
-
 

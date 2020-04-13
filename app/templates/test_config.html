@@ -2,68 +2,55 @@
 
 
 {% block content %}
-  <form action="{{ url_for('blue_test.vf_cmd_saveconfig') }}" method="post" class="form-horizontal">
-  <fieldset>
-    <legend>测试配置</legend> 
-    <!-- <div class="form-group" style="width:50%">
-      <label for="factorycode" class="col-lg-2 control-label">选择厂家</label>
-      <div class="col-lg-10">
-        <select class="form-control" id="factorycode" name="factorycode">
-          <option value="" style='display: none'>-</option>
-          <option value="1">Leedarson</option>
-          <option value="2">Innotech</option>
-          <option value="3">Tonly</option>
-        </select>
-        <br>
-      </div>
+    <form action="{{ url_for('blue_test.vf_cmd_saveconfig') }}" method="post" class="form-horizontal">
+        <fieldset>
+            <legend>测试配置</legend>
+            <!-- <div class="form-group" style="width:50%">
+              <label for="factorycode" class="col-lg-2 control-label">选择厂家</label>
+              <div class="col-lg-10">
+                <select class="form-control" id="factorycode" name="factorycode">
+                  <option value="" style='display: none'>-</option>
+                  <option value="1">Leedarson</option>
+                  <option value="2">Innotech</option>
+                  <option value="3">Tonly</option>
+                </select>
+                <br>
+              </div>
+        
+              <label for="devicetype" class="col-lg-2 control-label">设备类型</label>
+              <div class="col-lg-10">
+                <select class="form-control" id="devicecode" name="devicecode">
+                  <option value="" style='display: none'>-</option>
+              <option value="1">C-Life(Gen1/Gen2 ST C-Life(Ox01))</option>
+              <option value="17">C-Life(Gen2 Andromeda C-Life(0x11))</option>
+              <option value="18">C-Life(Gen2 MFG C-Life(0x12))</option>
+              <option value="5">C-Sleep(Gen1/Gen2 ST C-Sleep(0x05))</option>
+              <option value="19">C-Sleep(Gen2 MFG C-Sleep(0x13))</option>
+                </select>
+              </div>
+            </div> -->
 
-      <label for="devicetype" class="col-lg-2 control-label">设备类型</label>
-      <div class="col-lg-10">
-        <select class="form-control" id="devicecode" name="devicecode">
-          <option value="" style='display: none'>-</option>
-	  <option value="1">C-Life(Gen1/Gen2 ST C-Life(Ox01))</option>
-	  <option value="17">C-Life(Gen2 Andromeda C-Life(0x11))</option>
-	  <option value="18">C-Life(Gen2 MFG C-Life(0x12))</option>
-	  <option value="5">C-Sleep(Gen1/Gen2 ST C-Sleep(0x05))</option>
-	  <option value="19">C-Sleep(Gen2 MFG C-Sleep(0x13))</option>
-        </select>
-      </div>
-    </div> -->
+            <div class="form-group" style="width:50%">
+                <label for="totalcount" class="col-lg-2 control-label">数量</label>
+                <div class="col-lg-10">
+                    <select class="form-control" id="totalcount" name="totalcount">
+                        <option value="" style='display: none'>-</option>
+                        {% for i in range(1,200) %}
+                            <option value={{ i }}>{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                </div>
+            </div>
 
-    <div class="form-group" style="width:50%">
-      <label for="totalcount" class="col-lg-2 control-label">数量</label>
-      <div class="col-lg-10">
-        <select class="form-control" id="totalcount" name="totalcount">
-          <option value="" style='display: none'>-</option>
-          {% for i in range(1,200) %}
-          <option value={{i}}>{{i}}</option>
-          {% endfor %}
-        </select>
-        <br>
-      </div>
-    </div>
-
-    <!--
-    <div class="form-group" style="width:50%"> 
-      <label for="totalcount" class="col-lg-2 control-label">数量</label>
-      <div class="col-lg-10">
-        <input type="text" class="form-control" id="totalcount" name="totalcount" placeholder="">
-      </div>
-    </div>
-    -->
-
-    <div class="form-group">
-      <div class="col-lg-10 col-lg-offset-2">
-        <button type="reset" class="btn btn-default">取消</button>
-        <button type="submit" class="btn btn-primary">保存</button>
-      </div>
-    </div>
-  </fieldset>
-  </form>
-
-  {%- for message in get_flashed_messages() %}
-    {{ message }}
-  {%- endfor %}
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="reset" class="btn btn-default">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
 
 {% endblock %}
 

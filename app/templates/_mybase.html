@@ -1,29 +1,29 @@
 {% extends 'bootstrap/base.html' %}
 
 {% block head %}
-  {{ super() }}
-  <!-- <link href="{{ url_for('static',filename='site.css') }}" rel="stylesheet"> -->
+    {{ super() }}
+    <!-- <link href="{{ url_for('static',filename='site.css') }}" rel="stylesheet"> -->
 {% endblock %}
 
-{% block body%}
-  {{ super() }}
-  {% block footer %}
-    <br>
-    <br>
-    <!-- <footer class="bottom-right" style="position: absolute; bottom: 0; padding-bottom: 50px"> -->
-    <footer class="bottom-right" style="position: relative; bottom: 0; padding-bottom: 30px">
-        Copyright 2020 by <a href="https://www.ge.com/cn/">GE Lighting</a>
-    </footer>
-  {% endblock %}
+{% block body %}
+    {{ super() }}
+    {% block footer %}
+        <br>
+        <br>
+        <!-- <footer class="bottom-right" style="position: absolute; bottom: 0; padding-bottom: 50px"> -->
+        <footer class="bottom-right" style="position: relative; bottom: 0; padding-bottom: 30px">
+            Copyright 2020 by <a href="https://www.gelighting.com/">GE Lighting</a>
+        </footer>
+    {% endblock %}
 {% endblock body %}
 
-{% block metas %}  
-  {{ super() }}
-  <meta charset="UTF-8">
+{% block metas %}
+    {{ super() }}
+    <meta charset="UTF-8">
 {% endblock %}
 
 {% block content %}
-<br>
+    <br>
 {% endblock %}
 
 {% block title %}GE Lighting 自动化检测工具{% endblock %}
@@ -37,5 +37,4 @@
 {% block navbar %}
     {% include '_navbar.html' %}
 {% endblock %}
-
 

@@ -1,113 +1,110 @@
 {% extends '_mybase.html' %}
 
 {% block content %}
-  {{ super() }}
+    {{ super() }}
 
-
-<div class="btn-group">
-<form style="display: inline" action = "{{url_for('blue_test.vf_finished')}}" method = "get">
-  <button type="submit" class="btn btn-default">刷新</button>
-</form>
-<form style="display: inline" action = "{{url_for('blue_test.vf_cmd_blink_all')}}" method = "post">
-  <button type="submit" class="btn btn-success"{% if results|count == 0 %}disabled{% endif %}>全部闪烁</button>
-</form>
-<form style="display: inline" action = "{{url_for('blue_test.vf_cmd_blink_stop')}}" method = "post">
-  <button type="submit" class="btn btn-danger" {% if results|count == 0 %}disabled{% endif %}>停止</button>
-</form>
-</div>
-
-
-<table class="table table-striped table-hover ">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>设备类型</th>
-      <th>工厂</th>
-      <th>固件版本</th>
-      <th>RSSI_BLE</th>
-      <th>RSSI_WIFI</th>
-      <th>MAC_BLE</th>
-      <th>MAC_WIFI</th>
-      <th>组合指令检测</th>
-      <th>信号强度检测</th>
-      <th>时间</th>
-      <th colspan="1">控制</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for result in results %}
-    {% if not result.is_qualified or not result.status_cmd_check2|parse_status_boolean %}
-    {% if loop.index|string == control_index %}
-    <tr class="warning"> 
-    {% else %}
-    <tr class="info">
-    {%  endif %}
-      <td>{{ loop.index}}</td>
-      <td>{{result.device.name}}</td>
-      <td>{{result.factory.name}}</td>
-      <td>{{result.fw_version}}</td>
-      <td>{{result.rssi_ble1}}</td>
-      <td>{{result.rssi_wifi1}}</td>
-      <td>{{result.mac_ble}}</td>
-      <td>{{result.mac_wifi}}</td>
-      <td>{{ result.status_cmd_check2|parse_status }}</td>
-      <td>{{ result.is_qualified|parse_is_qualified }}</td>
-      <td>{{result.datetime}}</td>
-      <td>
-        <form action = "{{url_for('blue_test.vf_cmd_blink_single')}}" method = "post">
-          <input type = "hidden" name = "index" value= {{loop.index }} />
-          <input type = "hidden" name = "mac" value="{{result.mac_ble}}" />
-          <button type="submit" class="btn btn-primary btn-xs">闪烁</button>
+    <div class="btn-group">
+        <form style="display: inline" action="{{ url_for('blue_test.vf_finished') }}" method="get">
+            <button type="submit" class="btn btn-default">刷新</button>
         </form>
-      </td>
-    </tr>
-    {% endif %}
-    {% else %}
+        <form style="display: inline" action="{{ url_for('blue_test.vf_cmd_blink_all') }}" method="post">
+            <button type="submit" class="btn btn-success" {% if results|count == 0 %}disabled{% endif %}>全部闪烁</button>
+        </form>
+        <form style="display: inline" action="{{ url_for('blue_test.vf_cmd_blink_stop') }}" method="post">
+            <button type="submit" class="btn btn-danger" {% if results|count == 0 %}disabled{% endif %}>停止</button>
+        </form>
+    </div>
+
+
+    <table class="table table-striped table-hover ">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>设备类型</th>
+            <th>工厂</th>
+            <th>固件版本</th>
+            <th>RSSI_BLE</th>
+            <th>RSSI_WIFI</th>
+            <th>MAC_BLE</th>
+            <th>MAC_WIFI</th>
+            <th>组合指令检测</th>
+            <th>信号强度检测</th>
+            <th>时间</th>
+            <th colspan="1">控制</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for result in results %}
+            {% if not result.is_qualified or not result.status_cmd_check2|parse_status_boolean %}
+                {% if loop.index|string == control_index %}
+                    <tr class="warning">
+                {% else %}
+                    <tr class="info">
+                {% endif %}
+            <td>{{ loop.index }}</td>
+            <td>{{ result.device.name }}</td>
+            <td>{{ result.factory.name }}</td>
+            <td>{{ result.fw_version }}</td>
+            <td>{{ result.rssi_ble1 }}</td>
+            <td>{{ result.rssi_wifi1 }}</td>
+            <td>{{ result.mac_ble }}</td>
+            <td>{{ result.mac_wifi }}</td>
+            <td>{{ result.status_cmd_check2|parse_status }}</td>
+            <td>{{ result.is_qualified|parse_is_qualified }}</td>
+            <td>{{ result.datetime }}</td>
+            <td>
+                <form action="{{ url_for('blue_test.vf_cmd_blink_single') }}" method="post">
+                    <input type="hidden" name="index" value="{{ loop.index }}"/>
+                    <input type="hidden" name="mac" value="{{ result.mac_ble }}"/>
+                    <button type="submit" class="btn btn-primary btn-xs">闪烁</button>
+                </form>
+            </td>
+            </tr>
+            {% endif %}
+        {% else %}
+        {% endfor %}
+
+        {% for result in results %}
+            {% if result.is_qualified and result.status_cmd_check2|parse_status_boolean %}
+                <tr class="default">
+                    <td>{{ loop.index }}</td>
+                    <td>{{ result.device.name }}</td>
+                    <td>{{ result.factory.name }}</td>
+                    <td>{{ result.fw_version }}</td>
+                    <td>{{ result.rssi_ble1 }}</td>
+                    <td>{{ result.rssi_wifi1 }}</td>
+                    <td>{{ result.mac_ble }}</td>
+                    <td>{{ result.mac_wifi }}</td>
+                    <td>{{ result.status_cmd_check2|parse_status }}</td>
+                    <td>{{ result.is_qualified|parse_is_qualified }}</td>
+                    <td>{{ result.datetime }}</td>
+                    <td>
+                        <form action="{{ url_for('blue_test.vf_cmd_blink_single') }}" method="post">
+                            <input type="hidden" name="index" value={{ loop.index }}/>
+                            <input type="hidden" name="mac" value="{{ result.mac_ble }}"/>
+                            <button type="submit" class="btn btn-primary btn-xs">闪烁</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endif %}
+        {% else %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {%- for message in get_flashed_messages() %}
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>{{ message }}</strong>
+        </div>
     {% endfor %}
 
-    {% for result in results %}
-    {% if result.is_qualified and result.status_cmd_check2|parse_status_boolean %}
-    <tr class="default">
-      <td>{{ loop.index}}</td>
-      <td>{{result.device.name}}</td>
-      <td>{{result.factory.name}}</td>
-      <td>{{result.fw_version}}</td>
-      <td>{{result.rssi_ble1}}</td>
-      <td>{{result.rssi_wifi1}}</td>
-      <td>{{result.mac_ble}}</td>
-      <td>{{result.mac_wifi}}</td>
-      <td>{{ result.status_cmd_check2|parse_status }}</td>
-      <td>{{ result.is_qualified|parse_is_qualified }}</td>
-      <td>{{result.datetime}}</td>
-      <td>
-        <form action = "{{url_for('blue_test.vf_cmd_blink_single')}}" method = "post">
-          <input type = "hidden" name = "index" value= {{loop.index }} />
-          <input type = "hidden" name = "mac" value="{{result.mac_ble}}" />
-          <button type="submit" class="btn btn-primary btn-xs">闪烁</button>
-        </form>
-      </td>
-    </tr>
-    {% endif %}
-    {% else %}
-    {% endfor %}
-  </tbody>
-</table> 
-
-  {%- for message in get_flashed_messages() %}
-<div class="alert alert-dismissible alert-success">
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
-  <strong>{{ message }}</strong> 
-</div>
-  {% endfor %}
-
-<div>
-  <div>
-  </div>
-<div>
-  <br>
-  <br>
-
+    <div>
+    <div>
+    </div>
+    <div>
+    <br>
+    <br>
 
 {% endblock %}
-
 

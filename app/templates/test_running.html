@@ -1,6 +1,5 @@
 {% extends '_mybase.html' %}
 
-
 {% block content %}
     {{ super() }}
 
@@ -8,7 +7,6 @@
         <button type="submit" class="btn btn-success disabled">开始</button>
     </form>
     &nbsp;&nbsp;&nbsp;
-    <!--<div align="right">-->
     <div style="display: inline">
         <p style="display: inline"><strong>数量</strong>:</span> <span class="text-success"> {{ totalcount() }}</p>
     </div>
@@ -16,31 +14,27 @@
 
     <table class="table table-striped table-hover ">
         <thead>
-            <tr>
-              <th>#</th>
-              <th>设备类型</th>
-              <th>工厂</th>
-              <th>固件版本</th>
-              <th>RSSI_BLE</th>
-              <th>RSSI_WIFI</th>
-              <th>MAC_BLE</th>
-              <th>MAC_WIFI</th>
-              <th>组合指令检测</th>
-              <th>信号强度检测</th>
-              <th>时间</th>
-              <th colspan="1">控制</th>
-            </tr>
+        <tr>
+            <th>#</th>
+            <th>设备类型</th>
+            <th>工厂</th>
+            <th>固件版本</th>
+            <th>RSSI_BLE</th>
+            <th>RSSI_WIFI</th>
+            <th>MAC_BLE</th>
+            <th>MAC_WIFI</th>
+            <th>组合指令检测</th>
+            <th>信号强度检测</th>
+            <th>时间</th>
+            <th colspan="1">控制</th>
+        </tr>
         </thead>
         <tbody>
         </tbody>
     </table>
 
-    <!--
-    <legend>测试中...</legend> 
-    -->
-
-    <!--<script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="crossorigin="anonymous"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>-->
+    <!-- <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="crossorigin="anonymous"></script> -->
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script> -->
     <script src="{{ url_for('static',filename='socket.io.js') }}"></script>
     <script src="{{ url_for('static',filename='jquery-1.12.4.min.js') }}"></script>
     <script type="text/javascript" charset="utf-8">
@@ -48,6 +42,7 @@
         function _jump() {
             window.location.replace("{{url_for('blue_test.process_finished')}}");
         }
+
         function jump() {
             setTimeout("_jump()", 4000)
         }
@@ -73,15 +68,14 @@
                 jump();
             });
 
-            namespace = '/log';
+            namespace1 = '/log';
 
-            var socket1 = io(namespace);
+            var socket1 = io(namespace1);
 
-            socket1.on('logupdated', function(msg) {
+            socket1.on('logupdated', function (msg) {
                 // $('#log').append('<br>' + $('<div/>').text('Received #' + msg.count + ': ' + msg.data).html());
                 $('#log').append('<br>' + $('<div/>').text(msg).html());
             });
-
         });
 
     </script>
@@ -102,6 +96,7 @@
 
     <script type="text/javascript" charset="utf-8">
         var x = '';
+
         function countSecond() {
             x = (x == '.....') ? '' : (x + '.');
             document.getElementById('loading').innerText = x;
@@ -111,21 +106,20 @@
     </script>
 
     <script>
-        window.onload = function(){
+        window.onload = function () {
             timedCount();
             countSecond();
         }
     </script>
 
     <script type="text/javascript" charset="utf-8">
-        function scroll_log()
-        {
+        function scroll_log() {
             var div = document.getElementById('log');
             div.scrollTop = div.scrollHeight;
         }
 
         $(document).ready(function () {
-            $('#log').on('DOMNodeInserted',function(){
+            $('#log').on('DOMNodeInserted', function () {
                 scroll_log();
             });
         });
@@ -134,7 +128,7 @@
 
     <div id="main" class="jumbotron alert-info" style="padding-left: 60px;padding-right: 30px">
         <h1 id="testing" style="display: inline">测试中</h1>
-        <h1 id="loading" style="display: inline""></h1>
+        <h1 id="loading" style="display: inline"></h1>
         <!--
         <div class="progress progress-striped active" >
             <div class="progress-bar" style="width: 100%"></div>
@@ -144,21 +138,20 @@
         <br>
         <span id="tip1">1. 程序运行中，请勿刷新或关闭此页面！</span>
         <br>
-        <span id="tip2">2. 如果页面长时间未自动跳转，请<a style="display: inline" href="{{ url_for('blue_test.process_finished') }}"
-                            class="btn btn-link">手动转到</a>测试结果页面。</span>
+        <span id="tip2">2. 如果页面长时间未自动跳转，请<a style="display: inline" href="{{ url_for('blue_test.process_finished') }}" class="btn btn-link">手动转到</a>测试结果页面。</span>
     </div>
 
-<p>Debug: </p>
-<p style="display: inline"><strong>1. Timer: </strong></p>
-<!-- <form style="display: inline">
-    <input type="button" value="计时" onClick="timedCount()">
-    <input type="button" value="停止" onClick="stopCount()">
-</form> -->
-<span id="timer"></span>
-<p id="message"><strong>2. Event Monitor: </strong></p>
-<!-- <span "id="message">start</span> -->
-<p><strong>3. Log Monitor: </strong></p>
-<div id="log" style="overflow:auto; height: 270px; width: auto; border: 1px solid #999"></div>
+    <p>Debug: </p>
+    <p style="display: inline"><strong>1. Timer: </strong></p>
+    <!-- <form style="display: inline">
+        <input type="button" value="计时" onClick="timedCount()">
+        <input type="button" value="停止" onClick="stopCount()">
+    </form> -->
+    <span id="timer"></span>
+    <p id="message"><strong>2. Event Monitor: </strong></p>
+    <!-- <span "id="message">start</span> -->
+    <p><strong>3. Log Monitor: </strong></p>
+    <div id="log" style="overflow:auto; height: 250px; width: auto; border: 1px solid #999"></div>
 
 {% endblock %}
 

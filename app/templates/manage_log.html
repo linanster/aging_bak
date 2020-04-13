@@ -1,30 +1,29 @@
 {% extends '_mybase.html' %}
 
 {% block content %}
-  {{ super() }}
+    {{ super() }}
 
-<div style="padding-left: 10px">
-<table border="1">
-    <tr>
-        <th>#</th>
-        <th>日志</th>
-        <th>操作</th>
-    </tr>
-    {% for file in filelist %}
-        <tr>
-            <td>&nbsp;{{ loop.index }}&nbsp;</td>
-            <td>&nbsp;{{ file }}&nbsp;</td>
-            <td>
-                &nbsp;
-                <a href="{{ url_for('blue_manage.cmd_view', filename=file) }}">查看</a>&nbsp;
-                <a href="{{ url_for('blue_manage.cmd_download', filename=file) }}">下载</a>&nbsp; &nbsp;
-            </td>
-        </tr>
-    {% else %}
-    {% endfor %}
-</table>
-</div>
-
-
+    <div style="padding-left: 10px">
+        <table border="1">
+            <tr>
+                <th>#</th>
+                <th>日志</th>
+                <th>操作</th>
+            </tr>
+            {% for file in filelist %}
+                <tr>
+                    <td>&nbsp;{{ loop.index }}&nbsp;</td>
+                    <td>&nbsp;{{ file }}&nbsp;</td>
+                    <td>
+                        &nbsp;
+                        <a href="{{ url_for('blue_manage.cmd_view', filename=file) }}">查看</a>&nbsp;
+                        <a href="{{ url_for('blue_manage.cmd_download', filename=file) }}">下载</a>&nbsp; &nbsp;
+                    </td>
+                </tr>
+            {% else %}
+            {% endfor %}
+        </table>
+    </div>
 
 {% endblock %}
+

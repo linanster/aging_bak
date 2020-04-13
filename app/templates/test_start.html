@@ -1,39 +1,36 @@
 {% extends '_mybase.html' %}
 
-
 {% block content %}
-  {{ super() }}
+    {{ super() }}
 
-<form style="display: inline" id='start' action = "{{url_for('blue_test.vf_cmd_start')}}" method = "post">
-  <button type="submit" class="btn btn-success">开始</button>
-</form>
-&nbsp;&nbsp;&nbsp;
-<!--<div align="right">-->
-<div style="display: inline">  
-  <p style="display: inline" ><strong>数量</strong>:</span> <span class="text-success" > {{ totalcount() }}</p>
-</div>
+    <form style="display: inline" id='start' action="{{ url_for('blue_test.vf_cmd_start') }}" method="post">
+        <button type="submit" class="btn btn-success">开始</button>
+    </form>
+    &nbsp;&nbsp;&nbsp;
+    <div style="display: inline">
+        <p style="display: inline"><strong>数量</strong>:</span> <span class="text-success"> {{ totalcount() }}</p>
+    </div>
 
-<table class="table table-striped table-hover ">
-  <thead>
-            <tr>
-              <th>#</th>
-              <th>设备类型</th>
-              <th>工厂</th>
-              <th>固件版本</th>
-              <th>RSSI_BLE</th>
-              <th>RSSI_WIFI</th>
-              <th>MAC_BLE</th>
-              <th>MAC_WIFI</th>
-              <th>组合指令检测</th>
-              <th>信号强度检测</th>
-              <th>时间</th>
-              <th colspan="1">控制</th>
-            </tr>
-  </thead>
-  <tbody>
-  </tbody>
-</table> 
+    <table class="table table-striped table-hover ">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>设备类型</th>
+            <th>工厂</th>
+            <th>固件版本</th>
+            <th>RSSI_BLE</th>
+            <th>RSSI_WIFI</th>
+            <th>MAC_BLE</th>
+            <th>MAC_WIFI</th>
+            <th>组合指令检测</th>
+            <th>信号强度检测</th>
+            <th>时间</th>
+            <th colspan="1">控制</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 
 {% endblock %}
-
 
