@@ -6,6 +6,8 @@ Type=forking
 ExecStart=/root/aging/run.sh --start
 ExecReload=
 ExecStop=/root/aging/run.sh --stop
+Restart=on-failure
+RestartSec=42s
 
 [Install]
 WantedBy=multi-user.target
