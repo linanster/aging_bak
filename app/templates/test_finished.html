@@ -13,6 +13,9 @@
         <form style="display: inline" action="{{ url_for('blue_test.vf_cmd_blink_stop') }}" method="post">
             <button type="submit" class="btn btn-danger" {% if results|count == 0 %}disabled{% endif %}>停止</button>
         </form>
+        <form style="display: inline" action="{{ url_for('blue_test.cmd_download_testdatas') }}" method="post">
+            <button type="submit" class="btn btn-primary" {% if results|count == 0 %}disabled{% endif %}>下载报表</button>
+        </form>
     </div>
 
 

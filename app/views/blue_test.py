@@ -1,6 +1,8 @@
-from flask import Blueprint, request, render_template, flash, redirect, url_for
+from flask import Blueprint, request, render_template, flash, redirect, url_for, send_from_directory
 from flask_paginate import Pagination, get_page_parameter
 import time
+import datetime
+import os
 
 from app.models import Testdata
 from app.lib import start, blink_single, blink_all, blink_stop
@@ -10,6 +12,9 @@ from app.lib import get_errno, get_running_state
 from app.lib import testdatas_archive
 from app.lib import viewfunclog
 from app.lib import logger
+from app.lib import gen_excel, empty_folder
+
+from app.settings import topdir
 
 
 blue_test = Blueprint('blue_test', __name__, url_prefix='/test')
@@ -124,5 +129,14 @@ def process_finished():
     else:
         return redirect(url_for('blue_test.vf_error', errno=errno))
 
-
+@blue_test.route('/cmd_download_testdatas', methods=['POST'])
+@viewfunclog
+def cmd_download_testdatas():
+    timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+    excelname = 'testdatas-' + timestamp + '.xls'
+    excelfolder = os.path.join(topdir, 'pub', 'excel')
+    filename = os.path.join(excelfolder, excelname)
+    empty_folder(excelfolder)    
+    gen_excel(Testdata, filename)
+    return send_from_directory(excelfolder, excelname, as_attachment=True)
 

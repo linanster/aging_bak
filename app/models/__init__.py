@@ -6,4 +6,5 @@ from .views import view, TestdataView, TestdataArchiveView
 
 def init_models(app):
     db.init_app(app)
+    db.reflect(app=app)
     view.init_app(app)

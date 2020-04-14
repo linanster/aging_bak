@@ -1,10 +1,11 @@
 #! /usr/bin/env python3
 # coding: utf8
 #
+from flask import flash, redirect, url_for, send_from_directory
 import time
 import os
 import subprocess
-from flask import flash, redirect, url_for
+import datetime
 
 from .execsql import testdatas_cleanup, get_running_state_sql
 from .execsql import get_retried_sql, set_retried_sql, reset_retried_sql
@@ -20,12 +21,13 @@ from flask_socketio import send
 
 from app.settings import Debug
 from app.settings import Timeout
+from app.settings import topdir
 from app.settings import gofolder
 from app.settings import logfolder
 
 from .mylogger import logger
 from .mydecorator import processmaker, threadmaker
-
+from .myutils import gen_excel
 
 
 def _gosubprocess(cmd):
@@ -210,6 +212,13 @@ def blink_stop():
         loop+=1
     logger.info('==blink_stop success==')
     return 0
+
+
+
+
+######################
+## legacy functions ##
+######################
 
 def _start():
     set_phase('_start')

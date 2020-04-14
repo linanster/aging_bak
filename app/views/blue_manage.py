@@ -9,8 +9,12 @@ from app.lib import testdatasarchive_cleanup
 
 from app.lib import get_factorycode
 from app.lib import viewfunclog
+from app.lib import gen_excel, empty_folder
+
 from app.settings import logfolder
 from app.settings import gofolder
+
+from app.settings import topdir
 
 blue_manage = Blueprint('blue_manage', __name__, url_prefix='/manage')
 
@@ -109,4 +113,15 @@ def cmd_upload():
         os.chmod(destfile, stat.S_IXOTH)
         flash('文件导入成功，升级完成!')
     return redirect(url_for('blue_manage.vf_upgrade'))
+
+@blue_manage.route('/cmd_download_testdatasarchive', methods=['POST'])
+@viewfunclog
+def cmd_download_testdatasarchive():
+    timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+    excelname = 'testdatasarchive-' + timestamp + '.xls'
+    excelfolder = os.path.join(topdir, 'pub','excel')
+    filename = os.path.join(excelfolder, excelname)
+    empty_folder(excelfolder)
+    gen_excel(TestdataArchive, filename)
+    return send_from_directory(excelfolder, excelname, as_attachment=True)
 
