@@ -21,6 +21,10 @@ def gen_excel(tableclass, filename):
     # 3.prepare excel object
     book = xlwt.Workbook()
     sheet1 = book.add_sheet('sheet1')
+    # todo
+    # dateFormat = xlwt.XFStyle()
+    # dateFormat.num_format_str = '%y-%m-%d %h:%m:%s'
+    # dateFormat.num_format_str = 'yyyy/mm/dd'
     # 4. insert table head row
     for col,field in enumerate(heads):
         sheet1.write(0, col, field)
@@ -43,6 +47,8 @@ def gen_excel(tableclass, filename):
 def empty_folder(folder):
     files = os.listdir(folder)
     for file in files:
+        if file == '.gitkeep':
+            continue
         file = os.path.join(folder, file)
         # todo
         # if file type is folder, here will raise IsADirectoryError
