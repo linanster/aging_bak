@@ -38,20 +38,20 @@ fi
 # cd "$workdir/app"
 
 if [ "$1" == '--start' ]; then
-    echo "gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application"
+    echo "gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging"
     # todo --daemon
     # todo --user user1 --group user1
     if [ "$2" == '--nodaemon' ]; then
-        gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application
+        gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging
     else
-        gunicorn --daemon --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application
+        gunicorn --daemon --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging
     fi
-    ps -ef | fgrep "gunicorn" | grep "application" | awk '{if($3==1) print $2}'
+    ps -ef | fgrep "gunicorn" | grep "application_ge_aging" | awk '{if($3==1) print $2}'
     exit 0
 fi
 
 if [ "$1" == "--stop" ]; then
-    pid=$(ps -ef | fgrep "gunicorn" | grep "application" | awk '{if($3==1) print $2}')
+    pid=$(ps -ef | fgrep "gunicorn" | grep "application_ge_aging" | awk '{if($3==1) print $2}')
     if [ "$pid" == "" ]; then
         echo "not running" 
     else
@@ -62,7 +62,7 @@ if [ "$1" == "--stop" ]; then
 fi
 
 if [ "$1" == "--status" ]; then
-    pid=$(ps -ef | fgrep "gunicorn" | grep "application" | awk '{if($3==1) print $2}')
+    pid=$(ps -ef | fgrep "gunicorn" | grep "application_ge_aging" | awk '{if($3==1) print $2}')
     echo "$pid"
     if [ "$pid" == "" ]; then
         echo "stopped" 

@@ -2,38 +2,38 @@
 #
 from app import create_app
 
-application = create_app()
+application_ge_aging = create_app()
 
-@application.template_global('totalcount')
+@application_ge_aging.template_global('totalcount')
 def totalcount():
     from app.lib import get_totalcount
     return get_totalcount()
 
-@application.template_global('progress')
+@application_ge_aging.template_global('progress')
 def progress():
     from app.lib import get_progress
     return get_progress()
 
-@application.template_global('running')
+@application_ge_aging.template_global('running')
 def running():
     from app.lib import get_running_state
     return get_running_state()
 
-@application.template_global('phase')
+@application_ge_aging.template_global('phase')
 def phase():
     from app.lib import get_phase
     return get_phase()
 
-@application.template_global('errno')
+@application_ge_aging.template_global('errno')
 def errno():
     from app.lib import get_errno
     return get_errno()
 
-@application.template_filter('parse_is_qualified')
+@application_ge_aging.template_filter('parse_is_qualified')
 def parseIsQualified(mybool):
     return '成功' if mybool else '失败'
 
-@application.template_filter('parse_status')
+@application_ge_aging.template_filter('parse_status')
 def parseStatusCode(code):
     if '2' in str(code):
         plaintxt = '失败'
@@ -41,7 +41,7 @@ def parseStatusCode(code):
         plaintxt = '成功'
     return '{}({})'.format(plaintxt,code)
 
-@application.template_filter('parse_status_boolean')
+@application_ge_aging.template_filter('parse_status_boolean')
 def parseStatusCodeBoolean(code):
     if '2' in str(code):
         statusbool = False
