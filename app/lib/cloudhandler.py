@@ -8,6 +8,8 @@ from app.models import db, Testdata, TestdataArchive
 
 from app.myglobal import RETENTION
 
+from .mylogger import logger
+
 def _check_cloud_connection():
     method = 'GET'
     ############################################
@@ -30,9 +32,10 @@ def _check_cloud_connection():
     
 
 def upload_to_cloud():
+    logger.warn('upload_to_cloud: start')
     # 0. check network status
     if not _check_cloud_connection():
-        print('connection error')
+        logger.error('upload_to_cloud: connection error')
         return 1
 
     # 1. fetch data from database
@@ -77,10 +80,10 @@ def upload_to_cloud():
 
     # 6. error handler
     if response_msg.get('errno') == 1:
-        print('error errno')
+        logger.error('upload_to_cloud: response errno error')
         return 2
     if response_msg.get('pin') != pin:
-        print('error pin')
+        loger.error('cloud_to_cloud: pin mismatch error')
         return 3
 
     # 7. save data entries into database
@@ -89,32 +92,36 @@ def upload_to_cloud():
             item.is_sync = True
             db.session.add(item)
     except Exception as e:
-        print(str(e))
         db.session.rollback()
-        print('error when updating is_sync')
+        logger.error('upload_to_cloud: exception when updating database field is_sync')
+        logger.error(str(e))
         return 4
     else:
         db.session.commit()
-        print('success')
+        logger.info('upload_to_cloud: success')
         return 0
 
 
 def purge_local_archive():
+    logger.info('purge_local_archive: start')
     items = TestdataArchive.query.all()
     d_now = datetime.datetime.now()
     try:
         for item in items:
             d_item = item.datetime
-            day_range = (d_now - d_item).days
+            # production requirement
+            # day_range = (d_now - d_item).days
+            # test convenience
+            # day_range = (d_now - d_item).seconds
             if day_range >= RETENTION:
                 db.session.delete(item)
     except exception as e:
         db.session.rollback()
-        print(str(e))
-        print('error')
+        logger.error('purge_local_archive: exception')
+        logger.error(str(e))
         return 1
     else:
         db.session.commit()
-        print('success')
+        logger.info('purge_local_archive: success')
         return 0
     

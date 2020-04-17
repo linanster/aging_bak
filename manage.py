@@ -50,6 +50,16 @@ def set(code):
     from app.lib import set_factorycode
     set_factorycode(code)
 
+@manager.command
+def upload():
+    from app.lib import upload_to_cloud
+    upload_to_cloud()
+
+@manager.command
+def purge():
+    from app.lib import purge_local_archive
+    purge_local_archive()
+
 
 if __name__ == '__main__':
     manager.run()

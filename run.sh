@@ -6,8 +6,8 @@ if [ $# -eq 0 ]; then
     echo "run.sh [--start] [--stop] [--status] [--init]"
     exit 1
 fi
-if [ "$1" != "--start" -a "$1" != "--stop" -a "$1" != "--status" -a "$1" != "--init" ]; then
-    echo "run.sh [--start] [--stop] [--status] [--init]"
+if [ "$1" != "--start" -a "$1" != "--stop" -a "$1" != "--status" -a "$1" != "--init" -a "$1" != "--upload" -a "$1" != "--purge" ]; then
+    echo "run.sh [--start] [--stop] [--status] [--init] [--upload] [--purge]"
     exit 1
 fi
 
@@ -72,4 +72,12 @@ if [ "$1" == "--status" ]; then
     exit 0
 fi
 
+if [ "$1" == "--upload" ]; then
+    python3 manage.py upload
+    echo $? 
+fi
 
+if [ "$1" == "--purge" ]; then
+    python3 manage.py purge
+    echo $? 
+fi

@@ -10,4 +10,4 @@ sqlitefolder = os.path.abspath(os.path.join(topdir, "app", "sqlite"))
 
 
 # days of keep archive data on local Rasp Pi
-RETENTION = 1
+RETENTION = 7
