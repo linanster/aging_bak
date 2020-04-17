@@ -3,8 +3,10 @@ from threading import Thread, Lock
 from functools import wraps
 from flask import request
 
-from app.myglobal import thread, thread_lock
 from .mylogger import logger
+
+thread = None
+thread_lock = Lock()
 
 def processmaker(func):
     def inner(*args, **kwargs):
