@@ -118,7 +118,7 @@ def cmd_upload():
 @viewfunclog
 def cmd_download_testdatasarchive():
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
-    excelname = 'testdatasarchive-' + timestamp + '.xls'
+    excelname = 'TestdatasArchive-' + timestamp + '.xls'
     excelfolder = os.path.join(topdir, 'pub','excel')
     filename = os.path.join(excelfolder, excelname)
     empty_folder(excelfolder)

@@ -133,7 +133,7 @@ def process_finished():
 @viewfunclog
 def cmd_download_testdatas():
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
-    excelname = 'testdatas-' + timestamp + '.xls'
+    excelname = 'Testdata-' + timestamp + '.xls'
     excelfolder = os.path.join(topdir, 'pub', 'excel')
     filename = os.path.join(excelfolder, excelname)
     empty_folder(excelfolder)    

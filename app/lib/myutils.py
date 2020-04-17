@@ -33,7 +33,10 @@ def gen_excel(tableclass, filename):
     for data in datas:
         col = 0
         while col < len(heads):
-            sheet1.write(row, col, data.__dict__.get(heads[col]))
+            cell = data.__dict__.get(heads[col])
+            if heads[col] == 'datetime':
+                cell = cell.strftime('%Y-%m-%d %H:%M:%S')
+            sheet1.write(row, col, cell)
             col += 1
         row += 1
     # 6.save
