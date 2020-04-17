@@ -132,7 +132,7 @@ def process_finished():
 @blue_test.route('/cmd_download_testdatas', methods=['POST'])
 @viewfunclog
 def cmd_download_testdatas():
-    timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+    timestamp = datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
     excelname = 'Testdata-' + timestamp + '.xls'
     excelfolder = os.path.join(topdir, 'pub', 'excel')
     filename = os.path.join(excelfolder, excelname)

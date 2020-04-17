@@ -117,7 +117,7 @@ def cmd_upload():
 @blue_manage.route('/cmd_download_testdatasarchive', methods=['POST'])
 @viewfunclog
 def cmd_download_testdatasarchive():
-    timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+    timestamp = datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
     excelname = 'TestdatasArchive-' + timestamp + '.xls'
     excelfolder = os.path.join(topdir, 'pub','excel')
     filename = os.path.join(excelfolder, excelname)
