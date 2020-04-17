@@ -8,7 +8,7 @@ from app.models import db, Testdata, TestdataArchive
 
 from app.myglobal import RETENTION
 
-def check_cloud_connection():
+def _check_cloud_connection():
     method = 'GET'
     ############################################
     url = "http://10.30.30.101:8000/ping"
@@ -30,6 +30,11 @@ def check_cloud_connection():
     
 
 def upload_to_cloud():
+    # 0. check network status
+    if not _check_cloud_connection():
+        print('connection error')
+        return 1
+
     # 1. fetch data from database
     datas_raw = TestdataArchive.query.all()
     datas_rdy = list()
@@ -73,10 +78,10 @@ def upload_to_cloud():
     # 6. error handler
     if response_msg.get('errno') == 1:
         print('error errno')
-        return 1
+        return 2
     if response_msg.get('pin') != pin:
         print('error pin')
-        return 2
+        return 3
 
     # 7. save data entries into database
     try:
@@ -87,7 +92,7 @@ def upload_to_cloud():
         print(str(e))
         db.session.rollback()
         print('error when updating is_sync')
-        return 3
+        return 4
     else:
         db.session.commit()
         print('success')
