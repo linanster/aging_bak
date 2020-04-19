@@ -10,30 +10,32 @@ red=$(tput setf 4)
 reset=$(tput sgr0)
 
 function green() {
-          printf "${bold}${green}%s${reset}\n" "$@";
-  }
+  printf "${bold}${green}%s${reset}\n" "$@";
+}
 function red() {
-          printf "${bold}${red}%s${reset}\n" "$@";
-  }
+  printf "${bold}${red}%s${reset}\n" "$@";
+}
 
 
 usage=$"
 Usage: run.sh [--start] [--stop] [--status] [--init] [--upload] [--purge]
 "
 
-if [ $# -eq 0 ]; then
-    red "${usage}"
-    exit 1
-fi
-if [ "$1" != "--start" -a "$1" != "--stop" -a "$1" != "--status" -a "$1" != "--init" -a "$1" != "--upload" -a "$1" != "--purge" ]; then
-    red "${usage}"
-    exit 1
-fi
-
 workdir=$(cd "$(dirname $0)" && pwd)
 cd "$workdir"
 
-if [ "$1" == "--init" ]; then
+
+function activate_venv() {
+  if [ -d venv ]; then
+    source ./venv/bin/activate
+  else
+    red "==venv error=="
+    exit 1
+  fi
+}
+
+
+function run_init(){
     pip3 install virtualenv
     virtualenv venv
     source ./venv/bin/activate
@@ -45,18 +47,10 @@ if [ "$1" == "--init" ]; then
         red "==init config fail=="
         exit 1
     fi
-fi
+}
 
-if [ -d venv ]; then
-    source ./venv/bin/activate
-else
-    red "==venv error=="
-    exit 1
-fi
-
-# cd "$workdir/app"
-
-if [ "$1" == '--start' ]; then
+function run_start() {
+    activate_venv
     green "gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging"
     # todo --daemon
     # todo --user user1 --group user1
@@ -67,20 +61,23 @@ if [ "$1" == '--start' ]; then
     fi
     ps -ef | fgrep "gunicorn" | grep "application_ge_aging" | awk '{if($3==1) print $2}'
     exit 0
-fi
+}
 
-if [ "$1" == "--stop" ]; then
+function run_stop() {
+    activate_venv
     pid=$(ps -ef | fgrep "gunicorn" | grep "application_ge_aging" | awk '{if($3==1) print $2}')
     if [ "$pid" == "" ]; then
         red "not running" 
+        exit 1
     else
         green "kill $pid"
         kill "$pid"
+        exit 0
     fi
-    exit 0
-fi
+}
 
-if [ "$1" == "--status" ]; then
+function run_status(){
+    activate_venv
     pid=$(ps -ef | fgrep "gunicorn" | grep "application_ge_aging" | awk '{if($3==1) print $2}')
     if [ "$pid" == "" ]; then
         red "stopped" 
@@ -89,14 +86,59 @@ if [ "$1" == "--status" ]; then
         green "started"
     fi
     exit 0
-fi
+}
 
-if [ "$1" == "--upload" ]; then
+function run_upload(){
+    activate_venv
     python3 manage.py upload
-    green "$?" 
+    errno="$?"
+    green "$errno" 
+    exit "$errno"
+}
+
+function run_purge(){
+    activate_venv
+    python3 manage.py purge
+    errno="$?"
+    green "$errno" 
+    exit "$errno"
+}
+
+
+
+if [ $# -ne 1 ]; then
+    red "${usage}"
+    exit 1
 fi
 
-if [ "$1" == "--purge" ]; then
-    python3 manage.py purge
-    green "$?" 
+if [ $# -ge 1 ]; then
+  case $1 in
+    --help|-h)
+        green "$usage"
+        exit 0
+        ;;
+    --init)
+        run_init
+        ;;
+    --status)
+        run_status
+        ;;
+    --start)
+        run_start
+        ;;
+    --stop)
+        run_stop
+        ;;
+    --upload)
+        run_upload
+        ;;
+    --purge)
+        run_purge
+        ;;
+    *)
+        red "$usage"
+        exit 1
+        ;;
+  esac
 fi
+            
