@@ -111,8 +111,10 @@ def upload_to_cloud():
 
 def purge_local_archive():
     logger_cloud.info('purge_local_archive: start')
-    items = TestdataArchive.query.all()
+    # items = TestdataArchive.query.all()
+    items = TestdataArchive.query.filter_by(is_sync=True).all()
     d_now = datetime.datetime.now()
+    count = 0
     try:
         for item in items:
             d_item = item.datetime
@@ -120,8 +122,9 @@ def purge_local_archive():
             day_range = (d_now - d_item).days
             # (b)test convenience
             # day_range = (d_now - d_item).seconds
-            if day_range >= RETENTION:
+            if day_range > RETENTION:
                 db.session.delete(item)
+                count += 1
     except Exception as e:
         db.session.rollback()
         logger_cloud.error('purge_local_archive: exception')
@@ -129,6 +132,6 @@ def purge_local_archive():
         return 1
     else:
         db.session.commit()
-        logger_cloud.info('purge_local_archive: success')
+        logger_cloud.info('purge_local_archive: success(count: {})'.format(count))
         return 0
     
