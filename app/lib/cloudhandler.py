@@ -18,7 +18,7 @@ def _check_cloud_connection():
     headers = {}
     payload = {}
     try:
-        response = requests.request(method=method, url=url, headers=headers, data=payload, timeout=20)
+        response = requests.request(method=method, url=url, headers=headers, data=payload, timeout=10)
         # msg = response.content
         # msg = response.text
     except Exception as e:
@@ -74,7 +74,7 @@ def upload_to_cloud():
         payload = json.dumps(request_msg)
         
         # 4. send request
-        response = requests.request(method=method, url=url, headers=headers, data=payload)
+        response = requests.request(method=method, url=url, headers=headers, data=payload, timeout=60)
         
         # 5. take response
         response_msg = response.json()
