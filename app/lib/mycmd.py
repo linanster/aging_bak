@@ -25,7 +25,7 @@ from app.settings import topdir
 from app.settings import gofolder
 from app.settings import logfolder
 
-from .mylogger import logger
+from .mylogger import logger_app
 from .mydecorator import processmaker, threadmaker
 from .myutils import gen_excel
 
@@ -34,19 +34,19 @@ def _gosubprocess(cmd):
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gofolder)
         while p.poll() is None:
             output = p.stdout.readline().decode('utf-8')[0:-1]
-            logger.info('[ble-backend] {}'.format(output))
+            logger_app.info('[ble-backend] {}'.format(output))
         errno = p.poll()
         if errno != 0:
             errmsg = p.stderr.read().decode('utf-8')[:-1]
-            logger.error('[ble-backend] {}'.format(errmsg))
-            logger.error('[ble-backend] errno:{}'.format(errno))
+            logger_app.error('[ble-backend] {}'.format(errmsg))
+            logger_app.error('[ble-backend] errno:{}'.format(errno))
         p.stdout.close()
         p.stderr.close()
         return errno
 
 @threadmaker
 def watch_log():
-        logfile = os.path.join(logfolder, 'log.txt')
+        logfile = os.path.join(logfolder, 'log_app.txt')
         p = subprocess.Popen("tail -f {}".format(logfile), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         while get_running_state_sql():
             output = p.stdout.readline().decode('utf-8')[0:-1]
@@ -77,7 +77,7 @@ def watch_to_jump():
             socketio.emit('progress', {'data': '+', 'newline': newline}, namespace='/test', broadcast=True)
             time.sleep(2)
         else:
-            logger.info('==emit event_done==')
+            logger_app.info('==emit event_done==')
             socketio.emit('event_done', namespace='/test', broadcast=True)
             break
     
@@ -85,7 +85,7 @@ def watch_to_jump():
 def start():
     # reserve time for frontend to receive event message
     time.sleep(3)
-    logger.info('==starttest begin==')
+    logger_app.info('==starttest begin==')
     testdatas_cleanup()
     reset_errno()
     set_running_state()
@@ -136,11 +136,11 @@ def start():
             continue
     # if loop > 3 :
     if errno == 0:
-        logger.info('==starttest success==') 
-        logger.info("==errno:{}==".format(errno))
+        logger_app.info('==starttest success==') 
+        logger_app.info("==errno:{}==".format(errno))
     else:
-        logger.error('==starttest failed==') 
-        logger.error("==errno:{}==".format(errno))
+        logger_app.error('==starttest failed==') 
+        logger_app.error("==errno:{}==".format(errno))
     # reserve time for frontend to receive event message
     time.sleep(3)
     reset_running_state()
@@ -182,10 +182,10 @@ def blink_single(mac):
     while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist={} -meshname=telink_mesh1 -meshpass=123".format(maclist)):
         time.sleep(Timeout)
         if loop==3:
-            logger.error('==blink_single failed==') 
+            logger_app.error('==blink_single failed==') 
             return -1
         loop+=1
-    logger.info('==blink_single success==')
+    logger_app.info('==blink_single success==')
     return 0
 
 
@@ -195,10 +195,10 @@ def blink_all():
     while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist=ffff -meshname=telink_mesh1 -meshpass=123"):
         time.sleep(Timeout)
         if loop==3:
-            logger.error('==blink_all failed==') 
+            logger_app.error('==blink_all failed==') 
             return -1
         loop+=1
-    logger.info('==blink_all success==')
+    logger_app.info('==blink_all success==')
     return 0
     
 def blink_stop():
@@ -207,10 +207,10 @@ def blink_stop():
     while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist=stop -meshname=telink_mesh1 -meshpass=123"):
         time.sleep(Timeout)
         if loop==3:
-            logger.error('==blink_stop failed==') 
+            logger_app.error('==blink_stop failed==') 
             return -1
         loop+=1
-    logger.info('==blink_stop success==')
+    logger_app.info('==blink_stop success==')
     return 0
 
 

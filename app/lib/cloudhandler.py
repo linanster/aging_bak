@@ -8,7 +8,7 @@ from app.models import db, Testdata, TestdataArchive
 
 from app.myglobal import RETENTION
 
-from .mylogger import logger
+from .mylogger import logger_cloud
 
 def _check_cloud_connection():
     method = 'GET'
@@ -22,7 +22,7 @@ def _check_cloud_connection():
         # msg = response.content
         # msg = response.text
     except Exception as e:
-        logger.error(str(e))
+        logger_cloud.error(str(e))
         return False
     else:
         if response.ok and response.text == 'pong':
@@ -32,10 +32,10 @@ def _check_cloud_connection():
     
 
 def upload_to_cloud():
-    logger.warn('upload_to_cloud: start')
+    logger_cloud.warn('upload_to_cloud: start')
     # 0. check network status
     if not _check_cloud_connection():
-        logger.error('upload_to_cloud: connection error')
+        logger_cloud.error('upload_to_cloud: connection error')
         return 1
 
     # 1. fetch data from database
@@ -80,10 +80,10 @@ def upload_to_cloud():
 
     # 6. error handler
     if response_msg.get('errno') == 1:
-        logger.error('upload_to_cloud: response errno error')
+        logger_cloud.error('upload_to_cloud: response errno error')
         return 2
     if response_msg.get('pin') != pin:
-        logger.error('cloud_to_cloud: pin mismatch error')
+        logger_cloud.error('cloud_to_cloud: pin mismatch error')
         return 3
 
     # 7. save data entries into database
@@ -93,17 +93,17 @@ def upload_to_cloud():
             db.session.add(item)
     except Exception as e:
         db.session.rollback()
-        logger.error('upload_to_cloud: exception when updating database field is_sync')
-        logger.error(str(e))
+        logger_cloud.error('upload_to_cloud: exception when updating database field is_sync')
+        logger_cloud.error(str(e))
         return 4
     else:
         db.session.commit()
-        logger.info('upload_to_cloud: success')
+        logger_cloud.info('upload_to_cloud: success')
         return 0
 
 
 def purge_local_archive():
-    logger.info('purge_local_archive: start')
+    logger_cloud.info('purge_local_archive: start')
     items = TestdataArchive.query.all()
     d_now = datetime.datetime.now()
     try:
@@ -117,11 +117,11 @@ def purge_local_archive():
                 db.session.delete(item)
     except exception as e:
         db.session.rollback()
-        logger.error('purge_local_archive: exception')
-        logger.error(str(e))
+        logger_cloud.error('purge_local_archive: exception')
+        logger_cloud.error(str(e))
         return 1
     else:
         db.session.commit()
-        logger.info('purge_local_archive: success')
+        logger_cloud.info('purge_local_archive: success')
         return 0
     

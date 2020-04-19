@@ -3,7 +3,7 @@ from threading import Thread, Lock
 from functools import wraps
 from flask import request
 
-from .mylogger import logger
+from .mylogger import logger_app
 
 thread = None
 thread_lock = Lock()
@@ -30,7 +30,7 @@ def threadmaker_legacy(func):
 def viewfunclog(func):
     @wraps(func)
     def inner(*args, **kargs):
-        logger.info('{} {}'.format(request.method, request.url))
+        logger_app.info('{} {}'.format(request.method, request.url))
         return func(*args, **kargs)
     return inner
 
