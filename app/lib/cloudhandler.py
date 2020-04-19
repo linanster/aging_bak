@@ -32,7 +32,7 @@ def _check_cloud_connection():
     
 
 def upload_to_cloud():
-    logger_cloud.warn('upload_to_cloud: start')
+    logger_cloud.info('upload_to_cloud: start')
     # 0. check network status
     if not _check_cloud_connection():
         logger_cloud.error('upload_to_cloud: connection error')
@@ -105,7 +105,7 @@ def upload_to_cloud():
         return 4
     else:
         db.session.commit()
-        logger_cloud.info('upload_to_cloud: success')
+        logger_cloud.info('upload_to_cloud: success(count: {})'.format(len(datas_raw)))
         return 0
 
 
@@ -114,7 +114,6 @@ def purge_local_archive():
     # items = TestdataArchive.query.all()
     items = TestdataArchive.query.filter_by(is_sync=True).all()
     d_now = datetime.datetime.now()
-    count = 0
     try:
         for item in items:
             d_item = item.datetime
@@ -124,7 +123,6 @@ def purge_local_archive():
             # day_range = (d_now - d_item).seconds
             if day_range > RETENTION:
                 db.session.delete(item)
-                count += 1
     except Exception as e:
         db.session.rollback()
         logger_cloud.error('purge_local_archive: exception')
@@ -132,6 +130,6 @@ def purge_local_archive():
         return 1
     else:
         db.session.commit()
-        logger_cloud.info('purge_local_archive: success(count: {})'.format(count))
+        logger_cloud.info('purge_local_archive: success(count: {})'.format(len(items)))
         return 0
     
