@@ -1,0 +1,11 @@
+[Unit]
+Description=GE Lighting Auto Test Upload and Purge timer
+
+[Timer]
+Unit=background-aging.service
+OnCalendar=00:00:00
+
+[Install]
+WantedBy=multi-user.target
+WantedBy=graphical.target
+

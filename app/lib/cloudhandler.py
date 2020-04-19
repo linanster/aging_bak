@@ -22,7 +22,7 @@ def _check_cloud_connection():
         # msg = response.content
         # msg = response.text
     except Exception as e:
-        print(str(e))
+        logger.error(str(e))
         return False
     else:
         if response.ok and response.text == 'pong':
@@ -83,7 +83,7 @@ def upload_to_cloud():
         logger.error('upload_to_cloud: response errno error')
         return 2
     if response_msg.get('pin') != pin:
-        loger.error('cloud_to_cloud: pin mismatch error')
+        logger.error('cloud_to_cloud: pin mismatch error')
         return 3
 
     # 7. save data entries into database

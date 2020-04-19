@@ -18,7 +18,7 @@ function red() {
 
 
 usage=$"
-Usage: run.sh [--start] [--stop] [--status] [--init]
+Usage: run.sh [--start] [--stop] [--status] [--init] [--upload] [--purge]
 "
 
 if [ $# -eq 0 ]; then

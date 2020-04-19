@@ -167,6 +167,22 @@ function uninstall_service(){
   rm -f /usr/lib/systemd/system/aging.service
 }
 
+function install_background_service(){
+  cd "${scriptdir}"
+  cp background-aging.service /usr/lib/systemd/system
+  cp background-aging.timer /usr/lib/systemd/system
+  systemctl enable background-aging.timer
+  systemctl restart background-aging.timer
+  systemctl status background-aging.timer
+}
+
+function uninstall_background_service(){
+  cd "${scriptdir}"
+  systemctl stop background-aging.timer
+  systemctl disable background-aging.timer
+  rm -f /usr/lib/systemd/system/background-aging.*
+}
+
 function user_modification(){
   deluser pi sudo
   gpasswd -d pi sudo
@@ -211,16 +227,24 @@ function option7(){
   green "option7 done!"
 }
 function option8(){
-  install_service
+  user_modification
   green "option8 done!"
 }
 function option9(){
-  uninstall_service
+  install_service
   green "option9 done!"
 }
 function option10(){
-  user_modification
+  uninstall_service
   green "option10 done!"
+}
+function option11(){
+  install_background_service
+  green "option11 done!"
+}
+function option12(){
+  uninstall_background_service
+  green "option12 done!"
 }
 
 
@@ -233,9 +257,11 @@ cat << eof
 5) config mariadb
 6) clone codes from github (-)
 7) permission control (-)
-8) install service (make sure run not --start)
-9) uninstall service
-10) user configuration
+8) user configuration
+9) install service (make sure NO run --start)
+10) uninstall service
+11) install background service
+12) uninstall service
 q) quit 
 ====
 eof
@@ -280,6 +306,14 @@ while echo; read -p "Enter your option: " option; do
       ;;
     10)
       option10
+      break
+      ;;
+    11)
+      option11
+      break
+      ;;
+    12)
+      option12
       break
       ;;
     q|Q)

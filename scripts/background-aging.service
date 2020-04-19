@@ -1,0 +1,13 @@
+[Unit]
+Description=GE Lighting Auto Test Upload and Purge program
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c "/root/aging/run.sh --upload; sleep 3; /root/aging/run.sh --purge"
+ExecReload=
+ExecStop=
+
+[Install]
+WantedBy=multi-user.target
+WantedBy=graphical.target
+
