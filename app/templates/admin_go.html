@@ -1,0 +1,51 @@
+{% extends '_mybase.html' %}
+
+{% block content %}
+    {{ super() }}
+
+    <legend>Go程序管理 (admin only)</legend>
+
+    <table border="1">
+        <tr>
+            <th>Index</th>
+            <th>File</th>
+            <th>Operation</th>
+        </tr>
+        {% for file in filelist %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>&nbsp;{{ file }}&nbsp;</td>
+                <td>
+                    &nbsp;
+                    <a href="{{ url_for('blue_admin.cmd_view_file', filename=file) }}">view</a>&nbsp;
+                    <a href="{{ url_for('blue_admin.cmd_download_file', filename=file) }}">download</a>&nbsp; &nbsp;
+                    <a href="{{ url_for('blue_admin.cmd_delete_file', filename=file) }}" style="color: orangered"
+                       οnclick="{if(confirm('Delete confirmed?')){this.document.formname.submit();return true;}return false;}">delete</a>&nbsp;
+                </td>
+            </tr>
+        {% else %}
+        {% endfor %}
+    </table>
+    <a href="{{ url_for('blue_admin.vf_go') }}">refresh</a>
+
+    <br>
+    <br>
+    <br>
+
+    <legend>上传更新文件 (admin only)</legend>
+
+    <form action={{ url_for('blue_admin.cmd_upload_file') }} method="post" enctype=multipart/form-data>
+        <input type="file" name="file" value="请选择配置文件" style="display: inline">
+        <input type="submit" value='导入'>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p class="text-warning">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+{% endblock %}
+
