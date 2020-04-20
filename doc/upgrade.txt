@@ -1,1 +1,4 @@
 git checkout origin/upgrade upgrade/pin.txt
+
+prepare upgrade branch:
+git checkout master && git rebase master
