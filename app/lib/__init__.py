@@ -6,3 +6,4 @@ from .mylogger import logger_app, logger_cloud
 from .mydecorator import *
 from .myutils import *
 from .cloudhandler import *
+from .upgrade import *

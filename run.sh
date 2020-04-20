@@ -18,7 +18,7 @@ function red() {
 
 
 usage=$"
-Usage: run.sh [--start] [--stop] [--status] [--init] [--upload] [--purge]
+Usage: run.sh [--start] [--stop] [--status] [--init] [--upload] [--purge] [--upgrade]
 "
 
 workdir=$(cd "$(dirname $0)" && pwd)
@@ -104,7 +104,18 @@ function run_purge(){
     exit "$errno"
 }
 
-
+function run_upgrade(){
+    activate_venv
+    cd "$workdir"
+    git checkout master
+    systemctl stop aging.service
+    sleep 1
+    git pull origin upgrade:master
+    sleep 1
+    systemctl start aging.service
+    sleep 1
+    systemctl status aging.service && exit 0 || exit 1
+}
 
 if [ $# -eq 0 ]; then
     red "${usage}"
@@ -134,6 +145,9 @@ if [ $# -ge 1 ]; then
         ;;
     --purge)
         run_purge
+        ;;
+    --upgrade)
+        run_upgrade
         ;;
     *)
         red "$usage"
