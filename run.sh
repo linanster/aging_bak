@@ -54,7 +54,7 @@ function run_start() {
     green "gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging"
     # todo --daemon
     # todo --user user1 --group user1
-    if [ "$2" == '--nodaemon' ]; then
+    if [ "$1" == '--nodaemon' ]; then
         gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging
     else
         gunicorn --daemon --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging
@@ -106,7 +106,7 @@ function run_purge(){
 
 
 
-if [ $# -ne 1 ]; then
+if [ $# -eq 0 ]; then
     red "${usage}"
     exit 1
 fi
@@ -124,7 +124,7 @@ if [ $# -ge 1 ]; then
         run_status
         ;;
     --start)
-        run_start
+        run_start $2
         ;;
     --stop)
         run_stop
