@@ -10,6 +10,8 @@ scripts/raspbian.public.key
 pub/excel/*
 
 !**/*.bak
+!go/.gitkeep
 !log/.gitkeep
 !pub/.gitkeep
 !pub/excel/.gitkeep
+!go/ble-backend-nan
