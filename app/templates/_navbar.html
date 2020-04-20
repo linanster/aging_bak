@@ -35,7 +35,7 @@
                     </ul>
                 </li>
                 <li id='manage'
-                    {% if request.path in [url_for('blue_manage.vf_data'), url_for('blue_manage.vf_factory'), url_for('blue_manage.vf_device'), url_for('blue_manage.vf_log'), url_for('blue_manage.vf_upgrade')] %}class="active"{% endif %}
+                    {% if request.path in [url_for('blue_manage.vf_data'), url_for('blue_manage.vf_factory'), url_for('blue_manage.vf_device'), url_for('blue_manage.vf_log'), url_for('blue_manage.vf_go'), url_for('blue_manage.vf_upgrade')] %}class="active"{% endif %}
                     class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">管理
                         <span class="caret"></span></a>
@@ -45,6 +45,8 @@
                         <li><a href="{{ url_for('blue_manage.vf_device') }}">查看设备类型</a></li>
                         <li class="divider"></li>
                         <li><a href="{{ url_for('blue_manage.vf_log') }}">查看日志</a></li>
+                        <li class="divider"></li>
+                        <li><a href="{{ url_for('blue_manage.vf_go') }}">Go程序管理</a></li>
                         <li class="divider"></li>
                         <li><a href="{{ url_for('blue_manage.vf_upgrade') }}">系统升级</a></li>
                     </ul>

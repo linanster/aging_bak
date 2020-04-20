@@ -3,6 +3,7 @@ from flask_paginate import Pagination, get_page_parameter
 import datetime
 import os
 import stat
+from werkzeug.utils import secure_filename
 
 from app.models import db, Device, Factory, TestdataArchive
 from app.lib import testdatasarchive_cleanup
@@ -19,7 +20,9 @@ from app.settings import topdir
 blue_manage = Blueprint('blue_manage', __name__, url_prefix='/manage')
 
 
-# 1. view functions definition
+###########################
+## manage factory module ##
+###########################
 
 @blue_manage.route('/factory', methods=['GET'])
 @viewfunclog
@@ -34,6 +37,11 @@ def vf_factory():
     else:
         results = list()
     return render_template('manage_factory.html', results=results)
+
+
+##########################
+## manage device module ##
+##########################
 
 @blue_manage.route('/device', methods=['GET'])
 @viewfunclog
@@ -50,6 +58,11 @@ def vf_device():
         results = list()
     return render_template('manage_device.html', results=results)
 
+
+########################
+## manage data module ##
+########################
+
 @blue_manage.route('/data', methods=['GET'])
 @viewfunclog
 def vf_data():
@@ -64,55 +77,11 @@ def vf_data():
     ret = TestdataArchive.query.slice(start, end)
     return render_template('manage_data.html', pagination=pagination, results=ret)
 
-@blue_manage.route('/log')
-@viewfunclog
-def vf_log():
-    invisibles = ['.keep', '.gitkeep']
-    filelist = os.listdir(logfolder)
-    for f in invisibles:
-        if f in filelist:
-            filelist.remove(f)
-        else:
-            continue
-    return render_template('manage_log.html', filelist=filelist)
-
-@blue_manage.route('/upgrade')
-@viewfunclog
-def vf_upgrade():
-    return render_template('manage_upgrade.html')
-
 @blue_manage.route('/cmd_deletearchive', methods=['POST'])
 @viewfunclog
 def cmd_deletearchive():
     testdatasarchive_cleanup()
     return redirect(url_for('blue_manage.vf_data'))
-
-@blue_manage.route('/view')
-@viewfunclog
-def cmd_view():
-    filename = request.args.get('filename')
-    return send_from_directory(logfolder, filename, as_attachment=False)
-
-@blue_manage.route('/download')
-@viewfunclog
-def cmd_download():
-    filename = request.args.get('filename')
-    return send_from_directory(logfolder, filename, as_attachment=True)
-
-@blue_manage.route('/upload', methods=['POST'])
-@viewfunclog
-def cmd_upload():
-    file = request.files['file']
-    if file.filename == '':
-        flash('请选择文件!')
-    if file:
-        # filename = secure_filename(file.filename)            
-        filename = 'ble-backend'
-        destfile = os.path.join(gofolder, filename)
-        file.save(destfile)
-        os.chmod(destfile, stat.S_IXOTH)
-        flash('文件导入成功，升级完成!')
-    return redirect(url_for('blue_manage.vf_upgrade'))
 
 @blue_manage.route('/cmd_download_testdatasarchive', methods=['POST'])
 @viewfunclog
@@ -125,3 +94,92 @@ def cmd_download_testdatasarchive():
     gen_excel(TestdataArchive, filename)
     return send_from_directory(excelfolder, excelname, as_attachment=True)
 
+################
+## log module ##
+################
+
+@blue_manage.route('/log')
+@viewfunclog
+def vf_log():
+    invisibles = ['.keep', '.gitkeep']
+    filelist = os.listdir(logfolder)
+    for f in invisibles:
+        if f in filelist:
+            filelist.remove(f)
+        else:
+            continue
+    return render_template('manage_log.html', filelist=filelist)
+
+@blue_manage.route('/log/view', methods=['GET'])
+@viewfunclog
+def cmd_view_log():
+    filename = request.args.get('filename')
+    return send_from_directory(logfolder, filename, as_attachment=False)
+
+@blue_manage.route('/log/download', methods=['GET'])
+@viewfunclog
+def cmd_download_log():
+    filename = request.args.get('filename')
+    return send_from_directory(logfolder, filename, as_attachment=True)
+
+
+###############
+## go module ##
+###############
+
+@blue_manage.route('/go')
+@viewfunclog
+def vf_go():
+    invisibles = ['.keep', '.gitkeep', 'ble-backend-nan', 'ble-backend.bak', 'config.json.bak']
+    filelist = os.listdir(gofolder)
+    for filename in invisibles:
+        if filename in filelist:
+            filelist.remove(filename)
+        else:
+            continue
+    return render_template('manage_go.html', filelist=filelist)
+
+@blue_manage.route('/go/download', methods=['GET'])
+@viewfunclog
+def cmd_download_go():
+    filename = request.args.get('filename')
+    return send_from_directory(gofolder, filename, as_attachment=True)
+
+
+@blue_manage.route('/go/view', methods=['GET'])
+@viewfunclog
+def cmd_view_go():
+    filename = request.args.get('filename')
+    return send_from_directory(gofolder, filename, as_attachment=False)
+
+@blue_manage.route('/go/delete', methods=['GET'])
+@viewfunclog
+def cmd_delete_go():
+    filename = request.args.get('filename')
+    sourcefile = os.path.join(gofolder, filename)
+    os.remove(sourcefile)
+    return redirect(url_for('blue_manage.vf_go'))
+
+@blue_manage.route('/go/upload', methods=['POST'])
+@viewfunclog
+def cmd_upload_go():
+    file = request.files['file']
+    if file.filename == '':
+        flash('请选择文件!')
+    if file:
+        filename = secure_filename(file.filename)            
+        # filename = 'config.json'
+        destfile = os.path.join(gofolder, filename)
+        file.save(destfile)
+        os.chmod(destfile, stat.S_IROTH)
+        flash('文件导入成功!')
+    return redirect(url_for('blue_manage.vf_go'))
+
+####################
+## upgrade module ##
+####################
+
+@blue_manage.route('/upgrade')
+@viewfunclog
+def vf_upgrade():
+    return render_template('manage_upgrade.html')
