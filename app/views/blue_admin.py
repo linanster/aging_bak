@@ -12,9 +12,9 @@ blue_admin = Blueprint('blue_admin', __name__, url_prefix='/admin')
 @blue_admin.route('/go')
 @viewfunclog
 def vf_go():
-    invisible = ['.keep', '.gitkeep', 'ble-backend-nan', 'ble-backend.bak', 'config.json.bak']
+    invisibles = ['.keep', '.gitkeep', 'ble-backend-nan', 'ble-backend.bak', 'config.json.bak']
     filelist = os.listdir(gofolder)
-    for filename in invisible:
+    for filename in invisibles:
         if filename in filelist:
             filelist.remove(filename)
         else:

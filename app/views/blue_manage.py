@@ -67,7 +67,7 @@ def vf_data():
 @blue_manage.route('/log')
 @viewfunclog
 def vf_log():
-    invisibles = ['.keep',]
+    invisibles = ['.keep', '.gitkeep']
     filelist = os.listdir(logfolder)
     for f in invisibles:
         if f in filelist:
