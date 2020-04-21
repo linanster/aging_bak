@@ -156,6 +156,7 @@ function chmod_dir(){
 function install_service(){
   cd "${scriptdir}"
   cp aging.service /usr/lib/systemd/system
+  systemctl daemon-reload
   systemctl enable aging.service
   systemctl restart aging.service
   systemctl status aging.service
@@ -165,12 +166,14 @@ function uninstall_service(){
   systemctl stop aging.service
   systemctl disable aging.service
   rm -f /usr/lib/systemd/system/aging.service
+  systemctl daemon-reload
 }
 
 function install_background_service(){
   cd "${scriptdir}"
   cp background-aging.service /usr/lib/systemd/system
   cp background-aging.timer /usr/lib/systemd/system
+  systemctl daemon-reload
   systemctl enable background-aging.timer
   systemctl restart background-aging.timer
   systemctl status background-aging.timer
@@ -181,6 +184,7 @@ function uninstall_background_service(){
   systemctl stop background-aging.timer
   systemctl disable background-aging.timer
   rm -f /usr/lib/systemd/system/background-aging.*
+  systemctl daemon-reload
 }
 
 function user_modification(){
