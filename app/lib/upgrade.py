@@ -37,7 +37,7 @@ def check_upgrade_pin():
 def exec_upgrade():
     # errno = subprocess.call("./run.sh --upgrade", shell=True, cwd=topdir)
     # return errno
-    p = subprocess.Popen(["./run.sh", "--upgrade"], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=topdir)
+    p = subprocess.Popen("./run.sh --upgrade", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=topdir)
     while p.poll() is None:
         output = p.stdout.readline().decode('utf-8')[0:-1]
         logger_app.info('[upgrade] {}'.format(output))
