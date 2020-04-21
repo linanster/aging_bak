@@ -9,13 +9,12 @@ from app.models import db, Device, Factory, TestdataArchive
 from app.lib import testdatasarchive_cleanup
 
 from app.lib import get_factorycode
-from app.lib import viewfunclog
+from app.lib import viewfunclog, logger_app
 from app.lib import gen_excel, empty_folder
 from app.lib import exec_upgrade
 
 from app.settings import logfolder
 from app.settings import gofolder
-
 from app.settings import topdir
 
 blue_manage = Blueprint('blue_manage', __name__, url_prefix='/manage')
@@ -184,16 +183,31 @@ def cmd_upload_go():
 @viewfunclog
 def vf_upgrade():
     errno = request.args.get('errno', type=int)
+    errmsg = request.args.get('errmsg', type=str)
     if errno is None:
         return render_template('manage_upgrade.html')
     else:
-        return render_template('manage_upgrade.html', myerrno=errno)
+        return render_template('manage_upgrade.html', myerrno=errno, myerrmsg=errmsg)
         
 
 @blue_manage.route('/upgrade/execute', methods=['POST'])
 @viewfunclog
 def cmd_upgrade():
-    errno = exec_upgrade()
-    return redirect(url_for('blue_manage.vf_upgrade', errno=errno))
+    pin = request.form.get('pin', type=str)
+    errtable = {
+        1: 'pull upgrade error',
+        2: 'restart serice error',
+        3: 'check service status error',
+        11: 'network error',
+        12: 'upgrade auth code error',
+        15: 'service restarted'
+    }
+    # call upgrade function
+    errno = exec_upgrade(pin)
+    errmsg = errtable.get(errno) 
+    params = {'errno':errno, 'errmsg':errmsg}
+    logger_app.info("[upgrade] errno: {}".format(errno))
+    logger_app.info("[upgrade] errmsg: {}".format(errmsg))
+    return redirect(url_for('blue_manage.vf_upgrade', **params))
 
 

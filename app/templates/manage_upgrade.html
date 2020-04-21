@@ -5,16 +5,17 @@
 
 
    <form action="{{ url_for('blue_manage.cmd_upgrade')}}" method="post">
+       <input type="text" name="pin" placeholder="input auth code">
        <input type="submit" value='升级'>
    </form>
 
 <br>
 
 {% if myerrno|string %}
-   {% if myerrno == 0 %} 
+   {% if myerrno == 0 or myerrno == -15 %} 
        升级成功({{ myerrno }})
    {% else %} 
-       升级失败({{ myerrno }})
+       升级失败({{ myerrno }}): {{ errmsg }}
    {% endif %}
 {% else %}
 {% endif %}

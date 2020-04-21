@@ -7,6 +7,7 @@ appfolder = os.path.abspath(os.path.join(topdir, "app"))
 gofolder = os.path.abspath(os.path.join(topdir, "go"))
 logfolder = os.path.abspath(os.path.join(topdir, "log"))
 sqlitefolder = os.path.abspath(os.path.join(topdir, "app", "sqlite"))
+upgradefolder = os.path.abspath(os.path.join(topdir, "upgrade"))
 
 
 # days of keep archive data on local Rasp Pi

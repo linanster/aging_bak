@@ -93,13 +93,12 @@ function run_purge(){
 function run_upgrade(){
     cd "$workdir"
     activate_venv
-    git checkout --quiet master>/dev/null && { echo "1. checkout master success"; } || { echo "1. checkout master error, exit"; exit 1; }
     sleep 1
-    git pull --quiet origin upgrade>/dev/null && { echo "2. pull upgrade success"; } ||  { echo "2. pull upgrade error, exit"; exit 3; }
+    git pull --quiet origin upgrade>/dev/null && { echo "1. pull upgrade success"; } ||  { echo "1. pull upgrade error, exit"; exit 1; }
     sleep 1
-    systemctl restart --quiet aging.service>/dev/null && { echo "3. restart service success"; } ||  { echo "3. start service error, exit"; exit 4; }
+    systemctl restart --quiet aging.service>/dev/null && { echo "2. restart service success"; } ||  { echo "2. restart service error, exit"; exit 2; }
     sleep 1
-    systemctl status --quiet aging.service>/dev/null && { echo "4. check service success"; exit 0; } ||  { echo "4. check service error, exit"; exit 5; }
+    systemctl status --quiet aging.service>/dev/null && { echo "3. check service success"; exit 0; } ||  { echo "3. check service error, exit"; exit 3; }
 }
 
 if [ $# -eq 0 ]; then
