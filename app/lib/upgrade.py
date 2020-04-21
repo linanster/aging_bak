@@ -1,7 +1,9 @@
 import requests
 from requests.packages.urllib3 import disable_warnings
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+import subprocess
 
+from app.myglobal import topdir
 
 disable_warnings(InsecureRequestWarning)
 
@@ -30,4 +32,5 @@ def check_upgrade_pin():
     pass
 
 def exec_upgrade():
-    pass
+    errno = subprocess.call("./run.sh --upgrade", shell=True, cwd=topdir)
+    return errno

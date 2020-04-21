@@ -4,9 +4,20 @@
     {{ super() }}
 
 
-   <form action="#" method="post" enctype=multipart/form-data>
-       <input type="button" value='升级'>
+   <form action="{{ url_for('blue_manage.cmd_upgrade')}}" method="post">
+       <input type="submit" value='升级'>
    </form>
+
+<br>
+
+{% if myerrno|string %}
+   {% if myerrno == 0 %} 
+       升级成功({{ myerrno }})
+   {% else %} 
+       升级失败({{ myerrno }})
+   {% endif %}
+{% else %}
+{% endif %}
 
 {% endblock %}
 

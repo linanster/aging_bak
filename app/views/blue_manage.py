@@ -11,6 +11,7 @@ from app.lib import testdatasarchive_cleanup
 from app.lib import get_factorycode
 from app.lib import viewfunclog
 from app.lib import gen_excel, empty_folder
+from app.lib import exec_upgrade
 
 from app.settings import logfolder
 from app.settings import gofolder
@@ -182,4 +183,17 @@ def cmd_upload_go():
 @blue_manage.route('/upgrade')
 @viewfunclog
 def vf_upgrade():
-    return render_template('manage_upgrade.html')
+    errno = request.args.get('errno', type=int)
+    if errno is None:
+        return render_template('manage_upgrade.html')
+    else:
+        return render_template('manage_upgrade.html', myerrno=errno)
+        
+
+@blue_manage.route('/upgrade/execute', methods=['POST'])
+@viewfunclog
+def cmd_upgrade():
+    errno = exec_upgrade()
+    return redirect(url_for('blue_manage.vf_upgrade', errno=errno))
+
+

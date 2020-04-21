@@ -31,29 +31,29 @@ from .myutils import gen_excel
 
 
 def _gosubprocess(cmd):
-        p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gofolder)
-        while p.poll() is None:
-            output = p.stdout.readline().decode('utf-8')[0:-1]
-            logger_app.info('[ble-backend] {}'.format(output))
-        errno = p.poll()
-        if errno != 0:
-            errmsg = p.stderr.read().decode('utf-8')[:-1]
-            logger_app.error('[ble-backend] {}'.format(errmsg))
-            logger_app.error('[ble-backend] errno:{}'.format(errno))
-        p.stdout.close()
-        p.stderr.close()
-        return errno
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gofolder)
+    while p.poll() is None:
+        output = p.stdout.readline().decode('utf-8')[0:-1]
+        logger_app.info('[ble-backend] {}'.format(output))
+    errno = p.poll()
+    if errno != 0:
+        errmsg = p.stderr.read().decode('utf-8')[:-1]
+        logger_app.error('[ble-backend] {}'.format(errmsg))
+        logger_app.error('[ble-backend] errno:{}'.format(errno))
+    p.stdout.close()
+    p.stderr.close()
+    return errno
 
 @threadmaker
 def watch_log():
-        logfile = os.path.join(logfolder, 'log_app.txt')
-        p = subprocess.Popen("tail -f {}".format(logfile), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        while get_running_state_sql():
-            output = p.stdout.readline().decode('utf-8')[0:-1]
-            socketio.emit('logupdated', output, namespace='/log', broadcast=True)
-        # p.stdout.close()
-        # p.stderr.close()
-        p.kill()
+    logfile = os.path.join(logfolder, 'log_app.txt')
+    p = subprocess.Popen("tail -f {}".format(logfile), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    while get_running_state_sql():
+        output = p.stdout.readline().decode('utf-8')[0:-1]
+        socketio.emit('logupdated', output, namespace='/log', broadcast=True)
+    # p.stdout.close()
+    # p.stderr.close()
+    p.kill()
 
 @threadmaker
 def watch_log_test():
