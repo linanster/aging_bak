@@ -3,6 +3,20 @@
 # set -o errexit
 
 
+# lib: color print
+bold=$(tput bold)
+green=$(tput setf 2)
+red=$(tput setf 4)
+reset=$(tput sgr0)
+
+function green() {
+  printf "${bold}${green}%s${reset}\n" "$@";
+}
+function red() {
+  printf "${bold}${red}%s${reset}\n" "$@";
+}
+
+
 usage=$"
 Usage: run.sh [--start] [--stop] [--status] [--init] [--upload] [--purge] [--upgrade]
 "
@@ -15,7 +29,7 @@ function activate_venv() {
   if [ -d venv ]; then
     source ./venv/bin/activate
   else
-    echo "==venv error=="
+    red "==venv error=="
     exit 1
   fi
 }
@@ -27,17 +41,17 @@ function run_init(){
     source ./venv/bin/activate
     pip3 install -r requirements.txt
     if [ $? -eq 0 ]; then
-        echo "==init config complete=="
+        green "==init config complete=="
         exit 0
     else
-        echo "==init config fail=="
+        red "==init config fail=="
         exit 1
     fi
 }
 
 function run_start() {
     activate_venv
-    echo "gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging"
+    green "gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging"
     # todo --daemon
     # todo --user user1 --group user1
     if [ "$1" == '--nodaemon' ]; then
@@ -53,10 +67,10 @@ function run_stop() {
     activate_venv
     pid=$(ps -ef | fgrep "gunicorn" | grep "application_ge_aging" | awk '{if($3==1) print $2}')
     if [ "$pid" == "" ]; then
-        echo "not running" 
+        red "not running" 
         exit 1
     else
-        echo "kill $pid"
+        green "kill $pid"
         kill "$pid"
         exit 0
     fi
@@ -66,10 +80,10 @@ function run_status(){
     activate_venv
     pid=$(ps -ef | fgrep "gunicorn" | grep "application_ge_aging" | awk '{if($3==1) print $2}')
     if [ "$pid" == "" ]; then
-        echo "stopped" 
+        red "stopped" 
     else
-        echo "$pid"
-        echo "started"
+        green "$pid"
+        green "started"
     fi
     exit 0
 }
@@ -78,7 +92,7 @@ function run_upload(){
     activate_venv
     python3 manage.py upload
     errno="$?"
-    echo "$errno" 
+    green "$errno" 
     exit "$errno"
 }
 
@@ -86,32 +100,32 @@ function run_purge(){
     activate_venv
     python3 manage.py purge
     errno="$?"
-    echo "$errno" 
+    green "$errno" 
     exit "$errno"
 }
 
 function run_upgrade(){
     cd "$workdir"
     activate_venv
-    git checkout master>/dev/null && { echo "1. checkout master success"; } || { echo "1. checkout master error, exit"; exit 1; }
-    systemctl stop aging.service>/dev/null && { echo "2. stop service success"; } ||  { echo "2. stop service error, exit"; exit 2; }
+    git checkout master>/dev/null && { green "1. checkout master success"; } || { red "1. checkout master error, exit"; exit 1; }
+    systemctl stop aging.service>/dev/null && { green "2. stop service success"; } ||  { red "2. stop service error, exit"; exit 2; }
     sleep 1
-    git pull --quiet origin upgrade>/dev/null && { echo "3. pull upgrade success"; } ||  { echo "3. pull upgrade error, exit"; exit 3; }
+    git pull --quiet origin upgrade>/dev/null && { green "3. pull upgrade success"; } ||  { red "3. pull upgrade error, exit"; exit 3; }
     sleep 1
-    systemctl start aging.service>/dev/null && { echo "4. start service success"; } ||  { echo "4. start service error, exit"; exit 4; }
+    systemctl start aging.service>/dev/null && { green "4. start service success"; } ||  { red "4. start service error, exit"; exit 4; }
     sleep 1
-    systemctl status aging.service>/dev/null && { echo "5. check service success"; exit 0; } ||  { echo "5. check service error, exit"; exit 5; }
+    systemctl status aging.service>/dev/null && { green "5. check service success"; exit 0; } ||  { red "5. check service error, exit"; exit 5; }
 }
 
 if [ $# -eq 0 ]; then
-    echo "${usage}"
+    red "${usage}"
     exit 1
 fi
 
 if [ $# -ge 1 ]; then
   case $1 in
     --help|-h)
-        echo "$usage"
+        green "$usage"
         exit 0
         ;;
     --init)
@@ -136,7 +150,7 @@ if [ $# -ge 1 ]; then
         run_upgrade
         ;;
     *)
-        echo "$usage"
+        red "$usage"
         exit 1
         ;;
   esac
