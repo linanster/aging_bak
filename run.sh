@@ -93,7 +93,7 @@ function run_purge(){
 function run_upgrade(){
     cd "$workdir"
     activate_venv
-    git checkout master>/dev/null && { echo "1. checkout master success"; } || { echo "1. checkout master error, exit"; exit 1; }
+    # git checkout master>/dev/null && { echo "1. checkout master success"; } || { echo "1. checkout master error, exit"; exit 1; }
     systemctl stop aging.service>/dev/null && { echo "2. stop service success"; } ||  { echo "2. stop service error, exit"; exit 2; }
     sleep 1
     git pull --quiet origin upgrade>/dev/null && { echo "3. pull upgrade success"; } ||  { echo "3. pull upgrade error, exit"; exit 3; }
