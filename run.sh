@@ -105,12 +105,12 @@ function run_purge(){
 }
 
 function run_upgrade(){
-    activate_venv
     cd "$workdir"
+    activate_venv
     git checkout master>/dev/null && { green "1. checkout master success"; } || { red "1. checkout master error, exit"; exit 1; }
     systemctl stop aging.service>/dev/null && { green "2. stop service success"; } ||  { red "2. stop service error, exit"; exit 1; }
     sleep 1
-    git pull origin upgrade>/dev/null && { green "3. pull upgrade success"; } ||  { red "3. pull upgrade error, exit"; exit 1; }
+    git pull --quiet origin upgrade>/dev/null && { green "3. pull upgrade success"; } ||  { red "3. pull upgrade error, exit"; exit 1; }
     sleep 1
     systemctl start aging.service>/dev/null && { green "4. start service success"; } ||  { red "4. start service error, exit"; exit 1; }
     sleep 1
