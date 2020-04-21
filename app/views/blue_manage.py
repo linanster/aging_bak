@@ -130,7 +130,7 @@ def cmd_download_log():
 @blue_manage.route('/go')
 @viewfunclog
 def vf_go():
-    invisibles = ['.keep', '.gitkeep', 'ble-backend-nan', 'ble-backend.bak', 'config.json.bak']
+    invisibles = ['.keep', '.gitkeep']
     filelist = os.listdir(gofolder)
     for filename in invisibles:
         if filename in filelist:
@@ -171,7 +171,8 @@ def cmd_upload_go():
         # filename = 'config.json'
         destfile = os.path.join(gofolder, filename)
         file.save(destfile)
-        os.chmod(destfile, stat.S_IROTH)
+        # os.chmod(destfile, stat.S_IROTH)
+        os.chmod(destfile, 0o777)
         flash('文件导入成功!')
     return redirect(url_for('blue_manage.vf_go'))
 

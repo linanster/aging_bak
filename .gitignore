@@ -8,7 +8,7 @@ venv
 log/*
 scripts/raspbian.public.key
 pub/excel/*
-go/
+go
 
 !**/*.bak
 !go/.gitkeep
