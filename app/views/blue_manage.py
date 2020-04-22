@@ -122,6 +122,14 @@ def cmd_download_log():
     filename = request.args.get('filename')
     return send_from_directory(logfolder, filename, as_attachment=True)
 
+@blue_manage.route('/log/delete', methods=['GET'])
+@viewfunclog
+def cmd_delete_log():
+    filename = request.args.get('filename')
+    sourcefile = os.path.join(logfolder, filename)
+    os.remove(sourcefile)
+    return redirect(url_for('blue_manage.vf_log'))
+
 
 ###############
 ## go module ##

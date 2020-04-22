@@ -20,6 +20,8 @@
                         &nbsp;
                         <a href="{{ url_for('blue_manage.cmd_view_log', filename=file) }}">查看</a>&nbsp;
                         <a href="{{ url_for('blue_manage.cmd_download_log', filename=file) }}">下载</a>&nbsp; &nbsp;
+                        <a href="{{ url_for('blue_manage.cmd_delete_log', filename=file) }}" style="color: orangered"
+                            οnclick="{if(confirm('Delete confirmed?')){this.document.formname.submit();return true;}return false;}">删除</a>&nbsp;
                     </td>
                 </tr>
             {% else %}
