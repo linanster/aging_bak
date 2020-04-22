@@ -93,6 +93,9 @@ function run_purge(){
 function run_upgrade(){
     cd "$workdir"
     activate_venv
+    if [ "$1" == "--checkout" ]; then
+        git checkout origin/upgrade upgrade/pin.txt && { echo "checkout auth code success"; exit 0; } || { echo "checkout auth code error,exit"; exit 11; }
+    fi
     sleep 1
     git pull --quiet origin upgrade>/dev/null && { echo "1. pull upgrade success"; } ||  { echo "1. pull upgrade error, exit"; exit 1; }
     sleep 1
@@ -131,7 +134,7 @@ if [ $# -ge 1 ]; then
         run_purge
         ;;
     --upgrade)
-        run_upgrade
+        run_upgrade $2
         ;;
     *)
         echo "$usage"
