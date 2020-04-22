@@ -5,7 +5,7 @@ import datetime
 import os
 
 from app.models import Testdata
-from app.lib import start, blink_single, blink_all, blink_stop
+from app.lib import start, blink_single, blink_all, blink_stop, turn_on_all, turn_off_all
 from app.lib import watch_to_jump, watch_log
 from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state
 from app.lib import get_errno, get_running_state
@@ -114,6 +114,20 @@ def vf_cmd_blink_all():
 def vf_cmd_blink_stop():
     logger_app.warn('click blink stop button')
     blink_stop()
+    return redirect(url_for('blue_test.vf_finished'))
+
+@blue_test.route('/cmd_allon', methods=['POST'])
+@viewfunclog
+def cmd_allon():
+    logger_app.warn('click turn on all button')
+    turn_on_all()
+    return redirect(url_for('blue_test.vf_finished'))
+
+@blue_test.route('/cmd_alloff', methods=['POST'])
+@viewfunclog
+def cmd_alloff():
+    logger_app.warn('click turn off all button')
+    turn_off_all()
     return redirect(url_for('blue_test.vf_finished'))
 
 @blue_test.route('/process_finished')

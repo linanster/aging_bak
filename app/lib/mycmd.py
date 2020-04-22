@@ -181,7 +181,8 @@ def blink_single(mac):
     # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist={} -meshname=telink_mesh1 -meshpass=123".format(maclist), shell=True, cwd=gofolder):
     while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist={} -meshname=telink_mesh1 -meshpass=123".format(maclist)):
         time.sleep(Timeout)
-        if loop==3:
+        # if loop==3:
+        if loop==1:
             logger_app.error('==blink_single failed==') 
             return -1
         loop+=1
@@ -194,7 +195,8 @@ def blink_all():
     # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=ffff -meshname=telink_mesh1 -meshpass=123", shell=True, cwd=gofolder):
     while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist=ffff -meshname=telink_mesh1 -meshpass=123"):
         time.sleep(Timeout)
-        if loop==3:
+        # if loop==3:
+        if loop==1:
             logger_app.error('==blink_all failed==') 
             return -1
         loop+=1
@@ -206,14 +208,35 @@ def blink_stop():
     # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=stop -meshname=telink_mesh1 -meshpass=123", shell=True, cwd=gofolder):
     while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist=stop -meshname=telink_mesh1 -meshpass=123"):
         time.sleep(Timeout)
-        if loop==3:
+        # if loop==3:
+        if loop==1:
             logger_app.error('==blink_stop failed==') 
             return -1
         loop+=1
     logger_app.info('==blink_stop success==')
     return 0
 
+def turn_on_all():
+    loop = 1
+    while 0 != _gosubprocess("./ble-backend -command=allon"):
+        time.sleep(Timeout)
+        if loop==1:
+            logger_app.error('==turn_on_all failed==') 
+            return -1
+        loop+=1
+    logger_app.info('==turn_on_all success==')
+    return 0
 
+def turn_off_all():
+    loop = 1
+    while 0 != _gosubprocess("./ble-backend -command=alloff"):
+        time.sleep(Timeout)
+        if loop==1:
+            logger_app.error('==turn_off_all failed==') 
+            return -1
+        loop+=1
+    logger_app.info('==turn_off_all success==')
+    return 0
 
 
 ######################

@@ -5,16 +5,23 @@
 
     <div class="btn-group">
         <form style="display: inline" action="{{ url_for('blue_test.vf_finished') }}" method="get">
-            <button type="submit" class="btn btn-default">刷新</button>
+            <button type="submit" class="btn btn-primary">刷新</button>
+        </form>
+        <form style="display: inline" action="{{ url_for('blue_test.cmd_download_testdatas') }}" method="post">
+            <button type="submit" class="btn btn-primary" {% if results|count == 0 %}disabled{% endif %}>下载报表</button>
+        </form>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <form style="display: inline" action="{{ url_for('blue_test.cmd_allon') }}" method="post">
+            <button type="submit" class="btn btn-success" {% if results|count == 0 %}disabled{% endif %}>全部点亮</button>
+        </form>
+        <form style="display: inline" action="{{ url_for('blue_test.cmd_alloff') }}" method="post">
+            <button type="submit" class="btn btn-danger" {% if results|count == 0 %}disabled{% endif %}>全部熄灭</button>
         </form>
         <form style="display: inline" action="{{ url_for('blue_test.vf_cmd_blink_all') }}" method="post">
             <button type="submit" class="btn btn-success" {% if results|count == 0 %}disabled{% endif %}>全部闪烁</button>
         </form>
         <form style="display: inline" action="{{ url_for('blue_test.vf_cmd_blink_stop') }}" method="post">
-            <button type="submit" class="btn btn-danger" {% if results|count == 0 %}disabled{% endif %}>停止</button>
-        </form>
-        <form style="display: inline" action="{{ url_for('blue_test.cmd_download_testdatas') }}" method="post">
-            <button type="submit" class="btn btn-primary" {% if results|count == 0 %}disabled{% endif %}>下载报表</button>
+            <button type="submit" class="btn btn-danger" {% if results|count == 0 %}disabled{% endif %}>停止闪烁</button>
         </form>
     </div>
 
@@ -31,7 +38,7 @@
             <th>MAC_BLE</th>
             <th>MAC_WIFI</th>
             <th>组合指令检测</th>
-            <th>信号强度检测</th>
+            <th>信号检测</th>
             <th>时间</th>
             <th colspan="1">控制</th>
         </tr>
