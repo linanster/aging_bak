@@ -57,7 +57,7 @@ def exec_upgrade(pin):
         output = p.stdout.readline().decode('utf-8')[0:-1]
         logger_app.info('[upgrade] {}'.format(output))
     errno = p.poll()
-    if errno != 0:
+    if errno not in [0, -15]:
         errmsg = p.stderr.read().decode('utf-8')[:-1]
         logger_app.error('[upgrade] {}'.format(errmsg))
         logger_app.error('[upgrade] errno:{}'.format(errno))
