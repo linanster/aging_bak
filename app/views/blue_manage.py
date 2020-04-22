@@ -11,7 +11,7 @@ from app.lib import testdatasarchive_cleanup
 from app.lib import get_factorycode
 from app.lib import viewfunclog, logger_app
 from app.lib import gen_excel, empty_folder
-from app.lib import exec_upgrade
+from app.lib import exec_upgrade, check_github_connection
 
 from app.settings import logfolder
 from app.settings import gofolder
@@ -185,30 +185,56 @@ def cmd_upload_go():
 def vf_upgrade():
     errno = request.args.get('errno', type=int)
     errmsg = request.args.get('errmsg', type=str)
-    if errno is None:
-        return render_template('manage_upgrade.html')
+    network_enabled = request.args.get('network_enabled', type=bool)
+    if errno is not None:
+        logger_app.info("[upgrade] errno: {}".format(errno))
+        logger_app.info("[upgrade] errmsg: {}".format(errmsg))
+        logger_app.info("[upgrade] network_enabled: {}".format(network_enabled))
+        return render_template('manage_upgrade.html', upgrade_errno=errno, upgrade_errmsg=errmsg)
+    elif network_enabled is not None:
+        logger_app.info("[upgrade] errno: {}".format(errno))
+        logger_app.info("[upgrade] errmsg: {}".format(errmsg))
+        logger_app.info("[upgrade] network_enabled: {}".format(network_enabled))
+        return render_template('manage_upgrade.html', network_enabled=network_enabled)
     else:
-        return render_template('manage_upgrade.html', myerrno=errno, myerrmsg=errmsg)
+        return render_template('manage_upgrade.html')
         
 
 @blue_manage.route('/upgrade/execute', methods=['POST'])
 @viewfunclog
 def cmd_upgrade():
+    logger_app.info('[upgrade] click upgrade button')
     pin = request.form.get('pin', type=str)
     errtable = {
+        0: 'success',
         1: 'pull upgrade error',
-        2: 'restart serice error',
+        2: 'restart service error',
         3: 'check service status error',
         11: 'network error',
         12: 'upgrade auth code error',
-        15: 'service restarted'
+        -15: 'service restarted'
     }
     # call upgrade function
     errno = exec_upgrade(pin)
     errmsg = errtable.get(errno) 
+    if errno in [0, -15]:
+        flash('升级成功({0}):{1}'.format(errno,errmsg))
+    else:
+        flash('升级失败({0}):{1}'.format(errno,errmsg))
+        
     params = {'errno':errno, 'errmsg':errmsg}
-    logger_app.info("[upgrade] errno: {}".format(errno))
-    logger_app.info("[upgrade] errmsg: {}".format(errmsg))
     return redirect(url_for('blue_manage.vf_upgrade', **params))
+
+@blue_manage.route('/upgrade/checknetwork', methods=['POST'])
+@viewfunclog
+def cmd_checknetwork():
+    logger_app.info('[upgrade] click check network button')
+    if check_github_connection():
+        network_enabled = True
+        flash('网络可用!')
+    else:
+        network_enabled = False
+        flash('网络不可用，请检查是否可连接至github.com!')
+    return redirect(url_for('blue_manage.vf_upgrade', network_enabled=network_enabled))
 
 
