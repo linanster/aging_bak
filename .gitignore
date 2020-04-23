@@ -9,6 +9,7 @@ log/*
 scripts/raspbian.public.key*
 pub/excel/*
 go
+app/fcode.py
 
 !**/*.bak
 !go/.gitkeep

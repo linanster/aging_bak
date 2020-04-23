@@ -20,7 +20,7 @@ def init():
     Systeminfo.seed()
     RunningState.seed()
     from app.lib import set_factorycode
-    from app.settings import FCODE
+    from app.fcode import FCODE
     set_factorycode(FCODE)
 
 @manager.command

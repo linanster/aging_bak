@@ -8,7 +8,7 @@ import os
 # 2 -- Innotech
 # 3 -- Tonly
 # 4 -- Changhong
-FCODE=1
+# FCODE=1
 
 # called by lib.mycmd.py
 Debug = True

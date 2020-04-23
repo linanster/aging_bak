@@ -8,7 +8,7 @@ import datetime
 # 3 -- Tonly
 # 4 -- Changhong
 # 5 -- Test
-from app.settings import FCODE
+from app.fcode import FCODE
 
 # 1. lasy init
 db = SQLAlchemy(use_native_unicode='utf8')
