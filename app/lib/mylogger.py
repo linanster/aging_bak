@@ -15,11 +15,11 @@ logfile2 = os.path.abspath(os.path.join(logfolder, "log_cloud.txt"))
 
 
 # handler = logging.FileHandler(logfile)
-filehandler1 = RotatingFileHandler(logfile1, maxBytes = 10*1024*1024, backupCount=3)
+filehandler1 = RotatingFileHandler(logfile1, maxBytes = 10*1024*1024, backupCount=10)
 filehandler1.setLevel(logging.INFO)
 filehandler1.setFormatter(formatter1)
 
-filehandler2 = RotatingFileHandler(logfile2, maxBytes = 1*1024*1024, backupCount=3)
+filehandler2 = RotatingFileHandler(logfile2, maxBytes = 10*1024*1024, backupCount=3)
 filehandler2.setLevel(logging.INFO)
 filehandler2.setFormatter(formatter1)
 

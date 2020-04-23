@@ -245,10 +245,9 @@ class TestdataArchive(db.Model):
     __bind_key__ = 'mysql'
     __tablename__ = 'testdatasarchive'
     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
-    # devicecode = db.Column(db.Integer, db.ForeignKey('devices.code'), nullable=False)
-    # factorycode = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=True, server_default=str(FCODE)) 
     devicecode = db.Column(db.Integer, db.ForeignKey(Device.code), nullable=False)
-    factorycode = db.Column(db.Integer, db.ForeignKey(Factory.code), nullable=True, server_default=str(FCODE)) 
+    # factorycode = db.Column(db.Integer, db.ForeignKey(Factory.code), nullable=True, server_default=str(FCODE)) 
+    factorycode = db.Column(db.Integer, db.ForeignKey(Factory.code), nullable=True) 
     fw_version = db.Column(db.String(20))
     rssi_ble1 = db.Column(db.Integer)
     rssi_ble2 = db.Column(db.Integer)

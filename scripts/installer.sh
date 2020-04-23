@@ -263,9 +263,9 @@ cat << eof
 7) permission control (-)
 8) user configuration
 9) install service (make sure NO run --start)
-10) uninstall service
-11) install background service
-12) uninstall service
+10) uninstall service (-)
+11) install background service (cloud upload & local purge periodically) (-)
+12) uninstall background service (-)
 q) quit 
 ====
 eof

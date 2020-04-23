@@ -6,7 +6,7 @@
 **/__pycache__
 venv
 log/*
-scripts/raspbian.public.key
+scripts/raspbian.public.key*
 pub/excel/*
 go
 
