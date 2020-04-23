@@ -179,8 +179,8 @@ def blink_single(mac):
     segments = mac.split(':')
     maclist = segments[4] + segments[5]
     loop = 1
-    # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist={} -meshname=telink_mesh1 -meshpass=123".format(maclist), shell=True, cwd=gofolder):
-    while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist={} -meshname=telink_mesh1 -meshpass=123".format(maclist)):
+    # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist={}".format(maclist), shell=True, cwd=gofolder):
+    while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist={}".format(maclist)):
         time.sleep(Timeout)
         # if loop==3:
         if loop==1:
@@ -193,8 +193,8 @@ def blink_single(mac):
 
 def blink_all():
     loop = 1
-    # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=ffff -meshname=telink_mesh1 -meshpass=123", shell=True, cwd=gofolder):
-    while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist=ffff -meshname=telink_mesh1 -meshpass=123"):
+    # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=ffff", shell=True, cwd=gofolder):
+    while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist=ffff"):
         time.sleep(Timeout)
         # if loop==3:
         if loop==1:
@@ -206,8 +206,8 @@ def blink_all():
     
 def blink_stop():
     loop = 1
-    # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=stop -meshname=telink_mesh1 -meshpass=123", shell=True, cwd=gofolder):
-    while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist=stop -meshname=telink_mesh1 -meshpass=123"):
+    # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=stop", shell=True, cwd=gofolder):
+    while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist=stop"):
         time.sleep(Timeout)
         # if loop==3:
         if loop==1:
