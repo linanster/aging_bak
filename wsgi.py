@@ -4,6 +4,14 @@ from app import create_app
 
 application_ge_aging = create_app()
 
+@application_ge_aging.template_global('devicecode')
+def devicecode():
+    from app.lib import get_devicecode
+    from app.models import Device
+    code = get_devicecode()
+    name = Device.query.filter_by(code=code).first().name
+    return name
+
 @application_ge_aging.template_global('totalcount')
 def totalcount():
     from app.lib import get_totalcount

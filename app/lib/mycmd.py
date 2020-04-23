@@ -10,7 +10,7 @@ import datetime
 from .execsql import testdatas_cleanup, get_running_state_sql
 from .execsql import get_retried_sql, set_retried_sql, reset_retried_sql
 
-from .tools import get_totalcount
+from .tools import get_totalcount, get_devicecode
 from .tools import reset_progress, add_progress
 from .tools import reset_running_state, set_running_state, get_running_state
 from .tools import reset_phase, set_phase
@@ -90,6 +90,7 @@ def start():
     reset_errno()
     set_running_state()
     num = get_totalcount()
+    devicecode = get_devicecode()
     loop = 1
     while loop <= 3:
         # METHOD-1
@@ -118,7 +119,7 @@ def start():
         # p.stderr.close()        
 
         # METHOD-4
-        errno = _gosubprocess("./ble-backend -command=starttest -totalcount={}".format(num))
+        errno = _gosubprocess("./ble-backend -command=starttest -totalcount={} -deviceid={}".format(num, devicecode))
 
         loop += 1
         if errno == 0:

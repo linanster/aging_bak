@@ -4,11 +4,11 @@ import time
 import datetime
 import os
 
-from app.models import Testdata
+from app.models import Testdata, Factory
 from app.lib import start, blink_single, blink_all, blink_stop, turn_on_all, turn_off_all
 from app.lib import watch_to_jump, watch_log
 from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state
-from app.lib import get_errno, get_running_state
+from app.lib import get_errno, get_running_state, get_factorycode
 from app.lib import testdatas_archive
 from app.lib import viewfunclog
 from app.lib import logger_app
@@ -29,7 +29,16 @@ def vf_error():
 @blue_test.route('/config')
 @viewfunclog
 def vf_config():
-    return render_template('test_config.html')
+    fcode = get_factorycode()
+    if fcode == 0:
+        results = Device.query.all()
+    elif fcode in (1, 2, 3, 4, 5):
+        factory = Factory.query.get(fcode)
+        devices = factory.devices
+    else:
+        devices = list()
+    
+    return render_template('test_config.html', devices=devices)
 
 @blue_test.route('/start')
 @viewfunclog
@@ -85,11 +94,11 @@ def vf_cmd_start():
 @blue_test.route('/cmd_saveconfig', methods=['POST'])
 @viewfunclog
 def vf_cmd_saveconfig():
-    # devicecode = request.form.get('devicecode')
     # factorycode = request.form.get('factorycode')
-    totalcount = request.form.get('totalcount')
+    devicecode = request.form.get('devicecode', type=int)
+    totalcount = request.form.get('totalcount', type=int)
     # set_factorycode(factorycode)
-    # set_devicecode(devicecode) 
+    set_devicecode(devicecode) 
     set_totalcount(totalcount) 
     return redirect(url_for('blue_test.vf_start'))
 
