@@ -13,11 +13,14 @@
         <form style="display: inline" action="{{ url_for('blue_manage.vf_data') }}" method="get">
             <button type="submit" class="btn btn-primary ">刷新</button>
         </form>
-        <form style="display: inline" action="{{ url_for('blue_manage.cmd_deletearchive') }}" method="post">
-            <button type="submit" class="btn btn-danger">清理(test)</button>
-        </form>
         <form style="display: inline" action="{{ url_for('blue_manage.cmd_download_testdatasarchive') }}" method="post">
             <button type="submit" class="btn btn-primary" >下载报表</button>
+        </form>
+        <form style="display: inline" action="#" method="post">
+            <button type="submit" class="btn btn-success" disabled>上传数据</button>
+        </form>
+        <form style="display: inline" action="{{ url_for('blue_manage.cmd_deletearchive') }}" method="post">
+            <button type="submit" class="btn btn-danger">清除数据</button>
         </form>
     </div>
 
