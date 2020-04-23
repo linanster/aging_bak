@@ -147,7 +147,7 @@ class Device(db.Model):
         d_tonly_59 = Device(59, '0x3B', 3, 'Switch Centre Button(0x3B)')
         d_tonly_81 = Device(81, '0x51', 3, 'Fan Speed Switch')
 
-        d_changhong_66 = Device(66, '0x42', 4, 'Indoor Plug GEN2')
+        d_changhong_66 = Device(66, '0x42', 4, 'Indoor Plug GEN2(Ox42)')
 
         # todo
         d_test_5 = Device(5, '0x05', 5, 'Test1')
