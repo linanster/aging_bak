@@ -29,10 +29,15 @@
 {% block title %}GE Lighting 自动化检测工具{% endblock %}
 
 {% block styles %}
-    {{ super() }}
-    <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap.min.cerulean.341.css') }}">
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/3.4.1/cerulean/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap.min.cerulean.341.css') }}">
 {% endblock %}
+
+{% block scripts %}
+    <script src={{ url_for('static',filename='js/jquery.min.js') }}></script>
+    <script src={{ url_for('static',filename='js/bootstrap.min.js') }}></script>
+{% endblock scripts %}
 
 {% block navbar %}
     {% include '_navbar.html' %}
