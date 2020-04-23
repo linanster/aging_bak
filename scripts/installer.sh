@@ -197,6 +197,7 @@ function user_modification(){
   cp /etc/sudoers /etc/sudoers.bak
   cp /etc/group /etc/group.bak
   sed -i '/%sudo/ s/^/# /' /etc/sudoers
+  sed -i '$ a user1 ALL=(ALL) NOPASSWD: /usr/bin/tail, /bin/cat, /bin/systemctl' /etc/sudoers
   sed -i 's/pi$//' /etc/group
   sed -i 's/$/user1/' /etc/group
 }
