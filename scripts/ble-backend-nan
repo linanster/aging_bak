@@ -21,7 +21,7 @@ while [ $# -gt 0 ]; do
       exit 0
       ;;
     -command=starttest)
-      echo "**$1 $2**"
+      echo "**$1 $2 $3**"
       for i in {1..30}; do echo "hello, $i"; sleep 1; done
       sleep 5
       # act as failure
