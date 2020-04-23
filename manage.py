@@ -46,9 +46,14 @@ def testdata():
     Testdata.seed()
 
 @manager.option('--fcode', dest="code")
-def set(code):
+def setfcode(code):
     from app.lib import set_factorycode
     set_factorycode(code)
+
+@manager.command
+def getfcode():
+    from app.lib import get_factorycode
+    print(get_factorycode())
 
 @manager.command
 def upload():
