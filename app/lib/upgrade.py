@@ -34,8 +34,6 @@ def check_upgrade_pin(pin):
     pinfile = os.path.join(upgradefolder, 'pin.txt')
     pin_auth = open(pinfile).readline()
     pin_auth = pin_auth.replace('\r', '').replace('\n','')
-    print('==pin==',pin)
-    print('==pin_auth==',pin_auth)
     if pin == pin_auth:
         return True
     else:

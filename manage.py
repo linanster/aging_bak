@@ -40,11 +40,6 @@ def deletedb():
     from app.models import db
     db.drop_all(bind='mysql')
 
-@manager.command
-def testdata():
-    from app.models import Testdata
-    Testdata.seed()
-
 @manager.option('--fcode', dest="code")
 def setfcode(code):
     from app.lib import set_factorycode
