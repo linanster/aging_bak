@@ -37,13 +37,15 @@ function run_init(){
 
 function run_start() {
     activate_venv
-    echo "gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging"
-    # todo --daemon
+    # echo "gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging"
+    echo "gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class gevent wsgi:application_ge_aging"
     # todo --user user1 --group user1
     if [ "$1" == '--nodaemon' ]; then
-        gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging
+        # gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging
+        gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class gevent wsgi:application_ge_aging
     else
-        gunicorn --daemon --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging
+        # gunicorn --daemon --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging
+        gunicorn --daemon --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class gevent wsgi:application_ge_aging
     fi
     ps -ef | fgrep "gunicorn" | grep "application_ge_aging" | awk '{if($3==1) print $2}'
     exit 0
