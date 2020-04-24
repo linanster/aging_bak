@@ -147,6 +147,9 @@ eof
   git config --global user.email believelinan@aliyun.com
   git config --global color.ui true
   git config --global push.default simple
+
+  # 5. set default editor
+  update-alternatives --set editor /usr/bin/vim.basic
 }
 
 function chmod_dir(){

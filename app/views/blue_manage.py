@@ -193,7 +193,7 @@ def cmd_upload_go():
 def vf_upgrade():
     errno = request.args.get('errno', type=int)
     errmsg = request.args.get('errmsg', type=str)
-    network_enabled = request.args.get('network_enabled', type=bool)
+    network_enabled = request.args.get('network_enabled', type=int)
     if errno is not None:
         logger_app.info("[upgrade] errno: {}".format(errno))
         logger_app.info("[upgrade] errmsg: {}".format(errmsg))
@@ -238,10 +238,10 @@ def cmd_upgrade():
 def cmd_checknetwork():
     logger_app.info('[upgrade] click check network button')
     if check_github_connection():
-        network_enabled = True
+        network_enabled = 1
         flash('网络可用!')
     else:
-        network_enabled = False
+        network_enabled = 0
         flash('网络不可用，请检查是否可连接至github.com!')
     return redirect(url_for('blue_manage.vf_upgrade', network_enabled=network_enabled))
 
