@@ -1,11 +1,13 @@
 #! /usr/bin/env bash
 #
 usage=$"Usage: ble-backend 
-    -command=starttest -totalcount=num
-    -command=allkickout
+    -command=starttest -totalcount=num -deviceid=12
     -command=nok_ident -maclist=ffff
     -command=nok_ident -maclist=0102
     -command=nok_ident -maclist=stop
+    -command=allon
+    -command=alloff
+    -command=allkickout
     -command=bulb_cmd_set1
 \n"
 
@@ -95,6 +97,11 @@ while [ $# -gt 0 ]; do
       exit 0
       ;;
     -command=alloff)
+      echo "**$1**"
+      sleep 5
+      exit 0
+      ;;
+    -command=allkickout)
       echo "**$1**"
       sleep 5
       exit 0
