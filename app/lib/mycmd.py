@@ -181,7 +181,7 @@ def blink_single(mac):
     loop = 1
     # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist={}".format(maclist), shell=True, cwd=gofolder):
     while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist={}".format(maclist)):
-        time.sleep(Timeout)
+        # time.sleep(Timeout)
         # if loop==3:
         if loop==1:
             logger_app.error('==blink_single failed==') 
@@ -195,7 +195,7 @@ def blink_all():
     loop = 1
     # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=ffff", shell=True, cwd=gofolder):
     while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist=ffff"):
-        time.sleep(Timeout)
+        # time.sleep(Timeout)
         # if loop==3:
         if loop==1:
             logger_app.error('==blink_all failed==') 
@@ -208,7 +208,7 @@ def blink_stop():
     loop = 1
     # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist=stop", shell=True, cwd=gofolder):
     while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist=stop"):
-        time.sleep(Timeout)
+        # time.sleep(Timeout)
         # if loop==3:
         if loop==1:
             logger_app.error('==blink_stop failed==') 
@@ -220,7 +220,7 @@ def blink_stop():
 def turn_on_all():
     loop = 1
     while 0 != _gosubprocess("./ble-backend -command=allon"):
-        time.sleep(Timeout)
+        # time.sleep(Timeout)
         if loop==1:
             logger_app.error('==turn_on_all failed==') 
             return -1
@@ -231,12 +231,23 @@ def turn_on_all():
 def turn_off_all():
     loop = 1
     while 0 != _gosubprocess("./ble-backend -command=alloff"):
-        time.sleep(Timeout)
+        # time.sleep(Timeout)
         if loop==1:
             logger_app.error('==turn_off_all failed==') 
             return -1
         loop+=1
     logger_app.info('==turn_off_all success==')
+    return 0
+
+def kickout_all():
+    loop = 1
+    while 0 != _gosubprocess("./ble-backend -command=allkickout"):
+        # time.sleep(Timeout)
+        if loop==1:
+            logger_app.error('==kickout_all failed==') 
+            return -1
+        loop+=1
+    logger_app.info('==kickout_all success==')
     return 0
 
 

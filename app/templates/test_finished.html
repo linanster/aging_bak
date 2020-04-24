@@ -23,6 +23,10 @@
         <form style="display: inline" action="{{ url_for('blue_test.vf_cmd_blink_stop') }}" method="post">
             <button type="submit" class="btn btn-danger" {% if results|count == 0 %}disabled{% endif %}>停止闪烁</button>
         </form>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <form style="display: inline" action="{{ url_for('blue_test.cmd_kickout') }}" method="post">
+            <button type="submit" class="btn btn-danger" {% if results|count == 0 %}disabled{% endif %}>Kickout</button>
+        </form>
     </div>
 
 

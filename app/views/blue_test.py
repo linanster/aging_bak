@@ -5,7 +5,7 @@ import datetime
 import os
 
 from app.models import Testdata, Factory
-from app.lib import start, blink_single, blink_all, blink_stop, turn_on_all, turn_off_all
+from app.lib import start, blink_single, blink_all, blink_stop, turn_on_all, turn_off_all, kickout_all
 from app.lib import watch_to_jump, watch_log
 from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state
 from app.lib import get_errno, get_running_state, get_factorycode
@@ -137,6 +137,13 @@ def cmd_allon():
 def cmd_alloff():
     logger_app.warn('click turn off all button')
     turn_off_all()
+    return redirect(url_for('blue_test.vf_finished'))
+
+@blue_test.route('/cmd_kickout', methods=['POST'])
+@viewfunclog
+def cmd_kickout():
+    logger_app.warn('click kickout button')
+    kickout_all()
     return redirect(url_for('blue_test.vf_finished'))
 
 @blue_test.route('/process_finished')
