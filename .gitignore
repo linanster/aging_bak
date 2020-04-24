@@ -5,6 +5,7 @@
 **/*.sqlite
 **/__pycache__
 venv
+venv.bak
 log/*
 scripts/raspbian.public.key*
 pub/excel/*

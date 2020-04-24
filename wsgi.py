@@ -1,6 +1,10 @@
 # coding:utf8
 #
 from app import create_app
+import sys
+
+print('==sys.version==',sys.version)
+print('==sys.executable==',sys.executable)
 
 application_ge_aging = create_app()
 
