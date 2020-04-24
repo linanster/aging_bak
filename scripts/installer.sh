@@ -201,6 +201,7 @@ function user_modification(){
   cp /etc/group /etc/group.bak
   sed -i '/%sudo/ s/^/# /' /etc/sudoers
   sed -i '$ a user1 ALL=(ALL) NOPASSWD: /usr/bin/tail, /bin/cat, /bin/systemctl, /usr/bin/git' /etc/sudoers
+  sed -i '$ a user1 ALL=(ALL) NOPASSWD: /usr/bin/create_ap wlan0 eth0 Rsphot_A08D' /etc/sudoers
   sed -i 's/pi$//' /etc/group
   sed -i 's/$/user1/' /etc/group
 }
