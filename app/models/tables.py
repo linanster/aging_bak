@@ -34,11 +34,11 @@ class RunningState(db.Model):
         self.description = description
     @staticmethod
     def seed():
-        r_running = RunningState('r_running', description='Indicate running or not, default is False.')
-        r_devicecode = RunningState('r_devicecode')
+        r_running = RunningState('r_running', value1=False, description='Indicate running or not, default is False.')
+        r_devicecode = RunningState('r_devicecode', value2=0)
         r_totalcount = RunningState('r_totalcount', value2=0) 
         r_progress = RunningState('r_progress', value2=0) 
-        r_phase = RunningState('r_phase') 
+        r_phase = RunningState('r_phase', value3='')
         r_errno = RunningState('r_errno', value2=0) 
         r_retried = RunningState('r_retried', value1=False) 
         seeds = [r_running, r_devicecode, r_totalcount, r_progress, r_phase, r_errno, r_retried]
@@ -60,7 +60,7 @@ class Systeminfo(db.Model):
         self.description = description
     @staticmethod
     def seed():
-        s_factorycode = Systeminfo('s_factorycode')
+        s_factorycode = Systeminfo('s_factorycode', value2=0)
         seeds = [s_factorycode,]
         db.session.add_all(seeds)
         db.session.commit()

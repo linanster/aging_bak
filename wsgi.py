@@ -9,7 +9,10 @@ def devicecode():
     from app.lib import get_devicecode
     from app.models import Device
     code = get_devicecode()
-    name = Device.query.filter_by(code=code).first().name
+    if code == 0:
+        name = "未知"
+    else:
+        name = Device.query.filter_by(code=code).first().name
     return name
 
 @application_ge_aging.template_global('totalcount')
