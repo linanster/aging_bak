@@ -140,6 +140,7 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
+alias glog='git log --oneline -10 --graph'
 # my_custom_end
 eof
 
