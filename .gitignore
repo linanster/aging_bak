@@ -8,6 +8,7 @@ venv
 venv.bak
 log/*
 scripts/raspbian.public.key*
+scripts/get-pip.py*
 pub/excel/*
 go
 app/fcode.py
