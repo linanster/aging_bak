@@ -60,7 +60,20 @@ function install_python3(){
       return 1
     fi
   fi
-  apt install python3.6 python3.6-dev python3-pip
+  green "okay, will install python3.6.8. It's really really diffcult but i can make do with it"
+  echo
+  sleep 3
+  green "1. apt install python3.6 packages"
+  apt install libpython3.6 libpython3.6-dev libpython3.6-minimal libpython3.6-stdlib python3.6 python3.6-dev python3.6-minimal python3.6-doc binfmt-support python3.6-venv
+  green "2. wget https://bootstrap.pypa.io/get-pip.py"
+  wget https://bootstrap.pypa.io/get-pip.py
+  green "3. copy distutils from native python3.7.3 to new installed python3.6.8"
+  apt install python3-distutils
+  cp -r /usr/lib/python3.7/distutils/ /usr/lib/python3.6/
+  green "4. install pip for python3.6"
+  python3.6 get-pip.py
+  sleep 1
+  green "$(pip3 --version)"
 }
 
 function install_mariadb(){
@@ -140,7 +153,7 @@ eof
   sed -i '/^StrictModes/ s/^/# /' /etc/ssh/sshd_config
   sed -i '/StrictModes/ a StrictModes no' /etc/ssh/sshd_config
   systemctl enable ssh.service
-  systemctl restrat ssh.service
+  systemctl restart ssh.service
 
   # 4. set up git client
   git config --global user.name linan
@@ -236,7 +249,8 @@ function option7(){
   green "option7 done!"
 }
 function option8(){
-  user_modification
+  # user_modification
+  echo "do nothing"
   green "option8 done!"
 }
 function option9(){
