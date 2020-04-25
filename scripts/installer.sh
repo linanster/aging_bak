@@ -249,8 +249,7 @@ function option7(){
   green "option7 done!"
 }
 function option8(){
-  # user_modification
-  echo "do nothing"
+  user_modification
   green "option8 done!"
 }
 function option9(){
