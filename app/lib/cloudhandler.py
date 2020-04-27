@@ -13,7 +13,8 @@ from .mylogger import logger_cloud
 def _check_cloud_connection():
     method = 'GET'
     ############################################
-    url = "http://10.30.30.101:8000/ping"
+    # url = "http://10.30.30.101:8000/ping"
+    url = "http://47.101.215.138:8000/ping"
     ############################################
     headers = {}
     payload = {}
@@ -69,7 +70,8 @@ def upload_to_cloud():
         # 3. send message via http post method
         method = 'POST'
         ############################################
-        url = "http://10.30.30.101:8000/upload"
+        # url = "http://10.30.30.101:8000/upload"
+        url = "http://47.101.215.138:8000/upload"
         ############################################
         headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
         payload = json.dumps(request_msg)
