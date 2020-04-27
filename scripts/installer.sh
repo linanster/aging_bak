@@ -66,7 +66,7 @@ function install_python3(){
   green "1. apt install python3.6 packages"
   apt install libpython3.6 libpython3.6-dev libpython3.6-minimal libpython3.6-stdlib python3.6 python3.6-dev python3.6-minimal python3.6-doc binfmt-support python3.6-venv
   green "2. wget https://bootstrap.pypa.io/get-pip.py"
-  wget https://bootstrap.pypa.io/get-pip.py
+  # wget https://bootstrap.pypa.io/get-pip.py
   green "3. copy distutils from native python3.7.3 to new installed python3.6.8"
   apt install python3-distutils
   cp -r /usr/lib/python3.7/distutils/ /usr/lib/python3.6/
