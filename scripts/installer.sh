@@ -54,6 +54,7 @@ function conf_apt(){
 }
 
 function install_python3(){
+  cd "${scriptdir}"
   if python3 --version &> /dev/null; then
     read -p "$(python3 --version) already installed, proceed anyway(Y/n)? " opt
     if [ "$opt" == "n" ]; then
@@ -106,6 +107,7 @@ function init_mariadb_config(){
 }
 
 function init_mariadb_db(){
+  cd "${scriptdir}"
   read -p "Initialize ge database (Note that this will empty your data, Y/n)?" opt
   if [ 'n' == "$opt" ]; then
     return 1
@@ -122,6 +124,7 @@ function init_mariadb_db(){
 }
 
 function git_clone(){
+  cd "${topdir}"
   git clone https://github.com/linanster/aging.git
 }
 
