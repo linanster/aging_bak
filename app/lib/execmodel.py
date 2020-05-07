@@ -1,4 +1,4 @@
-from app.models import db, Testdata, TestdataArchive
+from app.models import db_mysql, Testdata, TestdataArchive
 
 def testdatas_archive():
     testdatas_list = Testdata.query.all()
@@ -26,8 +26,8 @@ def testdatas_archive():
         reserve_bool_1 = item.reserve_bool_1
         obj = TestdataArchive(devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_uploaded, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime, reserve_int_1, reserve_str_1, reserve_bool_1)
         testdatasarchive_list.append(obj)
-    db.session.add_all(testdatasarchive_list)
-    db.session.commit()
+    db_mysql.session.add_all(testdatasarchive_list)
+    db_mysql.session.commit()
 
 def testdata_upload():
     pass

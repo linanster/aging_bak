@@ -1,81 +1,24 @@
-from flask import Flask, request, flash, url_for, redirect, render_template
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 
-
-# 1 -- Leedarson
-# 2 -- Innotech
-# 3 -- Tonly
-# 4 -- Changhong
-# 5 -- Test
 from app.fcode import FCODE
 
 # 1. lasy init
-db = SQLAlchemy(use_native_unicode='utf8')
-
-
+db_mysql = SQLAlchemy(use_native_unicode='utf8')
 
 # 2. model definition
 
-class RunningState(db.Model):
-    __bind_key__ = 'sqlite'
-    __tablename__ = 'runningstates'
-    id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key=True)
-    key = db.Column(db.String(100))
-    value1 = db.Column(db.Boolean)
-    value2 = db.Column(db.Integer)
-    value3 = db.Column(db.String(100))
-    description = db.Column(db.String(100))
-    def __init__(self, key, value1=False, value2=-100, value3='', description=''):
-        self.key = key
-        self.value1 = value1
-        self.value2 = value2
-        self.value3 = value3
-        self.description = description
-    @staticmethod
-    def seed():
-        r_running = RunningState('r_running', value1=False, description='Indicate running or not, default is False.')
-        r_devicecode = RunningState('r_devicecode', value2=0)
-        r_totalcount = RunningState('r_totalcount', value2=0) 
-        r_progress = RunningState('r_progress', value2=0) 
-        r_phase = RunningState('r_phase', value3='')
-        r_errno = RunningState('r_errno', value2=0) 
-        r_retried = RunningState('r_retried', value1=False) 
-        seeds = [r_running, r_devicecode, r_totalcount, r_progress, r_phase, r_errno, r_retried]
-        db.session.add_all(seeds)
-        db.session.commit()
 
-class Systeminfo(db.Model):
-    __bind_key__ = 'sqlite'
-    __tablename__ = 'systeminfo'
-    id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key=True)
-    key = db.Column(db.String(100))
-    value1 = db.Column(db.Boolean)
-    value2 = db.Column(db.Integer)
-    description = db.Column(db.String(100))
-    def __init__(self, key, value1=False, value2=-100, description=''):
-        self.key = key
-        self.value1 = value1
-        self.value2 = value2
-        self.description = description
-    @staticmethod
-    def seed():
-        s_factorycode = Systeminfo('s_factorycode', value2=0)
-        seeds = [s_factorycode,]
-        db.session.add_all(seeds)
-        db.session.commit()
-
-
-class Factory(db.Model):
+class Factory(db_mysql.Model):
     __bind_key__ = 'mysql'
     __tablename__ = 'factories'
-    id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
-    code = db.Column(db.Integer, nullable=False, unique=True)
-    name = db.Column(db.String(100), unique=True, nullable=False)
-    description = db.Column(db.Text)
-    devices = db.relationship('Device', backref='factory')
-    testdatas = db.relationship('Testdata', backref='factory')
-    testdatasarchive = db.relationship('TestdataArchive', backref='factory')
+    id = db_mysql.Column(db_mysql.Integer, nullable=False, autoincrement=True, primary_key = True)
+    code = db_mysql.Column(db_mysql.Integer, nullable=False, unique=True)
+    name = db_mysql.Column(db_mysql.String(100), unique=True, nullable=False)
+    description = db_mysql.Column(db_mysql.Text)
+    devices = db_mysql.relationship('Device', backref='factory')
+    testdatas = db_mysql.relationship('Testdata', backref='factory')
+    testdatasarchive = db_mysql.relationship('TestdataArchive', backref='factory')
     def __init__(self, code, name, description=''):
         self.code = code
         self.name = name
@@ -87,22 +30,22 @@ class Factory(db.Model):
         f3 = Factory(3, 'Tonly', '通力')
         f4 = Factory(4, 'Changhong', '长虹')
         f5 = Factory(5, 'TestFactory', 'TestFactory')
-        db.session.add_all([f1, f2, f3, f4, f5])
-        db.session.commit()
+        db_mysql.session.add_all([f1, f2, f3, f4, f5])
+        db_mysql.session.commit()
 
 
-class Device(db.Model):
+class Device(db_mysql.Model):
     __bind_key__ = 'mysql'
     __tablename__ = 'devices'
-    id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
-    code = db.Column(db.Integer, nullable=False, unique=True)
-    name = db.Column('name', db.String(100), nullable=False)
-    code_hex = db.Column(db.String(10), nullable=False, unique=True)
-    # factorycode = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=False) 
-    factorycode = db.Column(db.Integer, db.ForeignKey(Factory.code), nullable=False) 
-    description = db.Column(db.Text, nullable=True)
-    testdatas = db.relationship('Testdata', backref='device')
-    testdatasarchive = db.relationship('TestdataArchive', backref='device')
+    id = db_mysql.Column(db_mysql.Integer, nullable=False, autoincrement=True, primary_key = True)
+    code = db_mysql.Column(db_mysql.Integer, nullable=False, unique=True)
+    name = db_mysql.Column('name', db_mysql.String(100), nullable=False)
+    code_hex = db_mysql.Column(db_mysql.String(10), nullable=False, unique=True)
+    # factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey('factories.code'), nullable=False) 
+    factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Factory.code), nullable=False) 
+    description = db_mysql.Column(db_mysql.Text, nullable=True)
+    testdatas = db_mysql.relationship('Testdata', backref='device')
+    testdatasarchive = db_mysql.relationship('TestdataArchive', backref='device')
     def __init__(self, code, code_hex, factorycode, name, description=''):
         self.code = code
         self.code_hex = code_hex
@@ -191,38 +134,38 @@ class Device(db.Model):
 
         devices_test = [d_test_255,]
 
-        db.session.add_all(devices_all)
-        db.session.add_all(devices_test)
-        db.session.commit()
+        db_mysql.session.add_all(devices_all)
+        db_mysql.session.add_all(devices_test)
+        db_mysql.session.commit()
 
 
 
-class Testdata(db.Model):
+class Testdata(db_mysql.Model):
     __bind_key__ = 'mysql'
     __tablename__ = 'testdatas'
-    id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
-    # devicecode = db.Column(db.Integer, db.ForeignKey('devices.code'), nullable=False)
-    # factorycode = db.Column(db.Integer, db.ForeignKey('factories.code'), nullable=True, server_default=str(FCODE)) 
-    devicecode = db.Column(db.Integer, db.ForeignKey(Device.code), nullable=False)
-    factorycode = db.Column(db.Integer, db.ForeignKey(Factory.code), nullable=True, server_default=str(FCODE)) 
-    fw_version = db.Column(db.String(20))
-    rssi_ble1 = db.Column(db.Integer)
-    rssi_ble2 = db.Column(db.Integer)
-    rssi_wifi1 = db.Column(db.Integer)
-    rssi_wifi2 = db.Column(db.Integer)
-    mac_ble = db.Column(db.String(18))
-    mac_wifi = db.Column(db.String(18))
-    status_cmd_check1 = db.Column(db.Integer, nullable=True)
-    status_cmd_check2 = db.Column(db.Integer, nullable=True)
-    bool_uploaded = db.Column(db.Boolean, server_default=str(0))
-    bool_qualified_signal = db.Column(db.Boolean)
-    bool_qualified_check = db.Column(db.Boolean)
-    bool_qualified_scan = db.Column(db.Boolean)
-    bool_qualified_deviceid = db.Column(db.Boolean)
-    datetime = db.Column(db.DateTime, default=datetime.datetime.now())
-    reserve_int_1 = db.Column(db.Integer, nullable=True, server_default=str(0))
-    reserve_str_1 = db.Column(db.String(100), nullable=True, server_default=str(''))
-    reserve_bool_1 = db.Column(db.Boolean, nullable=True, server_default=str(0))
+    id = db_mysql.Column(db_mysql.Integer, nullable=False, autoincrement=True, primary_key = True)
+    # devicecode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey('devices.code'), nullable=False)
+    # factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey('factories.code'), nullable=True, server_default=str(FCODE)) 
+    devicecode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Device.code), nullable=False)
+    factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Factory.code), nullable=True, server_default=str(FCODE)) 
+    fw_version = db_mysql.Column(db_mysql.String(20))
+    rssi_ble1 = db_mysql.Column(db_mysql.Integer)
+    rssi_ble2 = db_mysql.Column(db_mysql.Integer)
+    rssi_wifi1 = db_mysql.Column(db_mysql.Integer)
+    rssi_wifi2 = db_mysql.Column(db_mysql.Integer)
+    mac_ble = db_mysql.Column(db_mysql.String(18))
+    mac_wifi = db_mysql.Column(db_mysql.String(18))
+    status_cmd_check1 = db_mysql.Column(db_mysql.Integer, nullable=True)
+    status_cmd_check2 = db_mysql.Column(db_mysql.Integer, nullable=True)
+    bool_uploaded = db_mysql.Column(db_mysql.Boolean, server_default=str(0))
+    bool_qualified_signal = db_mysql.Column(db_mysql.Boolean)
+    bool_qualified_check = db_mysql.Column(db_mysql.Boolean)
+    bool_qualified_scan = db_mysql.Column(db_mysql.Boolean)
+    bool_qualified_deviceid = db_mysql.Column(db_mysql.Boolean)
+    datetime = db_mysql.Column(db_mysql.DateTime, default=datetime.datetime.now())
+    reserve_int_1 = db_mysql.Column(db_mysql.Integer, nullable=True, server_default=str(0))
+    reserve_str_1 = db_mysql.Column(db_mysql.String(100), nullable=True, server_default=str(''))
+    reserve_bool_1 = db_mysql.Column(db_mysql.Boolean, nullable=True, server_default=str(0))
     def __init__(self, devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_uploaded, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime):
         self.devicecode = devicecode
         self.factorycode = factorycode
@@ -247,31 +190,31 @@ class Testdata(db.Model):
         pass
 
 
-class TestdataArchive(db.Model):
+class TestdataArchive(db_mysql.Model):
     __bind_key__ = 'mysql'
     __tablename__ = 'testdatasarchive'
-    id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key = True)
-    devicecode = db.Column(db.Integer, db.ForeignKey(Device.code), nullable=False)
-    # factorycode = db.Column(db.Integer, db.ForeignKey(Factory.code), nullable=True, server_default=str(FCODE)) 
-    factorycode = db.Column(db.Integer, db.ForeignKey(Factory.code), nullable=True) 
-    fw_version = db.Column(db.String(20))
-    rssi_ble1 = db.Column(db.Integer)
-    rssi_ble2 = db.Column(db.Integer)
-    rssi_wifi1 = db.Column(db.Integer)
-    rssi_wifi2 = db.Column(db.Integer)
-    mac_ble = db.Column(db.String(18))
-    mac_wifi = db.Column(db.String(18))
-    status_cmd_check1 = db.Column(db.Integer)
-    status_cmd_check2 = db.Column(db.Integer)
-    bool_uploaded = db.Column(db.Boolean)
-    bool_qualified_signal = db.Column(db.Boolean)
-    bool_qualified_check = db.Column(db.Boolean)
-    bool_qualified_scan = db.Column(db.Boolean)
-    bool_qualified_deviceid = db.Column(db.Boolean)
-    datetime = db.Column(db.DateTime, default=datetime.datetime.now())
-    reserve_int_1 = db.Column(db.Integer, nullable=True, server_default=str(0))
-    reserve_str_1 = db.Column(db.String(100), nullable=True, server_default=str(''))
-    reserve_bool_1 = db.Column(db.Boolean, nullable=True, server_default=str(0))
+    id = db_mysql.Column(db_mysql.Integer, nullable=False, autoincrement=True, primary_key = True)
+    devicecode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Device.code), nullable=False)
+    # factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Factory.code), nullable=True, server_default=str(FCODE)) 
+    factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Factory.code), nullable=True) 
+    fw_version = db_mysql.Column(db_mysql.String(20))
+    rssi_ble1 = db_mysql.Column(db_mysql.Integer)
+    rssi_ble2 = db_mysql.Column(db_mysql.Integer)
+    rssi_wifi1 = db_mysql.Column(db_mysql.Integer)
+    rssi_wifi2 = db_mysql.Column(db_mysql.Integer)
+    mac_ble = db_mysql.Column(db_mysql.String(18))
+    mac_wifi = db_mysql.Column(db_mysql.String(18))
+    status_cmd_check1 = db_mysql.Column(db_mysql.Integer)
+    status_cmd_check2 = db_mysql.Column(db_mysql.Integer)
+    bool_uploaded = db_mysql.Column(db_mysql.Boolean)
+    bool_qualified_signal = db_mysql.Column(db_mysql.Boolean)
+    bool_qualified_check = db_mysql.Column(db_mysql.Boolean)
+    bool_qualified_scan = db_mysql.Column(db_mysql.Boolean)
+    bool_qualified_deviceid = db_mysql.Column(db_mysql.Boolean)
+    datetime = db_mysql.Column(db_mysql.DateTime, default=datetime.datetime.now())
+    reserve_int_1 = db_mysql.Column(db_mysql.Integer, nullable=True, server_default=str(0))
+    reserve_str_1 = db_mysql.Column(db_mysql.String(100), nullable=True, server_default=str(''))
+    reserve_bool_1 = db_mysql.Column(db_mysql.Boolean, nullable=True, server_default=str(0))
     def __init__(self, devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_uploaded, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime, reserve_int_1, reserve_str_1, reserve_bool_1):
         self.devicecode = devicecode
         self.factorycode = factorycode
@@ -293,3 +236,4 @@ class TestdataArchive(db.Model):
         self.reserve_int_1 = reserve_int_1
         self.reserve_str_1 = reserve_str_1
         self.reserve_bool_1 = reserve_bool_1
+

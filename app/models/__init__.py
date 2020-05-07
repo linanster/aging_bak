@@ -1,9 +1,12 @@
-from .tables import db
-from .tables import RunningState, Systeminfo
-from .tables import Device, Factory, Testdata, TestdataArchive
-
+# from .tables import db
+# from .tables import RunningState, Systeminfo
+# from .tables import Device, Factory, Testdata, TestdataArchive
 # from .views import view, TestdataView, TestdataArchiveView
+from .sqlite import db_sqlite, RunningState, Systeminfo
+from .mysql import db_mysql, Device, Factory, Testdata, TestdataArchive
 
 def init_models(app):
-    db.init_app(app)
-    db.reflect(app=app)
+    db_sqlite.init_app(app)
+    db_mysql.init_app(app)
+    db_sqlite.reflect(app=app)
+    db_mysql.reflect(app=app)

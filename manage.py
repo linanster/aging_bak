@@ -15,8 +15,8 @@ def hello():
 
 @manager.command
 def init():
-    from app.models import db, Systeminfo, RunningState
-    db.create_all(bind='sqlite')
+    from app.models import db_sqlite, Systeminfo, RunningState
+    db_sqlite.create_all(bind='sqlite')
     Systeminfo.seed()
     RunningState.seed()
     from app.lib import set_factorycode
@@ -25,20 +25,20 @@ def init():
 
 @manager.command
 def uninit():
-    from app.models import db
-    db.drop_all(bind='sqlite')
+    from app.models import db_sqlite
+    db_sqlite.drop_all(bind='sqlite')
 
 @manager.command
 def createdb():
-    from app.models import db, Device, Factory
-    db.create_all(bind='mysql')
+    from app.models import db_mysql, Device, Factory
+    db_mysql.create_all(bind='mysql')
     Factory.seed()
     Device.seed()
 
 @manager.command
 def deletedb():
-    from app.models import db
-    db.drop_all(bind='mysql')
+    from app.models import db_mysql
+    db_mysql.drop_all(bind='mysql')
 
 @manager.option('--fcode', dest="code")
 def setfcode(code):

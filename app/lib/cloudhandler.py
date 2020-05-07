@@ -4,7 +4,7 @@ import time
 import datetime
 import requests
 
-from app.models import db, Testdata, TestdataArchive
+from app.models import db_mysql, Testdata, TestdataArchive
 
 from app.myglobal import RETENTION
 
@@ -100,14 +100,14 @@ def upload_to_cloud():
     try:
         for item in datas_raw:
             item.bool_uploaded = True
-            db.session.add(item)
+            db_mysql.session.add(item)
     except Exception as e:
-        db.session.rollback()
+        db_mysql.session.rollback()
         logger_cloud.error('upload_to_cloud: exception when updating database field bool_uploaded')
         logger_cloud.error(str(e))
         return 4
     else:
-        db.session.commit()
+        db_mysql.session.commit()
         logger_cloud.info('upload_to_cloud: success(count: {})'.format(len(datas_raw)))
         return 0
 
@@ -127,15 +127,15 @@ def purge_local_archive():
             # (b)test convenience
             # day_range = (d_now - d_item).seconds
             if day_range > RETENTION:
-                db.session.delete(item)
+                db_mysql.session.delete(item)
                 count += 1
     except Exception as e:
-        db.session.rollback()
+        db_mysql.session.rollback()
         logger_cloud.error('purge_local_archive: exception')
         logger_cloud.error(str(e))
         return 1
     else:
-        db.session.commit()
+        db_mysql.session.commit()
         logger_cloud.info('purge_local_archive: success(count: {})'.format(count))
         return 0
     

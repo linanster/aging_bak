@@ -5,7 +5,7 @@ import os
 import stat
 from werkzeug.utils import secure_filename
 
-from app.models import db, Device, Factory, TestdataArchive
+from app.models import Device, Factory, TestdataArchive
 from app.lib import testdatasarchive_cleanup
 
 from app.lib import get_factorycode

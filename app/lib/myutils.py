@@ -2,15 +2,15 @@ import xlwt
 import os
 import datetime
 
-from app.models import db, Testdata, TestdataArchive
+from app.models import db_mysql, Testdata, TestdataArchive
 # from app.myglobal import topdir
 
 
 def gen_excel(tableclass, filename):
     # 1.prepare table heads
-    # heads_raw = db.metadata.tables.get('testdatas').c
+    # heads_raw = db_mysql.metadata.tables.get('testdatas').c
     tablename = tableclass.__tablename__
-    heads_raw = db.metadata.tables.get(tablename).c
+    heads_raw = db_mysql.metadata.tables.get(tablename).c
     heads = list()
     for item in heads_raw:
         # heads.append(str(item).replace('testdatas.','',1))
