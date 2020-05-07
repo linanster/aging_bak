@@ -86,7 +86,7 @@ class Factory(db.Model):
         f2 = Factory(2, 'Innotech', 'Smart LED Light Bulbs')
         f3 = Factory(3, 'Tonly', '通力')
         f4 = Factory(4, 'Changhong', '长虹')
-        f5 = Factory(5, 'Test', 'Test')
+        f5 = Factory(5, 'TestFactory', 'TestFactory')
         db.session.add_all([f1, f2, f3, f4, f5])
         db.session.commit()
 
@@ -150,8 +150,7 @@ class Device(db.Model):
         d_changhong_66 = Device(66, '0x42', 4, 'Indoor Plug GEN2(Ox42)')
 
         # todo
-        d_test_5 = Device(5, '0x05', 5, 'Test1')
-        d_test_6 = Device(6, '0x06', 5, 'Test2')
+        d_test_255 = Device(6, '0xFF', 5, 'TestDevice_255')
 
         devices_all = [
             d_leedarson_09,
@@ -190,7 +189,7 @@ class Device(db.Model):
             d_changhong_66
         ]
 
-        devices_test = [d_test_5, d_test_6]
+        devices_test = [d_test_255,]
 
         db.session.add_all(devices_all)
         db.session.add_all(devices_test)
@@ -213,12 +212,18 @@ class Testdata(db.Model):
     rssi_wifi2 = db.Column(db.Integer)
     mac_ble = db.Column(db.String(18))
     mac_wifi = db.Column(db.String(18))
-    is_qualified = db.Column(db.Boolean)
-    is_sync = db.Column(db.Boolean)
-    datetime = db.Column(db.DateTime, default=datetime.datetime.now())
     status_cmd_check1 = db.Column(db.Integer, nullable=True)
     status_cmd_check2 = db.Column(db.Integer, nullable=True)
-    def __init__(self, devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, is_qualified, is_sync, datetime, status_cmd_check1, status_cmd_check2):
+    bool_uploaded = db.Column(db.Boolean, server_default=str(0))
+    bool_qualified_signal = db.Column(db.Boolean)
+    bool_qualified_check = db.Column(db.Boolean)
+    bool_qualified_scan = db.Column(db.Boolean)
+    bool_qualified_deviceid = db.Column(db.Boolean)
+    datetime = db.Column(db.DateTime, default=datetime.datetime.now())
+    reserve_int_1 = db.Column(db.Integer, nullable=True, server_default=str(0))
+    reserve_str_1 = db.Column(db.String(100), nullable=True, server_default=str(''))
+    reserve_bool_1 = db.Column(db.Boolean, nullable=True, server_default=str(0))
+    def __init__(self, devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_uploaded, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime):
         self.devicecode = devicecode
         self.factorycode = factorycode
         self.fw_version = fw_version
@@ -228,11 +233,15 @@ class Testdata(db.Model):
         self.rssi_wifi2 = rssi_wifi2
         self.mac_ble = mac_ble
         self.mac_wifi = mac_wifi
-        self.is_qualified = is_qualified
-        self.is_sync = is_sync
         self.datetime = datetime
         self.status_cmd_check1 = status_cmd_check1
         self.status_cmd_check2 = status_cmd_check2
+        self.bool_uploaded = bool_uploaded
+        self.bool_qualified_signal = bool_qualified_signal
+        self.bool_qualified_check = bool_qualified_check
+        self.bool_qualified_scan = bool_qualified_scan
+        self.bool_qualified_deviceid = bool_qualified_deviceid
+        self.datetime = datetime
     @staticmethod
     def seed():
         pass
@@ -252,12 +261,18 @@ class TestdataArchive(db.Model):
     rssi_wifi2 = db.Column(db.Integer)
     mac_ble = db.Column(db.String(18))
     mac_wifi = db.Column(db.String(18))
-    is_qualified = db.Column(db.Boolean)
-    is_sync = db.Column(db.Boolean)
+    status_cmd_check1 = db.Column(db.Integer)
+    status_cmd_check2 = db.Column(db.Integer)
+    bool_uploaded = db.Column(db.Boolean)
+    bool_qualified_signal = db.Column(db.Boolean)
+    bool_qualified_check = db.Column(db.Boolean)
+    bool_qualified_scan = db.Column(db.Boolean)
+    bool_qualified_deviceid = db.Column(db.Boolean)
     datetime = db.Column(db.DateTime, default=datetime.datetime.now())
-    status_cmd_check1 = db.Column(db.Integer, nullable=True)
-    status_cmd_check2 = db.Column(db.Integer, nullable=True)
-    def __init__(self, devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, is_qualified, is_sync, datetime, status_cmd_check1, status_cmd_check2):
+    reserve_int_1 = db.Column(db.Integer, nullable=True, server_default=str(0))
+    reserve_str_1 = db.Column(db.String(100), nullable=True, server_default=str(''))
+    reserve_bool_1 = db.Column(db.Boolean, nullable=True, server_default=str(0))
+    def __init__(self, devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_uploaded, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime, reserve_int_1, reserve_str_1, reserve_bool_1):
         self.devicecode = devicecode
         self.factorycode = factorycode
         self.fw_version = fw_version
@@ -267,8 +282,14 @@ class TestdataArchive(db.Model):
         self.rssi_wifi2 = rssi_wifi2
         self.mac_ble = mac_ble
         self.mac_wifi = mac_wifi
-        self.is_qualified = is_qualified
-        self.is_sync = is_sync
-        self.datetime = datetime
         self.status_cmd_check1 = status_cmd_check1
         self.status_cmd_check2 = status_cmd_check2
+        self.bool_uploaded = bool_uploaded
+        self.bool_qualified_signal = bool_qualified_signal
+        self.bool_qualified_check = bool_qualified_check
+        self.bool_qualified_scan = bool_qualified_scan
+        self.bool_qualified_deviceid = bool_qualified_deviceid
+        self.datetime = datetime
+        self.reserve_int_1 = reserve_int_1
+        self.reserve_str_1 = reserve_str_1
+        self.reserve_bool_1 = reserve_bool_1

@@ -8,7 +8,6 @@ usage=$"Usage: ble-backend
     -command=allon
     -command=alloff
     -command=allkickout
-    -command=bulb_cmd_set1
 \n"
 
 if [ $# -eq 0 ]; then
@@ -24,53 +23,28 @@ while [ $# -gt 0 ]; do
       ;;
     -command=starttest)
       echo "**$1 $2 $3**"
-      for i in {1..30}; do echo "hello, $i"; sleep 1; done
-      sleep 5
+      # for i in {1..30}; do echo "hello, $i"; sleep 1; done
+      sleep 3
       # act as failure
       # exit 1
       for i in {1..50}; do
-      mysql -p123456 -e "INSERT ge.testdatas(devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, is_qualified, is_sync, datetime, status_cmd_check1, status_cmd_check2) VALUES(13, 1, '3.1', -65, -65, -33, -33, 'f4:bc:da:70:4c:20', '010203040506', true, false, now(), 11111, 11111)"
+      mysql -p123456 -e "INSERT ge.testdatas(devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime) VALUES(13, 1, '3.1', -65, -65, -33, -33, 'f4:bc:da:70:4c:20', '010203040506', 11111, 11111, true, true, true, true, now())"
       if [ $i -eq 5 ]; then
-      mysql -p123456 -e "INSERT ge.testdatas(devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, is_qualified, is_sync, datetime, status_cmd_check1, status_cmd_check2) VALUES(13, 1, '3.1', -65, -65, -33, -33, 'f4:bc:da:70:4c:20', '010203040506', false, false, now(), 11111, 11111)"
-      mysql -p123456 -e "INSERT ge.testdatas(devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, is_qualified, is_sync, datetime, status_cmd_check1, status_cmd_check2) VALUES(13, 1, '3.1', -65, -65, -33, -33, 'f4:bc:da:70:4c:20', '010203040506', true, false, now(), 21111, 21111)"
-      mysql -p123456 -e "INSERT ge.testdatas(devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, is_qualified, is_sync, datetime, status_cmd_check1, status_cmd_check2) VALUES(13, 1, '3.1', -65, -65, -33, -33, 'f4:bc:da:70:4c:20', '010203040506', false, false, now(), 21111, 21111)"
+        mysql -p123456 -e "INSERT ge.testdatas(devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime) VALUES(13, 1, '3.1', -65, -65, -33, -33, 'f4:bc:da:70:4c:20', '010203040506', 21111, 21111, false, true, true, true, now())"
+        mysql -p123456 -e "INSERT ge.testdatas(devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime) VALUES(13, 1, '3.1', -65, -65, -33, -33, 'f4:bc:da:70:4c:20', '010203040506', 11111, 11111, true, false, true, true, now())"
+        mysql -p123456 -e "INSERT ge.testdatas(devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime) VALUES(13, 1, '3.1', -65, -65, -33, -33, 'f4:bc:da:70:4c:20', '010203040506', 11111, 11111, true, true, false, true, now())"
+        mysql -p123456 -e "INSERT ge.testdatas(devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime) VALUES(13, 1, '3.1', -65, -65, -33, -33, 'f4:bc:da:70:4c:20', '010203040506', 11111, 11111, true, true, true, false, now())"
       fi
       done
       sleep 5
       exit 0
       ;;
-    -command=allkickout)
+    -command=allon)
       echo "**$1**"
       sleep 5
       exit 0
       ;;
-    # --start)
-    -command=start)
-      echo "**$1**"
-      sleep 5
-      exit 0
-      ;;
-    # --changemesh)
-    -command=changemesh)
-      echo "**$1**"
-      sleep 5
-      exit 0
-      ;;
-    # --scan)
-    -command=scan)
-      echo "**$1 $2**"
-      for i in {1..100}; do
-      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime, status_cmd_check2) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:20', '010203040506', true, false, now(), 20111)"
-      if [ $i -eq 5 ]; then
-      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime, status_cmd_check2) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:21', '010203040506', false, false, now(), 20111)"
-      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime, status_cmd_check2) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:22', '010203040506', false, false, now(), 20111)"
-      mysql -p123456 -e "INSERT ge.testdatas(device_type, factory, fw_version, rssi_ble1, rssi_wifi1, mac_ble, mac_wifi, is_qualified, is_sync, datetime, status_cmd_check2) VALUES(13, 1, '3.1', -65, -33, 'f4:bc:da:70:4c:23', '010203040506', false, false, now(), 20111)"
-      fi
-      done
-      sleep 5
-      exit 0
-      ;;
-    -command=bulb_cmd_set1)
+    -command=alloff)
       echo "**$1**"
       sleep 5
       exit 0
@@ -89,16 +63,6 @@ while [ $# -gt 0 ]; do
       maclist=$(echo "$2" | awk -F= '{print $2}')
       echo "**$1 $2**"
       sleep 1
-      exit 0
-      ;;
-    -command=allon)
-      echo "**$1**"
-      sleep 5
-      exit 0
-      ;;
-    -command=alloff)
-      echo "**$1**"
-      sleep 5
       exit 0
       ;;
     -command=allkickout)

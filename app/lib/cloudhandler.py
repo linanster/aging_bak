@@ -42,7 +42,7 @@ def upload_to_cloud():
     try:
         # 1. fetch data from database
         # datas_raw = TestdataArchive.query.all()
-        datas_raw = TestdataArchive.query.filter_by(is_sync=False).all()
+        datas_raw = TestdataArchive.query.filter_by(bool_uploaded=False).all()
         datas_rdy = list()
         for item in datas_raw:
             entry = copy.deepcopy(item.__dict__)
@@ -51,9 +51,9 @@ def upload_to_cloud():
             datetime_obj = entry.get('datetime')
             datetime_str = datetime_obj.strftime('%Y-%m-%d %H:%M:%S')
             datetime_dict = {'datetime': datetime_str}
-            is_sync_dict = {'is_sync': True}
+            bool_uploaded_dict = {'bool_uploaded': True}
             entry.update(datetime_dict)
-            entry.update(is_sync_dict)
+            entry.update(bool_uploaded_dict)
             datas_rdy.append(entry)
     
         # 2. assemble api request message
@@ -99,11 +99,11 @@ def upload_to_cloud():
     # 7. save data entries into database
     try:
         for item in datas_raw:
-            item.is_sync = True
+            item.bool_uploaded = True
             db.session.add(item)
     except Exception as e:
         db.session.rollback()
-        logger_cloud.error('upload_to_cloud: exception when updating database field is_sync')
+        logger_cloud.error('upload_to_cloud: exception when updating database field bool_uploaded')
         logger_cloud.error(str(e))
         return 4
     else:
@@ -115,7 +115,7 @@ def upload_to_cloud():
 def purge_local_archive():
     logger_cloud.info('purge_local_archive: start')
     # items = TestdataArchive.query.all()
-    items = TestdataArchive.query.filter_by(is_sync=True).all()
+    items = TestdataArchive.query.filter_by(bool_uploaded=True).all()
     d_now = datetime.datetime.now()
     count = 0
     try:
