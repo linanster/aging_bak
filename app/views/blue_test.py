@@ -5,7 +5,7 @@ import datetime
 import os
 
 from app.models import Testdata, Factory
-from app.lib import start, blink_single, blink_all, blink_stop, turn_on_all, turn_off_all, kickout_all
+from app.lib import start, blink_single, blink_all, blink_stop, turn_on_all, turn_off_all, kickout_all, indicator_r, indicator_g, indicator_b
 from app.lib import watch_to_jump, watch_log
 from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state
 from app.lib import get_errno, get_running_state, get_factorycode
@@ -169,4 +169,25 @@ def cmd_download_testdatas():
     empty_folder(excelfolder)    
     gen_excel(Testdata, filename)
     return send_from_directory(excelfolder, excelname, as_attachment=True)
+
+@blue_test.route('/cmd_indicator_r', methods=['POST'])
+@viewfunclog
+def cmd_indicator_r():
+    logger_app.warn('click indicator_r button')
+    indicator_r()
+    return redirect(url_for('blue_test.vf_finished'))
+
+@blue_test.route('/cmd_indicator_g', methods=['POST'])
+@viewfunclog
+def cmd_indicator_g():
+    logger_app.warn('click indicator_g button')
+    indicator_g()
+    return redirect(url_for('blue_test.vf_finished'))
+
+@blue_test.route('/cmd_indicator_b', methods=['POST'])
+@viewfunclog
+def cmd_indicator_b():
+    logger_app.warn('click indicator_b button')
+    indicator_b()
+    return redirect(url_for('blue_test.vf_finished'))
 

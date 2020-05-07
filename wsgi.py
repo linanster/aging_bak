@@ -8,16 +8,15 @@ print('==sys.executable==',sys.executable)
 
 application_ge_aging = create_app()
 
+@application_ge_aging.template_global('devicename')
+def devicename():
+    from app.lib import get_devicename
+    return get_devicename()
+
 @application_ge_aging.template_global('devicecode')
 def devicecode():
     from app.lib import get_devicecode
-    from app.models import Device
-    code = get_devicecode()
-    if code == 0:
-        name = "未知"
-    else:
-        name = Device.query.filter_by(code=code).first().name
-    return name
+    return get_devicecode()
 
 @application_ge_aging.template_global('totalcount')
 def totalcount():

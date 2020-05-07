@@ -27,6 +27,18 @@
         <form style="display: inline" action="{{ url_for('blue_test.cmd_kickout') }}" method="post">
             <button type="submit" class="btn btn-danger" {% if results|count == 0 %}disabled{% endif %}>Kickout</button>
         </form>
+        {% if devicecode() in [67, 66] %}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <form style="display: inline" action="{{ url_for('blue_test.cmd_indicator_r') }}" method="post">
+                <button type="submit" class="btn btn-success" {% if results|count == 0 %}disabled{% endif %}>指示灯R</button>
+            </form>
+            <form style="display: inline" action="{{ url_for('blue_test.cmd_indicator_g') }}" method="post">
+                <button type="submit" class="btn btn-success" {% if results|count == 0 %}disabled{% endif %}>指示灯G</button>
+            </form>
+            <form style="display: inline" action="{{ url_for('blue_test.cmd_indicator_b') }}" method="post">
+                <button type="submit" class="btn btn-success" {% if results|count == 0 %}disabled{% endif %}>指示灯B</button>
+            </form>
+        {% endif %}
     </div>
 
 

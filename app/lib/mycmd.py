@@ -250,6 +250,14 @@ def kickout_all():
     logger_app.info('==kickout_all success==')
     return 0
 
+def indicator_r():
+    pass
+
+def indicator_g():
+    pass
+
+def indicator_b():
+    pass
 
 ######################
 ## legacy functions ##

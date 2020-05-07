@@ -1,4 +1,5 @@
-from app.models import db_sqlite,RunningState,Systeminfo
+from app.models import db_sqlite, RunningState, Systeminfo
+from app.models import db_mysql, Factory, Device
 
 def get_running_state():
     r = RunningState.query.filter_by(key='r_running').first()
@@ -34,6 +35,15 @@ def set_devicecode(num):
 def get_devicecode():
     r = RunningState.query.filter_by(key='r_devicecode').first()
     return r.value2
+
+def get_devicename():
+    code = get_devicecode()
+    if code == 0:
+        name = "未知"
+    else:
+        name = Device.query.filter_by(code=code).first().name
+    return name
+
 
 def set_totalcount(num):
     r = RunningState.query.filter_by(key='r_totalcount').first()
