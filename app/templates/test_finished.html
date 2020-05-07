@@ -93,10 +93,10 @@
                     <td>{{ result.rssi_wifi1 }}</td>
                     <td>{{ result.mac_ble }}</td>
                     <td>{{ result.mac_wifi }}</td>
-                    <td>{{ result.bool_qualified_signal }}</td>
-                    <td>{{ result.bool_qualified_check }}</td>
-                    <td>{{ result.bool_qualified_scan }}</td>
-                    <td>{{ result.bool_qualified_deviceid }}</td>
+                    <td>{{ result.bool_qualified_signal|parse_is_qualified }}</td>
+                    <td>{{ result.bool_qualified_check|parse_is_qualified }}</td>
+                    <td>{{ result.bool_qualified_scan|parse_is_qualified }}</td>
+                    <td>{{ result.bool_qualified_deviceid|parse_is_qualified }}</td>
                     <td>{{ result.datetime }}</td>
                     <td>
                         <form action="{{ url_for('blue_test.vf_cmd_blink_single') }}" method="post">
