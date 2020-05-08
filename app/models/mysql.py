@@ -25,11 +25,11 @@ class Factory(db_mysql.Model):
         self.description = description
     @staticmethod
     def seed():
-        f1 = Factory(1, 'Leedarson', '立达信')
-        f2 = Factory(2, 'Innotech', 'Smart LED Light Bulbs')
-        f3 = Factory(3, 'Tonly', '通力')
-        f4 = Factory(4, 'Changhong', '长虹')
-        f5 = Factory(5, 'TestFactory', 'TestFactory')
+        f1 = Factory(1, 'Leedarson', '')
+        f2 = Factory(2, 'Innotech', '')
+        f3 = Factory(3, 'Tonly', '')
+        f4 = Factory(4, 'Changhong', '')
+        f5 = Factory(5, 'TestFactory', '')
         db_mysql.session.add_all([f1, f2, f3, f4, f5])
         db_mysql.session.commit()
 
