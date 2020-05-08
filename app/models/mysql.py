@@ -93,7 +93,7 @@ class Device(db_mysql.Model):
         d_changhong_66 = Device(66, '0x42', 4, 'Indoor Plug GEN2(Ox42)')
 
         # todo
-        d_test_255 = Device(6, '0xFF', 5, 'TestDevice_255')
+        d_test_255 = Device(255, '0xFF', 5, 'TestDevice_255')
 
         devices_all = [
             d_leedarson_09,

@@ -251,13 +251,38 @@ def kickout_all():
     return 0
 
 def indicator_r():
-    pass
+    loop = 1
+    while 0 != _gosubprocess("./ble-backend -command=indrgb -color=1"):
+        # time.sleep(Timeout)
+        if loop==1:
+            logger_app.error('==indicator_r failed==') 
+            return -1
+        loop+=1
+    logger_app.info('==indicator_r success==')
+    return 0
 
 def indicator_g():
-    pass
+    loop = 1
+    while 0 != _gosubprocess("./ble-backend -command=indrgb -color=2"):
+        # time.sleep(Timeout)
+        if loop==1:
+            logger_app.error('==indicator_g failed==') 
+            return -1
+        loop+=1
+    logger_app.info('==indicator_g success==')
+    return 0
+
 
 def indicator_b():
-    pass
+    loop = 1
+    while 0 != _gosubprocess("./ble-backend -command=indrgb -color=3"):
+        # time.sleep(Timeout)
+        if loop==1:
+            logger_app.error('==indicator_b failed==') 
+            return -1
+        loop+=1
+    logger_app.info('==indicator_b success==')
+    return 0
 
 ######################
 ## legacy functions ##

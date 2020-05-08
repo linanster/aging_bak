@@ -8,6 +8,7 @@ usage=$"Usage: ble-backend
     -command=allon
     -command=alloff
     -command=allkickout
+    -command=indrgb -color=0/1/2/3
 \n"
 
 if [ $# -eq 0 ]; then
@@ -69,6 +70,28 @@ while [ $# -gt 0 ]; do
       echo "**$1**"
       sleep 5
       exit 0
+      ;;
+    -command=indrgb)
+      if [ "$2" == "-color=0" ]; then
+        echo "**$1 $2**"
+        sleep 1
+        exit 0
+      elif [ "$2" == "-color=1" ]; then
+        echo "**$1 $2**"
+        sleep 1
+        exit 0
+      elif [ "$2" == "-color=2" ]; then
+        echo "**$1 $2**"
+        sleep 1
+        exit 0
+      elif [ "$2" == "-color=3" ]; then
+        echo "**$1 $2**"
+        sleep 1
+        exit 0
+      else
+        echo "invalid parameter"
+        exit 1
+      fi
       ;;
     *)
       # continue
