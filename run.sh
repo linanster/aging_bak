@@ -26,6 +26,7 @@ function run_init(){
     virtualenv venv
     source ./venv/bin/activate
     pip3 install -r requirements.txt
+    # pip3 install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
     if [ $? -eq 0 ]; then
         echo "==init config complete=="
         exit 0
