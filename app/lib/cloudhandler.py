@@ -13,8 +13,8 @@ from .mylogger import logger_cloud
 def _check_cloud_connection():
     method = 'GET'
     ############################################
-    # url = "http://10.30.30.101:5001/ping"
-    url = "http://47.101.215.138:5001/ping"
+    # url = "http://10.30.30.101:5001/api/rasp/ping"
+    url = "http://47.101.215.138:5001/api/rasp/ping"
     ############################################
     headers = {}
     payload = {}
@@ -26,7 +26,8 @@ def _check_cloud_connection():
         logger_cloud.error(str(e))
         return False
     else:
-        if response.ok and response.text == 'pong':
+        # if response.ok and response.text == 'pong':
+        if response.ok and response.json().get('msg') == 'pong':
             return True
         else:
             return False
@@ -70,8 +71,8 @@ def upload_to_cloud():
         # 3. send message via http post method
         method = 'POST'
         ############################################
-        # url = "http://10.30.30.101:5001/upload"
-        url = "http://47.101.215.138:5001/upload"
+        # url = "http://10.30.30.101:5001/api/rasp/upload"
+        url = "http://47.101.215.138:5001/api/rasp/upload"
         ############################################
         headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
         payload = json.dumps(request_msg)
