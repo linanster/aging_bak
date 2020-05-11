@@ -13,8 +13,8 @@ from .mylogger import logger_cloud
 def _check_cloud_connection():
     method = 'GET'
     ############################################
-    # url = "http://10.30.30.101:5001/api/rasp/ping"
-    url = "http://47.101.215.138:5001/api/rasp/ping"
+    # url = "http://10.30.30.101:5001/api/basic/ping"
+    url = "http://47.101.215.138:5001/api/basic/ping"
     ############################################
     headers = {}
     payload = {}
@@ -74,7 +74,12 @@ def upload_to_cloud():
         # url = "http://10.30.30.101:5001/api/rasp/upload"
         url = "http://47.101.215.138:5001/api/rasp/upload"
         ############################################
-        headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
+        headers = {
+            'Authorization': 'Basic dXNlcjE6MTIzNDU2',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            # 'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
         payload = json.dumps(request_msg)
         
         # 4. send request
