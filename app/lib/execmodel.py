@@ -1,5 +1,13 @@
 from app.models import db_mysql, Testdata, TestdataArchive
 
+def testdatas_cleanup():
+    Testdata.query.delete()
+    db_mysql.session.commit()
+
+def testdatasarchive_cleanup():
+    TestdataArchive.query.delete()
+    db_mysql.session.commit()
+
 def testdatas_archive():
     testdatas_list = Testdata.query.all()
     testdatasarchive_list = list()
@@ -29,5 +37,3 @@ def testdatas_archive():
     db_mysql.session.add_all(testdatasarchive_list)
     db_mysql.session.commit()
 
-def testdata_upload():
-    pass

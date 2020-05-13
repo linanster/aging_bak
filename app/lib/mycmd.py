@@ -7,8 +7,10 @@ import os
 import subprocess
 import datetime
 
-from .execsql import testdatas_cleanup, get_running_state_sql
+from .execsql import get_running_state_sql
 from .execsql import get_retried_sql, set_retried_sql, reset_retried_sql
+
+from app.lib.execmodel import testdatas_cleanup
 
 from .tools import get_totalcount, get_devicecode
 from .tools import reset_progress, add_progress

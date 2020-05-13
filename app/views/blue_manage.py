@@ -6,7 +6,7 @@ import stat
 from werkzeug.utils import secure_filename
 
 from app.models import Device, Factory, TestdataArchive
-from app.lib import testdatasarchive_cleanup
+from app.lib.execmodel import testdatasarchive_cleanup
 
 from app.lib import get_factorycode
 from app.lib import viewfunclog, logger_app
