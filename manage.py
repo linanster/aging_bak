@@ -4,6 +4,8 @@ import sys
 from flask_script import Manager
 
 from app import create_app
+from app.models.mysql import db_mysql, Device, Factory, Testdata, TestdataArchive
+from app.models.sqlite import db_sqlite, Systeminfo, RunningState
 
 app = create_app()
 
@@ -14,31 +16,50 @@ def hello():
     print('Hello, Manager Command!')
 
 @manager.command
-def init():
-    from app.models import db_sqlite, Systeminfo, RunningState
-    db_sqlite.create_all(bind='sqlite')
-    Systeminfo.seed()
-    RunningState.seed()
+def createdb_sqlite(init=False):
+    from app.lib import set_factorycode
+    from app.fcode import FCODE
+    if init:
+        Systeminfo.seed()
+        RunningState.seed()
+        set_factorycode(FCODE)
+    else:
+        db_sqlite.create_all(bind='sqlite')
+
+@manager.command
+def deletedb_sqlite(uninit=False):
+    if uninit:
+       Systeminfo.query.delete()
+       RunningState.query.delete()
+       db_sqlite.session.commit()
+    else:
+        db_sqlite.drop_all(bind='sqlite')
+
+@manager.command
+def createdb_mysql(init=False):
+    if init:
+        Factory.seed()
+        Device.seed()
+    else:
+        db_mysql.create_all(bind='mysql')
+
+@manager.command
+def deletedb_mysql(uninit=False):
+    if uninit:
+        TestdataArchive.query.delete()
+        Testdata.query.delete()
+        Device.query.delete()
+        Factory.query.delete()
+        db_mysql.session.commit()
+    else:
+        db_mysql.drop_all(bind='mysql')
+
+@manager.command
+def updatefcode():
     from app.lib import set_factorycode
     from app.fcode import FCODE
     set_factorycode(FCODE)
 
-@manager.command
-def uninit():
-    from app.models import db_sqlite
-    db_sqlite.drop_all(bind='sqlite')
-
-@manager.command
-def createdb():
-    from app.models import db_mysql, Device, Factory
-    db_mysql.create_all(bind='mysql')
-    Factory.seed()
-    Device.seed()
-
-@manager.command
-def deletedb():
-    from app.models import db_mysql
-    db_mysql.drop_all(bind='mysql')
 
 @manager.option('--fcode', dest="code")
 def setfcode(code):
