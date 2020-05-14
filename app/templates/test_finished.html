@@ -55,6 +55,7 @@
 
 
     <table class="table table-striped table-hover ">
+        <!--
         <thead>
         <tr>
             <th rowspan="2">#</th>
@@ -78,6 +79,8 @@
             <th>版本检测</th>
         </tr>
         </thead>
+        -->
+        {% include '_thead.html' %}
         <tbody>
         {% for result in results %}
             {% if not result.bool_qualified_signal or not result.bool_qualified_check or not result.bool_qualified_scan or not result.bool_qualified_deviceid or not result.reserve_bool_1 %}
