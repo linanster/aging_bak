@@ -2,7 +2,8 @@
 
 {% block head %}
     {{ super() }}
-    <script src="{{ url_for('static',filename='validate.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static',filename='myvalidate.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static',filename='mycommon.js') }}" type="text/javascript"></script>
 {% endblock head %}
 
 
@@ -71,7 +72,9 @@
                             <option value={{ i }}>{{ i }}</option>
                         {% endfor %}
                     </select>
-                    <a href="{{ url_for('blue_test.vf_config_tips') }}" class="btn btn-link" target="配置项说明">说明</a>
+                    <!-- <a href="{{ url_for('blue_test.vf_tips_mcu') }}" class="btn btn-link" target="_blank">说明</a> -->
+                    <!-- <a onclick=openUrl("{{ url_for('blue_test.vf_tips_mcu') }}")>配置说明</a> -->
+                    <a href="#" onclick=openUrl("{{ url_for('blue_test.vf_tips_mcu') }}")>配置说明</a>
                     <br>
                 </div>
             </div>
@@ -82,16 +85,6 @@
                     <input type="text" class="form-control" id="fwversion" name="fwversion" placeholder="有效范围: 10000-99999">
                 </div>
             </div>  
-
-            <!--
-            <div class="form-group" style="width:50%">
-                <label for="totalcount" class="col-lg-2 control-label">MCU版本</label>
-                <div class="col-lg-10">
-                    <input type="text" class="form-control" id="mcuversion" name="mcuversion" placeholder="可选参数" style="display: inline">
-                    <a href="{{ url_for('blue_test.vf_config_tips') }}" class="btn btn-link" target="配置项说明">说明</a>
-                </div>
-            </div>  
-            -->
 
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">

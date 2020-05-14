@@ -40,10 +40,10 @@ def vf_config():
     
     return render_template('test_config.html', devices=devices)
 
-@blue_test.route('/config_tips')
+@blue_test.route('/tips_mcu')
 @viewfunclog
-def vf_config_tips():
-    return render_template('test_config_tips.html')
+def vf_tips_mcu():
+    return render_template('tips_test_mcu.html')
 
 
 @blue_test.route('/start')
