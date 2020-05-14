@@ -1,8 +1,13 @@
 {% extends '_mybase.html' %}
 
+{% block head %}
+    {{ super() }}
+    <script src="{{ url_for('static',filename='validate.js') }}" type="text/javascript"></script>
+{% endblock head %}
+
 
 {% block content %}
-    <form action="{{ url_for('blue_test.vf_cmd_saveconfig') }}" method="post" class="form-horizontal">
+    <form action="{{ url_for('blue_test.vf_cmd_saveconfig') }}" method="post" class="form-horizontal" onsubmit="return validate_form(this)">
         <fieldset>
             <legend>测试配置</legend>
             <!-- <div class="form-group" style="width:50%">
@@ -32,7 +37,7 @@
 
 
             <div class="form-group" style="width:50%">
-                <label for="devicecode" class="col-lg-2 control-label">设备类别</label>
+                <label for="devicecode" class="col-lg-2 control-label">设备类别(必选)</label>
                 <div class="col-lg-10">
                     <select class="form-control" id="devicecode" name="devicecode">
                         <option value="" style='display: none'>-</option>
@@ -45,7 +50,7 @@
             </div>
 
             <div class="form-group" style="width:50%">
-                <label for="totalcount" class="col-lg-2 control-label">设备数量</label>
+                <label for="totalcount" class="col-lg-2 control-label">设备数量(必选)</label>
                 <div class="col-lg-10">
                     <select class="form-control" id="totalcount" name="totalcount">
                         <option value="" style='display: none'>-</option>
@@ -58,7 +63,7 @@
             </div>
 
             <div class="form-group" style="width:50%">
-                <label for="mcuversion" class="col-lg-2 control-label">MCU版本</label>
+                <label for="mcuversion" class="col-lg-2 control-label">MCU版本(可选)</label>
                 <div class="col-lg-10">
                     <select class="form-control" id="mcuversion" name="mcuversion">
                         <option value="" style='display: none'>-</option>
@@ -72,9 +77,9 @@
             </div>
 
             <div class="form-group" style="width:50%">
-                <label for="totalcount" class="col-lg-2 control-label">固件版本</label>
+                <label for="totalcount" class="col-lg-2 control-label">固件版本(可选)</label>
                 <div class="col-lg-10">
-                    <input type="text" class="form-control" id="fwversion" name="fwversion" placeholder="可选参数">
+                    <input type="text" class="form-control" id="fwversion" name="fwversion" placeholder="有效范围: 10000-99999">
                 </div>
             </div>  
 

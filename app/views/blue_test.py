@@ -105,8 +105,6 @@ def vf_cmd_saveconfig():
     totalcount = request.form.get('totalcount', type=int)
     fwversion = request.form.get('fwversion', type=str)
     mcuversion = request.form.get('mcuversion', type=str)
-    print('==fwversion==', fwversion)
-    print('==mcuversion==', mcuversion)
     set_devicecode(devicecode) 
     set_totalcount(totalcount) 
     set_fwversion(fwversion)
