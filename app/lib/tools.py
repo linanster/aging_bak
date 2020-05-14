@@ -38,8 +38,11 @@ def get_devicecode():
 
 def get_devicename():
     code = get_devicecode()
-    if code == 0:
-        name = "未知"
+    # code:
+    # - 0: 初始化值
+    # - None: 在test_config中未设置
+    if code == 0 or code is None:
+        name = None
     else:
         name = Device.query.filter_by(code=code).first().name
     return name

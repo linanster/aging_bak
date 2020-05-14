@@ -91,10 +91,20 @@ def start():
     testdatas_cleanup()
     reset_errno()
     set_running_state()
-    totalcount = get_totalcount()
     devicecode = get_devicecode()
-    fwversion = get_fwversion()
+    totalcount = get_totalcount()
     mcuversion = get_mcuversion()
+    fwversion = get_fwversion()
+    logger_app.info('{devicecode: %s}' % devicecode)
+    logger_app.info('{totalcount: %s}' % totalcount)
+    logger_app.info('{mcuversion: %s}' % mcuversion)
+    logger_app.info('{fwversion: %s}' % fwversion)
+    # return, if either is not set by test_config setp
+    if totalcount is None or devicecode is None:
+        errno = 2
+        reset_running_state()
+        set_errno(errno)
+        return errno
     loop = 1
     # while loop <= 3:
     while loop <= 1:
