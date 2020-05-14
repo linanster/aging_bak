@@ -12,7 +12,7 @@ from .execsql import get_retried_sql, set_retried_sql, reset_retried_sql
 
 from app.lib.execmodel import testdatas_cleanup
 
-from .tools import get_totalcount, get_devicecode
+from .tools import get_totalcount, get_devicecode, get_fwversion, get_mcuversion
 from .tools import reset_progress, add_progress
 from .tools import reset_running_state, set_running_state, get_running_state
 from .tools import reset_phase, set_phase
@@ -91,10 +91,13 @@ def start():
     testdatas_cleanup()
     reset_errno()
     set_running_state()
-    num = get_totalcount()
+    totalcount = get_totalcount()
     devicecode = get_devicecode()
+    fwversion = get_fwversion()
+    mcuversion = get_mcuversion()
     loop = 1
-    while loop <= 3:
+    # while loop <= 3:
+    while loop <= 1:
         # METHOD-1
         # errno = subprocess.call("./ble-backend -command=starttest -totalcount={}".format(num), shell=True, cwd=gofolder)
 
@@ -121,7 +124,7 @@ def start():
         # p.stderr.close()        
 
         # METHOD-4
-        errno = _gosubprocess("./ble-backend -command=starttest -totalcount={} -deviceid={}".format(num, devicecode))
+        errno = _gosubprocess("./ble-backend -command=starttest -totalcount={} -deviceid={} -fwversion={} -mcuversion={}".format(totalcount, devicecode, fwversion, mcuversion))
 
         loop += 1
         if errno == 0:

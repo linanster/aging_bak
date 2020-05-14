@@ -40,7 +40,9 @@ class RunningState(db_sqlite.Model):
         r_phase = RunningState('r_phase', value3='')
         r_errno = RunningState('r_errno', value2=0) 
         r_retried = RunningState('r_retried', value1=False) 
-        seeds = [r_running, r_devicecode, r_totalcount, r_progress, r_phase, r_errno, r_retried]
+        r_fwversion = RunningState('r_fwversion', value3='noversion') 
+        r_mcuversion = RunningState('r_mcuversion', value3='noversion') 
+        seeds = [r_running, r_devicecode, r_totalcount, r_progress, r_phase, r_errno, r_retried, r_fwversion, r_mcuversion]
         db_sqlite.session.add_all(seeds)
         db_sqlite.session.commit()
 

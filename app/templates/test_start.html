@@ -3,33 +3,45 @@
 {% block content %}
     {{ super() }}
 
-    <form style="display: inline" id='start' action="{{ url_for('blue_test.vf_cmd_start') }}" method="post">
-        <button type="submit" class="btn btn-success">开始</button>
-    </form>
-    &nbsp;&nbsp;&nbsp;
     <div style="display: inline">
         <p style="display: inline"><strong>类型</strong>:</span> <span class="text-success"> {{ devicename() }}</p>
         &nbsp;&nbsp;&nbsp;
         <p style="display: inline"><strong>数量</strong>:</span> <span class="text-success"> {{ totalcount() }}</p>
+        &nbsp;&nbsp;&nbsp;
+        <p style="display: inline"><strong>固件版本</strong>:</span> <span class="text-success"> {{ fwversion() }}</p>
+        &nbsp;&nbsp;&nbsp;
+        <p style="display: inline"><strong>MCU版本</strong>:</span> <span class="text-success"> {{ mcuversion() }}</p>
     </div>
+
+    <hr>
+
+    <form style="display: inline" id='start' action="{{ url_for('blue_test.vf_cmd_start') }}" method="post">
+        <button type="submit" class="btn btn-success">开始</button>
+    </form>
+    &nbsp;&nbsp;&nbsp;
 
     <table class="table table-striped table-hover ">
         <thead>
         <tr>
-            <th>#</th>
+            <th rowspan="2">#</th>
+            <th rowspan="2">设备类型</th>
+            <th rowspan="2">工厂</th>
+            <th rowspan="2">固件版本</th>
+            <th rowspan="2">RSSI_BLE</th>
+            <th rowspan="2">RSSI_WIFI</th>
+            <th rowspan="2">MAC_BLE</th>
+            <th rowspan="2">MAC_WIFI</th>
+            <th rowspan="2">MCU</th>
+            <th colspan="5">检测结果</th>
+            <th rowspan="2">时间</th>
+            <th rowspan="2">控制</th>
+        </tr>
+        <tr>
+            <th>信号强度</th>
+            <th>组合指令</th>
+            <th>广播扫描</th>
             <th>设备类型</th>
-            <th>工厂</th>
-            <th>固件版本</th>
-            <th>RSSI_BLE</th>
-            <th>RSSI_WIFI</th>
-            <th>MAC_BLE</th>
-            <th>MAC_WIFI</th>
-            <th>信号强度检测</th>
-            <th>组合指令检测</th>
-            <th>广播扫描检测</th>
-            <th>设备类型检测</th>
-            <th>时间</th>
-            <th colspan="1">控制</th>
+            <th>版本检测</th>
         </tr>
         </thead>
         <tbody>

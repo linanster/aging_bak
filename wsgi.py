@@ -23,6 +23,16 @@ def totalcount():
     from app.lib import get_totalcount
     return get_totalcount()
 
+@application_ge_aging.template_global('fwversion')
+def fwversion():
+    from app.lib import get_fwversion
+    return get_fwversion()
+
+@application_ge_aging.template_global('mcuversion')
+def mcuversion():
+    from app.lib import get_mcuversion
+    return get_mcuversion()
+
 @application_ge_aging.template_global('progress')
 def progress():
     from app.lib import get_progress

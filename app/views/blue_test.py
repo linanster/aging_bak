@@ -7,7 +7,7 @@ import os
 from app.models import Testdata, Factory
 from app.lib import start, blink_single, blink_all, blink_stop, turn_on_all, turn_off_all, kickout_all, indicator_r, indicator_g, indicator_b
 from app.lib import watch_to_jump, watch_log
-from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state
+from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state, set_fwversion, set_mcuversion
 from app.lib import get_errno, get_running_state, get_factorycode
 from app.lib import testdatas_archive
 from app.lib import viewfunclog
@@ -39,6 +39,12 @@ def vf_config():
         devices = list()
     
     return render_template('test_config.html', devices=devices)
+
+@blue_test.route('/config_tips')
+@viewfunclog
+def vf_config_tips():
+    return render_template('test_config_tips.html')
+
 
 @blue_test.route('/start')
 @viewfunclog
@@ -97,9 +103,14 @@ def vf_cmd_saveconfig():
     # factorycode = request.form.get('factorycode')
     devicecode = request.form.get('devicecode', type=int)
     totalcount = request.form.get('totalcount', type=int)
-    # set_factorycode(factorycode)
+    fwversion = request.form.get('fwversion', type=str)
+    mcuversion = request.form.get('mcuversion', type=str)
+    print('==fwversion==', fwversion)
+    print('==mcuversion==', mcuversion)
     set_devicecode(devicecode) 
     set_totalcount(totalcount) 
+    set_fwversion(fwversion)
+    set_mcuversion(mcuversion)
     return redirect(url_for('blue_test.vf_start'))
 
 @blue_test.route('/cmd_blink_single', methods=['POST'])

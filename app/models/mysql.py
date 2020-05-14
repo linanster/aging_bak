@@ -166,7 +166,7 @@ class Testdata(db_mysql.Model):
     reserve_int_1 = db_mysql.Column(db_mysql.Integer, nullable=True, server_default=str(0))
     reserve_str_1 = db_mysql.Column(db_mysql.String(100), nullable=True, server_default=str(''))
     reserve_bool_1 = db_mysql.Column(db_mysql.Boolean, nullable=True, server_default=str(0))
-    def __init__(self, devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_uploaded, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime):
+    def __init__(self, devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_uploaded, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime, reserve_str_1, reserve_bool_1):
         self.devicecode = devicecode
         self.factorycode = factorycode
         self.fw_version = fw_version
@@ -185,6 +185,8 @@ class Testdata(db_mysql.Model):
         self.bool_qualified_scan = bool_qualified_scan
         self.bool_qualified_deviceid = bool_qualified_deviceid
         self.datetime = datetime
+        self.reserve_str_1 = reserve_str_1
+        self.reserve_bool_1 = reserve_bool_1
     @staticmethod
     def seed():
         pass

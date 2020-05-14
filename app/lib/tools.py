@@ -103,3 +103,22 @@ def reset_errno():
     r = RunningState.query.filter_by(key='r_errno').first()
     r.value2 = 0
     db_sqlite.session.commit() 
+
+
+def set_fwversion(version):
+    r = RunningState.query.filter_by(key='r_fwversion').first()
+    r.value3 = version
+    db_sqlite.session.commit()
+def get_fwversion():
+    r = RunningState.query.filter_by(key='r_fwversion').first()
+    return r.value3
+
+def set_mcuversion(version):
+    r = RunningState.query.filter_by(key='r_mcuversion').first()
+    r.value3 = version
+    db_sqlite.session.commit()
+def get_mcuversion():
+    r = RunningState.query.filter_by(key='r_mcuversion').first()
+    return r.value3
+
+
