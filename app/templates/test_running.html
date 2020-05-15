@@ -3,16 +3,22 @@
 {% block content %}
     {{ super() }}
 
-    <form style="display: inline" id='start' action="{{ url_for('blue_test.vf_cmd_start') }}" method="post">
-        <button type="submit" class="btn btn-success disabled">开始</button>
-    </form>
-    &nbsp;&nbsp;&nbsp;
     <div style="display: inline">
         <p style="display: inline"><strong>类型</strong>:</span> <span class="text-success"> {{ devicename() }}</p>
         &nbsp;&nbsp;&nbsp;
         <p style="display: inline"><strong>数量</strong>:</span> <span class="text-success"> {{ totalcount() }}</p>
+        &nbsp;&nbsp;&nbsp;
+        <p style="display: inline"><strong>固件版本</strong>:</span> <span class="text-success"> {{ fwversion() }}</p>
+        &nbsp;&nbsp;&nbsp;
+        <p style="display: inline"><strong>MCU版本</strong>:</span> <span class="text-success"> {{ mcuversion() }}</p>
     </div>
 
+    <hr>
+
+    <form style="display: inline" id='start' action="{{ url_for('blue_test.vf_cmd_start') }}" method="post">
+        <button type="submit" class="btn btn-success disabled">开始</button>
+    </form>
+    &nbsp;&nbsp;&nbsp;
 
     <table class="table table-striped table-hover ">
         {% include '_thead.html' %}

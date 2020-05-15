@@ -95,6 +95,10 @@ def start():
     totalcount = get_totalcount()
     mcuversion = get_mcuversion()
     fwversion = get_fwversion()
+    if len(mcuversion) == 0:
+        mcuversion = '0'
+    if len(fwversion) == 0:
+        fwversion = '0'
     logger_app.info('{devicecode: %s}' % devicecode)
     logger_app.info('{totalcount: %s}' % totalcount)
     logger_app.info('{mcuversion: %s}' % mcuversion)
