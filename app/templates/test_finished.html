@@ -2,18 +2,7 @@
 
 {% block content %}
     {{ super() }}
-
-
-    <div style="display: inline">
-        <p style="display: inline"><strong>类型</strong>:</span> <span class="text-success"> {{ devicename() }}</p>
-        &nbsp;&nbsp;&nbsp;
-        <p style="display: inline"><strong>数量</strong>:</span> <span class="text-success"> {{ totalcount() }}</p>
-        &nbsp;&nbsp;&nbsp;
-        <p style="display: inline"><strong>固件版本</strong>:</span> <span class="text-success"> {{ fwversion() }}</p>
-        &nbsp;&nbsp;&nbsp;
-        <p style="display: inline"><strong>MCU版本</strong>:</span> <span class="text-success"> {{ mcuversion() }}</p>
-    </div>
-    <hr>
+    {% include '_configinfo.html' %}
 
     <div class="btn-group">
         <form style="display: inline" action="{{ url_for('blue_test.vf_finished') }}" method="get">
