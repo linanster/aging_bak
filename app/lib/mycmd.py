@@ -32,6 +32,8 @@ from .mydecorator import processmaker, threadmaker
 from .myutils import gen_excel
 
 
+
+
 def _gosubprocess(cmd):
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gofolder)
     while p.poll() is None:
@@ -52,20 +54,10 @@ def watch_log():
     p = subprocess.Popen("tail -f {}".format(logfile), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     while get_running_state_sql():
         output = p.stdout.readline().decode('utf-8')[0:-1]
-        socketio.emit('logupdated', output, namespace='/log', broadcast=True)
-    # p.stdout.close()
-    # p.stderr.close()
+        socketio.emit('mylog', output, namespace='/test', broadcast=True)
+        # print('==emit mylog==')
     p.kill()
 
-@threadmaker
-def watch_log_test():
-    count = 0
-    while get_running_state_sql():
-        socketio.emit('logupdated',
-                      {'data': 'Server generated event', 'count': count},
-                      namespace='/log', broadcast=True)
-        count += 1
-        socketio.sleep(1)
 
 @threadmaker
 def watch_to_jump():
@@ -76,11 +68,13 @@ def watch_to_jump():
                 reset_retried_sql()
             else:
                 newline = 0
-            socketio.emit('progress', {'data': '+', 'newline': newline}, namespace='/test', broadcast=True)
+            socketio.emit('myevent', {'data': '+', 'newline': newline}, namespace='/test', broadcast=True)
+            # print('==emit myevent==')
             time.sleep(2)
         else:
             logger_app.info('==emit event_done==')
-            socketio.emit('event_done', namespace='/test', broadcast=True)
+            socketio.emit('mydone', namespace='/test', broadcast=True)
+            # print('==emit mydone==')
             break
     
 @processmaker

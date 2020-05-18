@@ -76,8 +76,11 @@ class Device(db_mysql.Model):
         d_innotech_131 = Device(131, '0x83', 2, 'Dual mode Full Color A19(0x83)')
         d_innotech_132 = Device(132, '0x84', 2, 'Dual mode Full Color BR30(0x84)')
         d_innotech_133 = Device(133, '0x85', 2, 'Dual mode Full Color Strip(0x85)')
-        d_innotech_49 = Device(49, '0x31', 2, 'Motion dimmer switch(0x31)')
         d_innotech_48 = Device(48, '0x30', 2, 'Dimmer switch(0x30)')
+        d_innotech_49 = Device(49, '0x31', 2, 'Dimmer Switch(Premium)(0x31)')
+        d_innotech_51 = Device(51, '0x33', 2, 'Switch Paddle(0x33)')
+        d_innotech_52 = Device(52, '0x34', 2, 'Switch Toggle(0x34)')
+        d_innotech_53 = Device(53, '0x35', 2, 'Switch Centre Button(0x35)')
         d_innotech_61 = Device(61, '0x3D', 2, 'Paddle switch TCO(0x3D)')
         d_innotech_62 = Device(62, '0x3E', 2, 'Toggle switch TCO(0x3E)')
         d_innotech_63 = Device(63, '0x3F', 2, 'Button switch TCO(0x3F)')
@@ -93,7 +96,7 @@ class Device(db_mysql.Model):
         d_changhong_66 = Device(66, '0x42', 4, 'Indoor Plug GEN2(Ox42)')
 
         # todo
-        d_test_255 = Device(255, '0xFF', 5, 'TestDevice_255')
+        d_test_255 = Device(255, '0xFF', 5, 'TestDevice(0xFF)')
 
         devices_all = [
             d_leedarson_09,
@@ -117,6 +120,11 @@ class Device(db_mysql.Model):
             d_innotech_131,
             d_innotech_132,
             d_innotech_133,
+            d_innotech_48,
+            d_innotech_49,
+            d_innotech_51,
+            d_innotech_52,
+            d_innotech_53,
             d_innotech_49,
             d_innotech_48,
             d_innotech_61,

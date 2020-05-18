@@ -32,32 +32,31 @@
         $(document).ready(function () {
 
             namespace = '/test';
-            var socket = io(namespace);
-            socket.on('progress', function (msg) {
+            // var socket = io(namespace);
+            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+
+            // 1. log monitor
+            socket.on('mylog', function (msg) {
+                $('#log').append('<br>' + $('<div/>').text(msg).html());
+            });
+
+            // 2. event monitor
+            socket.on('myevent', function (msg) {
                 if (msg.newline == 1) {
                     $('#message').append(' retry ');
                 }
                 $('#message').append('#');
             });
 
-            socket.on('event_done', function () {
+            // 3. event_done monitor
+            socket.on('mydone', function () {
                 $('#message').append(' done');
                 $('#main').attr("class", "jumbotron alert-success");
                 $('#testing').text('测试完成!');
                 $('#loading').hide();
-                // $('#tip1').text('即将跳转至结果页面...');
-                // $('#tip2').text('');
                 jump();
             });
 
-            namespace1 = '/log';
-
-            var socket1 = io(namespace1);
-
-            socket1.on('logupdated', function (msg) {
-                // $('#log').append('<br>' + $('<div/>').text('Received #' + msg.count + ': ' + msg.data).html());
-                $('#log').append('<br>' + $('<div/>').text(msg).html());
-            });
         });
 
     </script>

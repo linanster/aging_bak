@@ -4,7 +4,7 @@ import time
 import datetime
 import os
 
-from app.models import Testdata, Factory
+from app.models import Testdata, Factory, Device
 from app.lib import start, blink_single, blink_all, blink_stop, turn_on_all, turn_off_all, kickout_all, indicator_r, indicator_g, indicator_b
 from app.lib import watch_to_jump, watch_log
 from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state, set_fwversion, set_mcuversion
@@ -31,7 +31,7 @@ def vf_error():
 def vf_config():
     fcode = get_factorycode()
     if fcode == 0:
-        results = Device.query.all()
+        devices = Device.query.all()
     elif fcode in (1, 2, 3, 4, 5):
         factory = Factory.query.get(fcode)
         devices = factory.devices
