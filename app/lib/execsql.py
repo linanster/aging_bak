@@ -40,7 +40,7 @@ sql_truncate_testdatasarchive = '''
     TRUNCATE table testdatasarchive;
 '''
 
-def testdatas_cleanup_legacy():
+def sql_testdatas_cleanup():
     conn = pymysql.Connect(host=db_addr, port=db_port, user=db_user, passwd=db_passwd, db=db_name)
     cursor = conn.cursor()
     cursor.execute(sql_truncate_testdatas)
@@ -48,7 +48,7 @@ def testdatas_cleanup_legacy():
     conn.commit()
     conn.close()
 
-def testdatasarchive_cleanup_legacy():
+def sql_testdatasarchive_cleanup():
     conn = pymysql.Connect(host=db_addr, port=db_port, user=db_user, passwd=db_passwd, db=db_name)
     cursor = conn.cursor()
     cursor.execute(sql_truncate_testdatasarchive)
