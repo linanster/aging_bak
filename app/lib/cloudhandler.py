@@ -10,7 +10,7 @@ from app.myglobal import RETENTION
 
 from .mylogger import logger_cloud
 
-def _check_cloud_connection():
+def check_cloud_connection():
     method = 'GET'
     ############################################
     # url = "http://10.30.30.101:5001/api/basic/ping"
@@ -36,7 +36,7 @@ def _check_cloud_connection():
 def upload_to_cloud():
     logger_cloud.info('upload_to_cloud: start')
     # 0. check network status
-    if not _check_cloud_connection():
+    if not check_cloud_connection():
         logger_cloud.error('upload_to_cloud: connection error')
         return 1
 
@@ -69,7 +69,7 @@ def upload_to_cloud():
         request_msg.update(dict_data)
     
         # 3. send message via http post method
-        method = 'POST'
+        method = 'PUT'
         ############################################
         # url = "http://10.30.30.101:5001/api/rasp/upload"
         url = "http://47.101.215.138:5001/api/rasp/upload"
