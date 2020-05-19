@@ -6,15 +6,14 @@ import requests
 
 from app.models import db_mysql, Testdata, TestdataArchive
 
-from app.myglobal import RETENTION
+from app.myglobal import RETENTION, gecloud_ip
 
 from .mylogger import logger_cloud
 
 def check_cloud_connection():
     method = 'GET'
     ############################################
-    # url = "http://10.30.30.101:5001/api/basic/ping"
-    url = "http://47.101.215.138:5001/api/basic/ping"
+    url = "http://{}:5001/api/rasp/ping".format(gecloud_ip)
     ############################################
     headers = {}
     payload = {}
@@ -31,6 +30,18 @@ def check_cloud_connection():
             return True
         else:
             return False
+
+def check_upgrade_pin(pin):
+    ############################################
+    url = 'http://{}:5001/api/rasp/verifypin'.format(gecloud_ip)
+    ############################################
+    payload = 'pin={}'.format(pin)
+    headers = {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+    response = requests.request("POST", url, headers=headers, data = payload)
+    return response.json().get('verified')
+
     
 
 def upload_to_cloud():
@@ -71,8 +82,7 @@ def upload_to_cloud():
         # 3. send message via http post method
         method = 'PUT'
         ############################################
-        # url = "http://10.30.30.101:5001/api/rasp/upload"
-        url = "http://47.101.215.138:5001/api/rasp/upload"
+        url = "http://{}:5001/api/rasp/upload".format(gecloud_ip)
         ############################################
         headers = {
             'Authorization': 'Basic dXNlcjE6MTIzNDU2',

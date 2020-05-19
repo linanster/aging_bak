@@ -5,8 +5,9 @@ import subprocess
 import os
 
 from .mylogger import logger_app
+from app.lib.cloudhandler import check_upgrade_pin
 
-from app.myglobal import topdir, upgradefolder
+from app.myglobal import topdir, upgradefolder, gecloud_ip
 
 disable_warnings(InsecureRequestWarning)
 
@@ -30,7 +31,7 @@ def check_github_connection():
             return False
 
 
-def check_upgrade_pin(pin):
+def check_upgrade_pin_legacy(pin):
     pinfile = os.path.join(upgradefolder, 'pin.txt')
     pin_auth = open(pinfile).readline()
     pin_auth = pin_auth.replace('\r', '').replace('\n','')
