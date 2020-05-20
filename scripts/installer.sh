@@ -48,11 +48,11 @@ function conf_apt(){
   fi
   mv /etc/apt/sources.list /etc/apt/sources.list.bak
   # 1.rasp official repo
-  echo "deb http://raspbian.raspberrypi.org/raspbian/ buster main contrib non-free rpi" > /etc/apt/sources.list
-  wget http://raspbian.raspberrypi.org/raspbian.public.key
+  # echo "deb http://raspbian.raspberrypi.org/raspbian/ buster main contrib non-free rpi" > /etc/apt/sources.list
+  # wget http://raspbian.raspberrypi.org/raspbian.public.key
   # 2.aliyun mirror repo
-  # echo "deb http://mirrors.aliyun.com/raspbian/raspbian/ buster main contrib non-free rpi" > /etc/apt/sources.list
-  # wget http://mirrors.aliyun.com/raspbian/raspbian.public.key
+  echo "deb http://mirrors.aliyun.com/raspbian/raspbian/ buster main contrib non-free rpi" > /etc/apt/sources.list
+  wget http://mirrors.aliyun.com/raspbian/raspbian.public.key
   apt-key add raspbian.public.key
   apt update
 }
