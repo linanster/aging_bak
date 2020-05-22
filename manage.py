@@ -65,16 +65,19 @@ def deletedb_mysql(table=False, data=False):
         print('==delete datas==')
 
 @manager.command
-def cleanup():
+def cleanup(db=False, log=False, pycache=False, all=False):
     from app.lib.execsql import sql_testdatas_cleanup, sql_testdatasarchive_cleanup
     from app.lib.utils import cleanup_log, cleanup_pycache
-    print('==cleanup database==')
-    sql_testdatas_cleanup()
-    sql_testdatasarchive_cleanup()
-    print('==cleanup log==')
-    cleanup_log()
-    print('==cleanup pycache==')
-    cleanup_pycache()
+    if all or db:
+        print('==cleanup database==')
+        sql_testdatas_cleanup()
+        sql_testdatasarchive_cleanup()
+    if all or log:
+        print('==cleanup log==')
+        cleanup_log()
+    if all or pycache:
+        print('==cleanup pycache==')
+        cleanup_pycache()
 
 @manager.command
 def updatefcode():
