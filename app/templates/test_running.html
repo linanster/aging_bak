@@ -29,6 +29,29 @@
             setTimeout("_jump()", 2000)
         }
 
+        var c = 0
+        var t
+        function timedCount() {
+            document.getElementById('timer').innerHTML = c
+            c = c + 1
+            t = setTimeout("timedCount()", 1000)
+        }
+        function stopCount() {
+            clearTimeout(t)
+        }
+
+        var x = '';
+        function countSecond() {
+            x = (x == '.....') ? '' : (x + '.');
+            document.getElementById('loading').innerText = x;
+            setTimeout("countSecond()", 1000);
+        }
+
+         function scroll_log() {
+            var div = document.getElementById('log');
+            div.scrollTop = div.scrollHeight;
+        }
+
         $(document).ready(function () {
 
             namespace = '/test';
@@ -59,44 +82,9 @@
 
         });
 
-    </script>
-
-    <script type="text/javascript" charset="utf-8">
-        var c = 0
-        var t
-        function timedCount() {
-            document.getElementById('timer').innerHTML = c
-            c = c + 1
-            t = setTimeout("timedCount()", 1000)
-        }
-        function stopCount() {
-            clearTimeout(t)
-        }
-        // window.onload = timedCount;
-    </script>
-
-    <script type="text/javascript" charset="utf-8">
-        var x = '';
-
-        function countSecond() {
-            x = (x == '.....') ? '' : (x + '.');
-            document.getElementById('loading').innerText = x;
-            setTimeout("countSecond()", 1000);
-        }
-        // window.onload = countSecond;
-    </script>
-
-    <script>
         window.onload = function () {
             timedCount();
             countSecond();
-        }
-    </script>
-
-    <script type="text/javascript" charset="utf-8">
-        function scroll_log() {
-            var div = document.getElementById('log');
-            div.scrollTop = div.scrollHeight;
         }
 
         $(document).ready(function () {
@@ -120,19 +108,19 @@
         <span id="tip1">1. 程序运行中，请勿刷新或关闭此页面！</span>
         <br>
         <span id="tip2">2. 如果页面长时间未自动跳转，请<a style="display: inline" href="{{ url_for('blue_test.process_finished') }}" class="btn btn-link">手动转到</a>测试结果页面。</span>
+        <br>
+        <span id="tip3">3. 计时: </span>
+        <span id="timer"></span>
     </div>
 
+    <!--
     <p>Debug: </p>
     <p style="display: inline"><strong>1. Timer: </strong></p>
-    <!-- <form style="display: inline">
-        <input type="button" value="计时" onClick="timedCount()">
-        <input type="button" value="停止" onClick="stopCount()">
-    </form> -->
     <span id="timer"></span>
     <p id="message"><strong>2. Event Monitor: </strong></p>
-    <!-- <span "id="message">start</span> -->
     <p><strong>3. Log Monitor: </strong></p>
     <div id="log" style="overflow:auto; height: 250px; width: auto; border: 1px solid #999"></div>
+    -->
 
 {% endblock %}
 

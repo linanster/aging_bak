@@ -4,10 +4,20 @@ function openUrl(url){
 }
 
 
-function openUrl(url)
+function openUrl_tips(url)
 {
     var width=400;
     var height=630;
+    var y=(window.screen.availHeight-height/2);
+    var x=(window.screen.availWidth-width/2);
+    var mywindow=window.open(url,"_blank","height="+height+",width="+width+"toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+    mywindow.moveTo(x/2,y/2);
+}
+
+function openUrl_log(url)
+{
+    var width=1200;
+    var height=700;
     var y=(window.screen.availHeight-height/2);
     var x=(window.screen.availWidth-width/2);
     var mywindow=window.open(url,"_blank","height="+height+",width="+width+"toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");

@@ -55,7 +55,6 @@ def watch_log():
     while get_running_state_sql():
         output = p.stdout.readline().decode('utf-8')[0:-1]
         socketio.emit('mylog', output, namespace='/test', broadcast=True)
-        # print('==emit mylog==')
     p.kill()
 
 
@@ -69,12 +68,10 @@ def watch_to_jump():
             else:
                 newline = 0
             socketio.emit('myevent', {'data': '+', 'newline': newline}, namespace='/test', broadcast=True)
-            # print('==emit myevent==')
             time.sleep(2)
         else:
             logger_app.info('==emit event_done==')
             socketio.emit('mydone', namespace='/test', broadcast=True)
-            # print('==emit mydone==')
             break
     
 @processmaker

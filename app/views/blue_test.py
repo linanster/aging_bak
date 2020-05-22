@@ -73,24 +73,17 @@ def vf_finished():
     # return render_template('testing.html', pagination=pagination, results=ret)
     return render_template('test_finished.html', results=results, control_index=control_index)
 
+@blue_test.route('/logmonitor')
+@viewfunclog
+def vf_logmonitor():
+    return render_template('test_logmonitor.html')
 
 # button & command
-
-@blue_test.route('/cmd_start_legacy', methods=['POST'])
-@viewfunclog
-def vf_cmd_start_legacy():
-    time.sleep(1)
-    # errno saved at sqlite, instead of return value here.
-    # errno = start()
-    start()
-    # wait a second for start initializing sqlite running states
-    time.sleep(1)
-    return redirect(url_for('blue_test.vf_running')) 
-
 
 @blue_test.route('/cmd_start', methods=['POST'])
 @viewfunclog
 def vf_cmd_start():
+    time.sleep(1)
     logger_app.warn('click start button')
     set_running_state()
     start()
