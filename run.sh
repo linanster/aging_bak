@@ -13,7 +13,7 @@ cd "$workdir"
 
 function activate_venv() {
   if [ -d venv ]; then
-    source ./venv/bin/activate
+    source ./venv/bin/activate || source ./venv/Script/activate
   else
     echo "==venv error=="
     exit 1
