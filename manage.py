@@ -81,9 +81,10 @@ def cleanup(db=False, log=False, pycache=False, all=False):
 
 @manager.command
 def updatefcode():
-    from app.lib import set_factorycode
+    from app.lib import set_factorycode, get_factorycode
     from app.fcode import FCODE
     set_factorycode(FCODE)
+    print(get_factorycode())
 
 
 @manager.option('--fcode', dest="code")
