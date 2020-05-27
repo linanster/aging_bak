@@ -38,15 +38,13 @@ function run_init(){
 
 function run_start() {
     activate_venv
-    echo "gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging"
-    # echo "gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class gevent wsgi:application_ge_aging"
     # todo --user user1 --group user1
     if [ "$1" == '--nodaemon' ]; then
         gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging
-        # gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class gevent wsgi:application_ge_aging
+        echo "gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging"
     else
         gunicorn --daemon --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging
-        # gunicorn --daemon --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class gevent wsgi:application_ge_aging
+        echo "gunicorn --daemon --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging"
     fi
     ps -ef | fgrep "gunicorn" | grep "application_ge_aging" | awk '{if($3==1) print $2}'
     exit 0
@@ -94,7 +92,6 @@ function run_purge(){
 }
 
 function run_upgrade(){
-    cd "$workdir"
     activate_venv
     if [ "$1" == "--checkout" ]; then
         git checkout origin/upgrade upgrade/pin.txt && { echo "checkout auth code success"; exit 0; } || { echo "checkout auth code error,exit"; exit 11; }
@@ -105,6 +102,40 @@ function run_upgrade(){
     systemctl restart --quiet aging.service>/dev/null && { echo "2. restart service success"; } ||  { echo "2. restart service error, exit"; exit 2; }
     sleep 1
     systemctl status --quiet aging.service>/dev/null && { echo "3. check service success"; exit 0; } ||  { echo "3. check service error, exit"; exit 3; }
+}
+
+function run_logmonitor_start(){
+    activate_venv
+    cd logmonitor
+    gunicorn --daemon --workers 1 --bind 0.0.0.0:5001 --timeout 300 --worker-class eventlet app:app_aging_logmonitor
+    echo "gunicorn --daemon --workers 1 --bind 0.0.0.0:5001 --timeout 300 --worker-class eventlet app:app_aging_logmonitor"
+    ps -ef | fgrep "gunicorn" | grep "app_aging_logmonitor" | awk '{if($3==1) print $2}'
+    exit 0
+}
+function run_logmonitor_stop(){
+    activate_venv
+    cd logmonitor
+    pid=$(ps -ef | fgrep "gunicorn" | grep "app_aging_logmonitor" | awk '{if($3==1) print $2}')
+    if [ "$pid" == "" ]; then
+        echo "not running" 
+    else
+        echo "kill $pid"
+        kill "$pid"
+    fi
+    exit 0
+}
+function run_logmonitor_status(){
+    cd "$workdir"
+    activate_venv
+    cd logmonitor
+    pid=$(ps -ef | fgrep "gunicorn" | grep "app_aging_logmonitor" | awk '{if($3==1) print $2}')
+    echo "$pid"
+    if [ "$pid" == "" ]; then
+        echo "stopped" 
+    else
+        echo "started"
+    fi
+    exit 0
 }
 
 if [ $# -eq 0 ]; then
@@ -138,6 +169,15 @@ if [ $# -ge 1 ]; then
         ;;
     --upgrade)
         run_upgrade $2
+        ;;
+    --logmonitorstart)
+        run_logmonitor_start
+        ;;
+    --logmonitorstop)
+        run_logmonitor_stop
+        ;;
+    --logmonitorstatus)
+        run_logmonitor_status
         ;;
     *)
         echo "$usage"

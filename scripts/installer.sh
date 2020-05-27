@@ -211,6 +211,22 @@ function uninstall_background_service(){
   systemctl daemon-reload
 }
 
+function install_logmonitor_service(){
+  cd "${scriptdir}"
+  cp logmonitor.service /usr/lib/systemd/system
+  systemctl daemon-reload
+  systemctl enable logmonitor.service
+  systemctl start logmonitor.service
+  systemctl status logmonitor.service
+}
+function uninstall_logmonitor_service(){
+  cd "${scriptdir}"
+  systemctl stop logmonitor.service
+  systemctl disable logmonitor.service
+  rm -f /usr/lib/systemd/system/logmonitor.service
+  systemctl daemon-reload
+}
+
 function user_modification(){
   deluser pi sudo
   gpasswd -d pi sudo
@@ -276,6 +292,14 @@ function option12(){
   uninstall_background_service
   green "option12 done!"
 }
+function option13(){
+  install_logmonitor_service
+  green "option13 done!"
+}
+function option14(){
+  uninstall_logmonitor_service
+  green "option14 done!"
+}
 
 
 cat << eof
@@ -292,6 +316,8 @@ cat << eof
 10) uninstall service (-)
 11) install background service (cloud upload & local purge periodically) (-)
 12) uninstall background service (-)
+13) install logmonitor service
+14) uninstall logmonitor service
 q) quit 
 ====
 eof
@@ -344,6 +370,14 @@ while echo; read -p "Enter your option: " option; do
       ;;
     12)
       option12
+      break
+      ;;
+    13)
+      option13
+      break
+      ;;
+    14)
+      option14
       break
       ;;
     q|Q)

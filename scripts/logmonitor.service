@@ -1,0 +1,13 @@
+[Unit]
+Description=GE Lighting Auto Test Log Monitor
+
+[Service]
+Type=forking
+ExecStart=/root/aging/run.sh --logmonitorstart
+ExecReload=
+ExecStop=/root/aging/run.sh --logmonitorstop
+
+
+[Install]
+WantedBy=multi-user.target
+WantedBy=graphical.target
