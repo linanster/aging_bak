@@ -27,3 +27,13 @@ function openUrl_log()
     var mywindow=window.open(url,"_blank","height="+height+",width="+width+"toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
     mywindow.moveTo(x/2,y/2);
 }
+
+function scroll_output(divid) {
+    var div = document.getElementById(divid);
+    div.scrollTop = div.scrollHeight;
+}
+
+function clean_output(divid) {
+    var div = document.getElementById(divid);
+    div.innerHTML = "";
+}

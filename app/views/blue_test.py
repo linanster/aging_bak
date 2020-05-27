@@ -6,7 +6,7 @@ import os
 
 from app.models import Testdata, Factory, Device
 from app.lib import start, blink_single, blink_all, blink_stop, turn_on_all, turn_off_all, kickout_all, indicator_r, indicator_g, indicator_b
-from app.lib import watch_to_jump, watch_log
+from app.lib import watch_to_jump
 from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state, set_fwversion, set_mcuversion
 from app.lib import get_errno, get_running_state, get_factorycode
 from app.lib import testdatas_archive
@@ -54,8 +54,6 @@ def vf_start():
 @blue_test.route('/running')
 @viewfunclog
 def vf_running():
-    watch_to_jump()
-    watch_log()
     return render_template('test_running.html')
 
 @blue_test.route('/finished')
@@ -87,6 +85,7 @@ def vf_cmd_start():
     logger_app.warn('click start button')
     set_running_state()
     start()
+    watch_to_jump()
     return redirect(url_for('blue_test.vf_running')) 
 
 

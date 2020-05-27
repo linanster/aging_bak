@@ -42,14 +42,14 @@ def _gosubprocess(cmd):
     errno = p.poll()
     if errno != 0:
         errmsg = p.stderr.read().decode('utf-8')[:-1]
+        logger_app.error('{ble-backend] errno: {}'.format(errno))
         logger_app.error('[ble-backend] {}'.format(errmsg))
-        logger_app.error('[ble-backend] errno:{}'.format(errno))
     p.stdout.close()
     p.stderr.close()
     return errno
 
 @threadmaker
-def watch_log():
+def watch_log_legacy():
     logfile = os.path.join(logfolder, 'log_app.txt')
     p = subprocess.Popen("tail -f {}".format(logfile), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     while get_running_state_sql():
@@ -62,13 +62,8 @@ def watch_log():
 def watch_to_jump():
     while True:
         if get_running_state_sql():
-            if get_retried_sql():
-                newline = 1
-                reset_retried_sql()
-            else:
-                newline = 0
-            socketio.emit('myevent', {'data': '+', 'newline': newline}, namespace='/test', broadcast=True)
-            time.sleep(2)
+            # time.sleep(2)
+            socketio.sleep(2)
         else:
             logger_app.info('==emit event_done==')
             socketio.emit('mydone', namespace='/test', broadcast=True)
@@ -78,6 +73,7 @@ def watch_to_jump():
 def start():
     # reserve time for frontend to receive event message
     time.sleep(3)
+    logger_app.info('==测试开始==')
     logger_app.info('==starttest begin==')
     testdatas_cleanup()
     reset_errno()
@@ -90,10 +86,10 @@ def start():
         mcuversion = '0'
     if len(fwversion) == 0:
         fwversion = '0'
-    logger_app.info('{devicecode: %s}' % devicecode)
-    logger_app.info('{totalcount: %s}' % totalcount)
-    logger_app.info('{mcuversion: %s}' % mcuversion)
-    logger_app.info('{fwversion: %s}' % fwversion)
+    logger_app.info('==config devicecode: %s==' % devicecode)
+    logger_app.info('==config totalcount: %s==' % totalcount)
+    logger_app.info('==config mcuversion: %s==' % mcuversion)
+    logger_app.info('==config fwversion: %s==' % fwversion)
     # return, if either is not set by test_config setp
     if totalcount is None or devicecode is None:
         errno = 2
@@ -145,7 +141,6 @@ def start():
             _gosubprocess("./ble-backend -command=allkickout")
             set_retried_sql()
             continue
-    # if loop > 3 :
     if errno == 0:
         logger_app.info('==starttest success==') 
         logger_app.info("==errno:{}==".format(errno))
@@ -156,6 +151,7 @@ def start():
     time.sleep(3)
     reset_running_state()
     set_errno(errno)
+    logger_app.error('==测试结束==') 
     return errno
     
 

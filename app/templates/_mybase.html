@@ -2,7 +2,6 @@
 
 {% block head %}
     {{ super() }}
-    <!-- <link href="{{ url_for('static',filename='site.css') }}" rel="stylesheet"> -->
 {% endblock %}
 
 {% block body %}
@@ -10,7 +9,6 @@
     {% block footer %}
         <br>
         <br>
-        <!-- <footer class="bottom-right" style="position: absolute; bottom: 0; padding-bottom: 50px"> -->
         <footer class="bottom-right" style="position: relative; bottom: 0; padding-bottom: 30px">
             Copyright 2020 by <a href="https://www.gelighting.com/">GE Lighting</a>
         </footer>
@@ -31,7 +29,7 @@
 {% block styles %}
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/3.4.1/cerulean/bootstrap.min.css"> -->
     <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap.min.cerulean.341.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.cerulean.341.css') }}">
 {% endblock %}
 
 {% block scripts %}
