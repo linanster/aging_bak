@@ -54,6 +54,11 @@
                 <li id='about' {% if request.path in [url_for('blue_about.about'),] %}class='active'{% endif %}><a
                         href="{{ url_for('blue_about.about') }}">关于</a></li>
             </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#" onclick=openUrl_log()>实时日志</a></li>
+            </ul>
+
         </div>
     </div>
 </nav>
