@@ -151,7 +151,7 @@ def start():
     time.sleep(3)
     reset_running_state()
     set_errno(errno)
-    logger_app.error('==测试结束==') 
+    logger_app.info('==测试结束==')
     return errno
     
 
