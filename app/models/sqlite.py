@@ -61,7 +61,7 @@ class Systeminfo(db_sqlite.Model):
         self.description = description
     @staticmethod
     def seed():
-        s_factorycode = Systeminfo('s_factorycode', value2=0)
+        s_factorycode = Systeminfo('s_factorycode', value2=FCODE)
         seeds = [s_factorycode,]
         db_sqlite.session.add_all(seeds)
         db_sqlite.session.commit()
