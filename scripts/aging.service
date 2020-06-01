@@ -1,5 +1,6 @@
 [Unit]
 Description=GE Lighting Auto Test
+After=mariadb.service
 
 [Service]
 Type=forking
