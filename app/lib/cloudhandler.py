@@ -13,7 +13,7 @@ from .mylogger import logger_cloud
 def check_gecloud_connection():
     method = 'GET'
     ############################################
-    url = "http://{}:6000/api/rasp/ping".format(gecloud_ip)
+    url = "http://{}:5100/api/rasp/ping".format(gecloud_ip)
     ############################################
     headers = {}
     payload = {}
@@ -33,7 +33,7 @@ def check_gecloud_connection():
 
 def check_upgrade_pin(pin):
     ############################################
-    url = 'http://{}:6000/api/rasp/verifypin'.format(gecloud_ip)
+    url = 'http://{}:5100/api/rasp/verifypin'.format(gecloud_ip)
     ############################################
     payload = 'pin={}'.format(pin)
     headers = {
@@ -82,7 +82,7 @@ def upload_to_cloud():
         # 3. send message via http post method
         method = 'PUT'
         ############################################
-        url = "http://{}:6000/api/rasp/upload".format(gecloud_ip)
+        url = "http://{}:5100/api/rasp/upload".format(gecloud_ip)
         ############################################
         headers = {
             'Authorization': 'Basic dXNlcjE6MTIzNDU2',
