@@ -7,14 +7,15 @@ import os
 from app.models import Testdata, Factory, Device
 from app.lib import start, blink_single, blink_all, blink_stop, turn_on_all, turn_off_all, kickout_all, indicator_r, indicator_g, indicator_b
 from app.lib import watch_to_jump
-from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state, set_fwversion, set_mcuversion
+from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state, set_fwversion, set_mcuversion, set_ble_strength_low, set_wifi_strength_low
 from app.lib import get_errno, get_running_state, get_factorycode
 from app.lib import testdatas_archive
 from app.lib import viewfunclog
 from app.lib import logger_app
 from app.lib import gen_excel, empty_folder
+from app.lib.myutils import write_json_to_file
 
-from app.settings import topdir
+from app.settings import topdir, gofolder
 
 
 blue_test = Blueprint('blue_test', __name__, url_prefix='/test')
@@ -97,10 +98,32 @@ def vf_cmd_saveconfig():
     totalcount = request.form.get('totalcount', type=int)
     fwversion = request.form.get('fwversion', type=str)
     mcuversion = request.form.get('mcuversion', type=str)
+    ble_strength_low = request.form.get('ble_strength_low', type=int)
+    wifi_strength_low = request.form.get('wifi_strength_low', type=int)
+    if len(mcuversion) == 0:
+        mcuversion = '0'
+    if ble_strength_low is None:
+        ble_strength_low = -100
+    if wifi_strength_low is None:
+        wifi_strength_low = -110
     set_devicecode(devicecode) 
     set_totalcount(totalcount) 
     set_fwversion(fwversion)
     set_mcuversion(mcuversion)
+    set_ble_strength_low(ble_strength_low)
+    set_wifi_strength_low(wifi_strength_low)
+
+    dict_params = {
+        'devicecode': devicecode,
+        'totalcount': totalcount,
+        'fwversion': fwversion,
+        'mcuversion': mcuversion,
+        'ble_strength_low': ble_strength_low,
+        'wifi_strength_low': wifi_strength_low,
+    }
+    filename = os.path.join(gofolder, 'params.json')
+    write_json_to_file(dict_params, filename)
+
     return redirect(url_for('blue_test.vf_start'))
 
 @blue_test.route('/cmd_blink_single', methods=['POST'])

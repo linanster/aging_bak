@@ -12,7 +12,7 @@ from .execsql import get_retried_sql, set_retried_sql, reset_retried_sql
 
 from app.lib.execmodel import testdatas_cleanup
 
-from .tools import get_totalcount, get_devicecode, get_fwversion, get_mcuversion
+from .tools import get_totalcount, get_devicecode, get_fwversion, get_mcuversion, get_ble_strength_low, get_wifi_strength_low
 from .tools import reset_progress, add_progress
 from .tools import reset_running_state, set_running_state, get_running_state
 from .tools import reset_phase, set_phase
@@ -78,24 +78,27 @@ def start():
     testdatas_cleanup()
     reset_errno()
     set_running_state()
+
     devicecode = get_devicecode()
     totalcount = get_totalcount()
-    mcuversion = get_mcuversion()
     fwversion = get_fwversion()
-    if len(mcuversion) == 0:
-        mcuversion = '0'
-    if len(fwversion) == 0:
-        fwversion = '0'
+    mcuversion = get_mcuversion()
+    ble_strength_low = get_ble_strength_low()
+    wifi_strength_low = get_wifi_strength_low()
+
     logger_app.info('==config devicecode: %s==' % devicecode)
     logger_app.info('==config totalcount: %s==' % totalcount)
-    logger_app.info('==config mcuversion: %s==' % mcuversion)
     logger_app.info('==config fwversion: %s==' % fwversion)
+    logger_app.info('==config mcuversion: %s==' % mcuversion)
+    logger_app.info('==config ble_strength_low: %s==' % ble_strength_low)
+    logger_app.info('==config wifi_strength_low: %s==' % wifi_strength_low)
     # return, if either is not set by test_config setp
-    if totalcount is None or devicecode is None:
+    if totalcount is None or devicecode is None or fwversion is None:
         errno = 2
         reset_running_state()
         set_errno(errno)
         return errno
+
     loop = 1
     # while loop <= 3:
     while loop <= 1:

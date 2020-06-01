@@ -32,8 +32,8 @@ with (thisform)
   if (validate_required(totalcount,"请选择设备数量!")==false)
     {totalcount.focus();return false}
    
-  // if (validate_required(fwversion,"请输入固件版本号!")==false)
-  //   {fwversion.focus();return false}
+   if (validate_required(fwversion,"请输入固件版本号!")==false)
+     {fwversion.focus();return false}
    
   if (validate_format(fwversion,"固件版本号格式错误!")==false)
     {fwversion.focus();return false}

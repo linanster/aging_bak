@@ -42,7 +42,9 @@ class RunningState(db_sqlite.Model):
         r_retried = RunningState('r_retried', value1=False) 
         r_fwversion = RunningState('r_fwversion', value3='noversion') 
         r_mcuversion = RunningState('r_mcuversion', value3='noversion') 
-        seeds = [r_running, r_devicecode, r_totalcount, r_progress, r_phase, r_errno, r_retried, r_fwversion, r_mcuversion]
+        r_ble_strength_low = RunningState('r_ble_strength_low', value2=-100) 
+        r_wifi_strength_low = RunningState('r_wifi_strength_low', value2=-100) 
+        seeds = [r_running, r_devicecode, r_totalcount, r_progress, r_phase, r_errno, r_retried, r_fwversion, r_mcuversion, r_ble_strength_low, r_wifi_strength_low]
         db_sqlite.session.add_all(seeds)
         db_sqlite.session.commit()
 

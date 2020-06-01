@@ -33,6 +33,16 @@ def mcuversion():
     from app.lib import get_mcuversion
     return get_mcuversion()
 
+@application_ge_aging.template_global('ble_strength_low')
+def ble_strength_low():
+    from app.lib import get_ble_strength_low
+    return get_ble_strength_low()
+
+@application_ge_aging.template_global('wifi_strength_low')
+def wifi_strength_low():
+    from app.lib import get_wifi_strength_low
+    return get_wifi_strength_low()
+
 @application_ge_aging.template_global('progress')
 def progress():
     from app.lib import get_progress

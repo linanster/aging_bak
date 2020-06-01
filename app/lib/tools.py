@@ -124,4 +124,18 @@ def get_mcuversion():
     r = RunningState.query.filter_by(key='r_mcuversion').first()
     return r.value3
 
+def get_ble_strength_low():
+    r = RunningState.query.filter_by(key='r_ble_strength_low').first()
+    return r.value2
+def set_ble_strength_low(num):
+    r = RunningState.query.filter_by(key='r_ble_strength_low').first()
+    r.value2 = num
+    db_sqlite.session.commit() 
+def get_wifi_strength_low():
+    r = RunningState.query.filter_by(key='r_wifi_strength_low').first()
+    return r.value2
+def set_wifi_strength_low(num):
+    r = RunningState.query.filter_by(key='r_wifi_strength_low').first()
+    r.value2 = num
+    db_sqlite.session.commit() 
 
