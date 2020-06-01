@@ -4,7 +4,7 @@
 
 
 usage=$"
-Usage: run.sh [--start] [--stop] [--status] [--init] [--upload] [--purge] [--upgrade]
+Usage: run.sh [--start] [--stop] [--status] [--init] [--upload] [--purge] [--upgrade] [--logmonitorstart/--logmonitorstatus/--logmonitorstop]
 "
 
 workdir=$(cd "$(dirname $0)" && pwd)

@@ -1,21 +1,25 @@
-
+# 1.general ignore
 **/*.py[cdo]
 **/*.swp
 **/*.sqlite3
 **/*.sqlite
 **/__pycache__
+
+# 2. ignore folder
 venv
 venv.bak
-log/*
-scripts/raspbian.public.key*
-# scripts/get-pip.py*
-pub/excel/*
 go
+logs/*
+pub/excel/*
+
+# 3.ignore specified file
+scripts/raspbian.public.key*
 app/fcode.py
 
+# 4.exceptions that not ignore
 !**/*.bak
 !go/.gitkeep
-!log/.gitkeep
+!logs/.gitkeep
 !pub/.gitkeep
 !pub/excel/.gitkeep
 !sqlite/.gitkeep

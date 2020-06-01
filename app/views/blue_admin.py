@@ -5,7 +5,7 @@ from werkzeug.utils import secure_filename
 
 from app.lib import viewfunclog
 
-from app.settings import gofolder
+from app.myglobals import gofolder
 
 blue_admin = Blueprint('blue_admin', __name__, url_prefix='/admin')
 

@@ -14,7 +14,7 @@ from app.secret import db_user
 from app.secret import db_passwd
 from app.secret import db_name
 
-from app.settings import sqlitefolder
+from app.myglobals import sqlitefolder
 
 dbfile = os.path.abspath(os.path.join(sqlitefolder, "system.sqlite3"))
 

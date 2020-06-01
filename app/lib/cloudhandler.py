@@ -6,7 +6,7 @@ import requests
 
 from app.models import db_mysql, Testdata, TestdataArchive
 
-from app.myglobal import RETENTION, gecloud_ip
+from app.myglobals import RETENTION, gecloud_ip
 
 from .mylogger import logger_cloud
 

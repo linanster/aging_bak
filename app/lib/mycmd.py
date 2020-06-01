@@ -21,11 +21,8 @@ from .tools import reset_errno, set_errno
 from app.ext.mysocketio import socketio
 from flask_socketio import send
 
-from app.settings import Debug
-from app.settings import Timeout
-from app.settings import topdir
-from app.settings import gofolder
-from app.settings import logfolder
+from app.myglobals import Debug, Timeout
+from app.myglobals import gofolder, logfolder
 
 from .mylogger import logger_app
 from .mydecorator import processmaker, threadmaker

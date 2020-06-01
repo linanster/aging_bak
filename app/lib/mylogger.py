@@ -2,7 +2,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 import os
 
-from  app.settings import logfolder
+from  app.myglobals import logfolder
 
 
 formatter1 = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')

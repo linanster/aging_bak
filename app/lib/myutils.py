@@ -6,7 +6,7 @@ import json
 
 from app.models import db_mysql, Testdata, TestdataArchive
 
-from app.settings import logfolder, appfolder, gofolder
+from app.myglobals import logfolder, appfolder, gofolder
 
 def gen_excel(tableclass, filename):
     # 1.prepare table heads

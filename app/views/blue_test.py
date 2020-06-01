@@ -15,7 +15,7 @@ from app.lib import logger_app
 from app.lib import gen_excel, empty_folder
 from app.lib.myutils import write_json_to_file
 
-from app.settings import topdir, gofolder
+from app.myglobals import topdir, gofolder
 
 
 blue_test = Blueprint('blue_test', __name__, url_prefix='/test')

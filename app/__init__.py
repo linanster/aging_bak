@@ -5,7 +5,7 @@ from flask import Flask
 from app.models import init_models
 from app.views import init_views
 from app.apis import init_apis
-from app.settings import config
+from app.mysettings import config
 from app.ext import init_ext
 
 

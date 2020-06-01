@@ -7,7 +7,7 @@ import os
 from .mylogger import logger_app
 from app.lib.cloudhandler import check_upgrade_pin
 
-from app.myglobal import topdir, upgradefolder, gecloud_ip
+from app.myglobals import topdir, upgradefolder, gecloud_ip
 
 disable_warnings(InsecureRequestWarning)
 

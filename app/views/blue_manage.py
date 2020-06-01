@@ -13,9 +13,7 @@ from app.lib import viewfunclog, logger_app
 from app.lib import gen_excel, empty_folder
 from app.lib import exec_upgrade, check_github_connection
 
-from app.settings import logfolder
-from app.settings import gofolder
-from app.settings import topdir
+from app.myglobals import logfolder, gofolder, topdir
 
 blue_manage = Blueprint('blue_manage', __name__, url_prefix='/manage')
 
