@@ -35,7 +35,8 @@ class NanConfig1(Config):
     # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123456@localhost:3306/ge' 
     SQLALCHEMY_BINDS = {
     'mysql': 'mysql+pymysql://root:123456@localhost:3306/ge',
-    'sqlite': 'sqlite:///sqlite/system.sqlite3'
+    # 'sqlite': 'sqlite:///sqlite/system.sqlite3'
+    'sqlite': 'sqlite:///../sqlite/system.sqlite3'
     }
 
 

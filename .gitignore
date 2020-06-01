@@ -18,3 +18,4 @@ app/fcode.py
 !log/.gitkeep
 !pub/.gitkeep
 !pub/excel/.gitkeep
+!sqlite/.gitkeep
