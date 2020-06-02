@@ -56,20 +56,7 @@
                 <tr class="default">
             {% endif %}
         <td>{{ loop.index + pagination.skip }}</td>
-        <td>{{ result.device.name }}</td>
-        <td>{{ result.factory.name }}</td>
-        <td>{{ result.fw_version }}</td>
-        <td>{{ result.rssi_ble1 }}</td>
-        <td>{{ result.rssi_wifi1|parse_rssi_wifi_na }}</td>
-        <td>{{ result.mac_ble }}</td>
-        <td>{{ result.mac_wifi }}</td>
-        <td>{{ result.reserve_str_1 }}</td>
-        <td>{{ result.bool_qualified_signal|parse_is_qualified }}</td>
-        <td>{{ result.bool_qualified_check|parse_is_qualified }}({{result.status_cmd_check1}})</td>
-        <td>{{ result.bool_qualified_scan|parse_is_qualified }}</td>
-        <td>{{ result.bool_qualified_deviceid|parse_is_qualified }}</td>
-        <td>{{ result.reserve_bool_1|parse_is_qualified }}</td>
-        <td>{{ result.datetime }}</td>
+        {% include '_resulttable.html' %}
         </tr>
         {% else %}
         {% endfor %}
