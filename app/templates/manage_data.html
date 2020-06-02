@@ -50,7 +50,7 @@
 
         <tbody>
         {% for result in results %}
-            {% if not result.bool_qualified_signal or not result.bool_qualified_check or not result.bool_qualified_scan or not result.bool_qualified_deviceid %}
+            {% if not result.bool_qualified_signal or not result.bool_qualified_check or not result.bool_qualified_scan or not result.bool_qualified_deviceid or not result.reserve_bool_1%}
                 <tr class="info">
             {% else %}
                 <tr class="default">

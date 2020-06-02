@@ -106,7 +106,7 @@
         {% endfor %}
 
         {% for result in results %}
-            {% if result.bool_qualified_signal and result.bool_qualified_check and result.bool_qualified_scan and result.bool_qualified_deviceid %}
+            {% if result.bool_qualified_signal and result.bool_qualified_check and result.bool_qualified_scan and result.bool_qualified_deviceid and result.reserve_bool_1%}
                 <tr class="default">
                     <td>{{ loop.index }}</td>
                     <td>{{ result.device.name }}</td>
