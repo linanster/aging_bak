@@ -4,7 +4,9 @@
 
 
 usage=$"
-Usage: run.sh [--start] [--stop] [--status] [--init] [--upload] [--purge] [--upgrade] [--logmonitorstart/--logmonitorstatus/--logmonitorstop]
+Usage: run.sh [--start] [--stop] [--status] [--init] [--upload] [--purge] [--upgrade]
+              [--logmonitorstart/--logmonitorstatus/--logmonitorstop]
+              [--gotool --start/--stop/--status]
 "
 
 workdir=$(cd "$(dirname $0)" && pwd)
@@ -138,6 +140,33 @@ function run_logmonitor_status(){
     exit 0
 }
 
+function run_gotool() {
+    if [ "$1" == "--start" ]; then
+        nohup /root/aging/go/gotool &>/dev/null &
+        pid=$(ps -ef | grep "/root/aging/go/gotool" | grep -v "grep" | awk '{print $2}')
+        echo "$pid"
+    elif [ "$1" == "--stop" ]; then
+        pid=$(ps -ef | grep "/root/aging/go/gotool" | grep -v "grep" | awk '{print $2}')
+        if [ "$pid" == "" ]; then
+            echo "not running"
+        else
+            echo "kill $pid"
+            kill "$pid"
+        fi
+    elif [ "$1" == "--status" ]; then
+        pid=$(ps -ef | grep "/root/aging/go/gotool" | grep -v "grep" | awk '{print $2}')
+        if [ "$pid" == "" ]; then
+            echo "stopped"
+        else
+            echo "$pid"
+            echo "started"
+        fi
+    else
+        echo "${usage}"
+    fi
+    exit 0
+}
+
 if [ $# -eq 0 ]; then
     echo "${usage}"
     exit 1
@@ -178,6 +207,9 @@ if [ $# -ge 1 ]; then
         ;;
     --logmonitorstatus)
         run_logmonitor_status
+        ;;
+    --gotool)
+        run_gotool $2
         ;;
     *)
         echo "$usage"

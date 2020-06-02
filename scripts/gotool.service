@@ -1,0 +1,14 @@
+[Unit]
+Description=GoTool Daemon Service
+
+[Service]
+Type=forking
+ExecStart=/root/aging/run.sh --gotool --start
+ExecReload=
+ExecStop=/root/aging/run.sh --gotool --stop
+Restart=on-failure
+RestartSec=42s
+
+[Install]
+WantedBy=multi-user.target
+WantedBy=graphical.target

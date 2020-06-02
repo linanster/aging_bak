@@ -226,6 +226,21 @@ function uninstall_logmonitor_service(){
   rm -f /usr/lib/systemd/system/logmonitor.service
   systemctl daemon-reload
 }
+function install_gotool_service(){
+  cd "${scriptdir}"
+  cp gotool.service /usr/lib/systemd/system
+  systemctl daemon-reload
+  systemctl enable gotool.service
+  systemctl start gotool.service
+  systemctl status gotool.service
+}
+function uninstall_gotool_service(){
+  cd "${scriptdir}"
+  systemctl stop gotool.service
+  systemctl disable gotool.service
+  rm -f /usr/lib/systemd/system/gotool.service
+  systemctl daemon-reload
+}
 
 function user_modification(){
   deluser pi sudo
@@ -300,6 +315,14 @@ function option14(){
   uninstall_logmonitor_service
   green "option14 done!"
 }
+function option15(){
+  install_gotool_service
+  green "option15 done!"
+}
+function option16(){
+  uninstall_gotool_service
+  green "option16 done!"
+}
 
 
 cat << eof
@@ -318,6 +341,8 @@ cat << eof
 12) uninstall background service (-)
 13) install logmonitor service
 14) uninstall logmonitor service
+15) install gotool service
+16) uninstall gotool service
 q) quit 
 ====
 eof
@@ -378,6 +403,14 @@ while echo; read -p "Enter your option: " option; do
       ;;
     14)
       option14
+      break
+      ;;
+    15)
+      option15
+      break
+      ;;
+    16)
+      option16
       break
       ;;
     q|Q)
