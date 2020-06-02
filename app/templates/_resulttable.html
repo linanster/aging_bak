@@ -6,9 +6,9 @@
         <td>{{ result.mac_ble }}</td>
         <td>{{ result.mac_wifi }}</td>
         <td>{{ result.reserve_str_1 }}</td>
-        <td>{{ result.bool_qualified_signal|parse_is_qualified }}</td>
-        <td>{{ result.bool_qualified_check|parse_is_qualified }}({{result.status_cmd_check1}})</td>
-        <td>{{ result.bool_qualified_scan|parse_is_qualified }}</td>
-        <td>{{ result.bool_qualified_deviceid|parse_is_qualified }}</td>
-        <td>{{ result.reserve_bool_1|parse_is_qualified }}</td>
+        <td {% if not result.bool_qualified_signal %}bgcolor="red"{% endif %} >{{ result.bool_qualified_signal|parse_is_qualified }}</td>
+        <td {% if not result.bool_qualified_check %}bgcolor="red"{% endif %} >{{ result.bool_qualified_check|parse_is_qualified }}({{result.status_cmd_check1}})</td>
+        <td {% if not result.bool_qualified_scan %}bgcolor="red"{% endif %} >{{ result.bool_qualified_scan|parse_is_qualified }}</td>
+        <td {% if not result.bool_qualified_deviceid %}bgcolor="red"{% endif %} >{{ result.bool_qualified_deviceid|parse_is_qualified }}</td>
+        <td {% if not result.reserve_bool_1 %}bgcolor="red"{% endif %} >{{ result.reserve_bool_1|parse_is_qualified }}</td>
         <td>{{ result.datetime }}</td>
