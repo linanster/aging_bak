@@ -125,7 +125,8 @@ def start():
         # p.stderr.close()        
 
         # METHOD-4
-        errno = _gosubprocess("./ble-backend -command=starttest -totalcount={} -deviceid={} -fwversion={} -mcuversion={}".format(totalcount, devicecode, fwversion, mcuversion))
+        # errno = _gosubprocess("./ble-backend -command=starttest -totalcount={} -deviceid={} -fwversion={} -mcuversion={}".format(totalcount, devicecode, fwversion, mcuversion))
+        errno = _gosubprocess("./ble-backend -command=starttest")
 
         loop += 1
         if errno == 0:
