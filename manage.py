@@ -157,22 +157,12 @@ def errno():
 def parseIsQualified(mybool):
     return '成功' if mybool else '失败'
 
-@app.template_filter('parse_status')
-def parseStatusCode(code):
-    if '2' in str(code):
-        plaintxt = '失败'
+@app.template_filter('parse_rssi_wifi_na')
+def parseRssiWifiNa(rssiwifi):
+    if rssiwifi == 1:
+        return 'na'
     else:
-        plaintxt = '成功'
-    return '{}({})'.format(plaintxt,code)
-
-@app.template_filter('parse_status_boolean')
-def parseStatusCodeBoolean(code):
-    if '2' in str(code):
-        statusbool = False
-    else:
-        statusbool = True
-    return statusbool
-
+        return rssiwifi
 
 
 
