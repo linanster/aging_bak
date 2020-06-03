@@ -1,0 +1,4 @@
+#! /usr/bin/env bash
+#
+seconds=$[3600*24]
+sleep $seconds
