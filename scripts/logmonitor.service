@@ -3,9 +3,9 @@ Description=GE Lighting Auto Test Log Monitor
 
 [Service]
 Type=forking
-ExecStart=/root/aging/run.sh --logmonitorstart
+ExecStart=/root/aging/run.sh --logmonitor --start
 ExecReload=
-ExecStop=/root/aging/run.sh --logmonitorstop
+ExecStop=/root/aging/run.sh --logmonitor --stop
 
 
 [Install]

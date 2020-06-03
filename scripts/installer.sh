@@ -177,6 +177,22 @@ function chmod_dir(){
   chmod -R 700 "${topdir}"
 }
 
+function user_modification(){
+  deluser pi sudo
+  gpasswd -d pi sudo
+  # userdel pi
+  # groupdel pi
+  useradd -m -s /bin/bash user1
+  echo "user1:a" | chpasswd -m
+  cp /etc/sudoers /etc/sudoers.bak
+  cp /etc/group /etc/group.bak
+  sed -i '/%sudo/ s/^/# /' /etc/sudoers
+  sed -i '$ a user1 ALL=(ALL) NOPASSWD: /usr/bin/tail, /bin/cat, /bin/systemctl, /usr/bin/git' /etc/sudoers
+  sed -i '$ a user1 ALL=(ALL) NOPASSWD: /usr/bin/create_ap wlan0 eth0 Rsphot_A08D' /etc/sudoers
+  sed -i 's/pi$//' /etc/group
+  sed -i 's/$/user1/' /etc/group
+}
+
 function install_service(){
   cd "${scriptdir}"
   cp aging.service /usr/lib/systemd/system
@@ -240,22 +256,6 @@ function uninstall_gotool_service(){
   systemctl disable gotool.service
   rm -f /usr/lib/systemd/system/gotool.service
   systemctl daemon-reload
-}
-
-function user_modification(){
-  deluser pi sudo
-  gpasswd -d pi sudo
-  # userdel pi
-  # groupdel pi
-  useradd -m -s /bin/bash user1
-  echo "user1:a" | chpasswd -m
-  cp /etc/sudoers /etc/sudoers.bak
-  cp /etc/group /etc/group.bak
-  sed -i '/%sudo/ s/^/# /' /etc/sudoers
-  sed -i '$ a user1 ALL=(ALL) NOPASSWD: /usr/bin/tail, /bin/cat, /bin/systemctl, /usr/bin/git' /etc/sudoers
-  sed -i '$ a user1 ALL=(ALL) NOPASSWD: /usr/bin/create_ap wlan0 eth0 Rsphot_A08D' /etc/sudoers
-  sed -i 's/pi$//' /etc/group
-  sed -i 's/$/user1/' /etc/group
 }
 
 function option1(){

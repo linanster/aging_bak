@@ -5,7 +5,7 @@
 
 usage=$"
 Usage: run.sh [--start] [--stop] [--status] [--init] [--upload] [--purge] [--upgrade]
-              [--logmonitorstart/--logmonitorstatus/--logmonitorstop]
+              [--logmonitor --start/--stop/--status]
               [--gotool --start/--stop/--status]
 "
 
@@ -106,36 +106,32 @@ function run_upgrade(){
     systemctl status --quiet aging.service>/dev/null && { echo "3. check service success"; exit 0; } ||  { echo "3. check service error, exit"; exit 3; }
 }
 
-function run_logmonitor_start(){
+function run_logmonitor() {
     activate_venv
-    cd logmonitor
-    gunicorn --daemon --workers 1 --bind 0.0.0.0:5001 --timeout 300 --worker-class eventlet app:app_aging_logmonitor
-    echo "gunicorn --daemon --workers 1 --bind 0.0.0.0:5001 --timeout 300 --worker-class eventlet app:app_aging_logmonitor"
-    ps -ef | fgrep "gunicorn" | grep "app_aging_logmonitor" | awk '{if($3==1) print $2}'
-    exit 0
-}
-function run_logmonitor_stop(){
-    activate_venv
-    cd logmonitor
-    pid=$(ps -ef | fgrep "gunicorn" | grep "app_aging_logmonitor" | awk '{if($3==1) print $2}')
-    if [ "$pid" == "" ]; then
-        echo "not running" 
+    if [ "$1" == "--start" ]; then
+        cd logmonitor
+        gunicorn --daemon --workers 1 --bind 0.0.0.0:5001 --timeout 300 --worker-class eventlet app:app_aging_logmonitor
+        echo "gunicorn --daemon --workers 1 --bind 0.0.0.0:5001 --timeout 300 --worker-class eventlet app:app_aging_logmonitor"
+        pid=$(ps -ef | fgrep "gunicorn" | grep "app_aging_logmonitor" | awk '{if($3==1) print $2}')
+        echo "$pid"
+    elif [ "$1" == "--stop" ]; then
+        pid=$(ps -ef | fgrep "gunicorn" | grep "app_aging_logmonitor" | awk '{if($3==1) print $2}')
+        if [ "$pid" == "" ]; then
+            echo "not running"
+        else
+            echo "kill $pid"
+            kill "$pid"
+        fi
+    elif [ "$1" == "--status" ]; then
+        pid=$(ps -ef | fgrep "gunicorn" | grep "app_aging_logmonitor" | awk '{if($3==1) print $2}')
+        if [ "$pid" == "" ]; then
+            echo "stopped"
+        else
+            echo "$pid"
+            echo "started"
+        fi
     else
-        echo "kill $pid"
-        kill "$pid"
-    fi
-    exit 0
-}
-function run_logmonitor_status(){
-    cd "$workdir"
-    activate_venv
-    cd logmonitor
-    pid=$(ps -ef | fgrep "gunicorn" | grep "app_aging_logmonitor" | awk '{if($3==1) print $2}')
-    echo "$pid"
-    if [ "$pid" == "" ]; then
-        echo "stopped" 
-    else
-        echo "started"
+        echo "${usage}"
     fi
     exit 0
 }
@@ -208,6 +204,9 @@ if [ $# -ge 1 ]; then
         ;;
     --logmonitorstatus)
         run_logmonitor_status
+        ;;
+    --logmonitor)
+        run_logmonitor $2
         ;;
     --gotool)
         run_gotool $2
