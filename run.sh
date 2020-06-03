@@ -142,7 +142,8 @@ function run_logmonitor_status(){
 
 function run_gotool() {
     if [ "$1" == "--start" ]; then
-        nohup /root/aging/go/gotool &>/dev/null &
+        cd "$workdir/go"
+        nohup ./gotool &>/dev/null &
         pid=$(ps -ef | grep "/root/aging/go/gotool" | grep -v "grep" | awk '{print $2}')
         echo "$pid"
     elif [ "$1" == "--stop" ]; then
