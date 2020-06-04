@@ -196,15 +196,6 @@ if [ $# -ge 1 ]; then
     --upgrade)
         run_upgrade $2
         ;;
-    --logmonitorstart)
-        run_logmonitor_start
-        ;;
-    --logmonitorstop)
-        run_logmonitor_stop
-        ;;
-    --logmonitorstatus)
-        run_logmonitor_status
-        ;;
     --logmonitor)
         run_logmonitor $2
         ;;

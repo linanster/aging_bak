@@ -193,19 +193,19 @@ function user_modification(){
   sed -i 's/$/user1/' /etc/group
 }
 
-function install_service(){
+function install_main_service(){
   cd "${scriptdir}"
-  cp aging.service /usr/lib/systemd/system
+  cp aging-main.service /usr/lib/systemd/system
   systemctl daemon-reload
-  systemctl enable aging.service
-  systemctl restart aging.service
-  systemctl status aging.service
+  systemctl enable aging-main.service
+  systemctl restart aging-main.service
+  systemctl status aging-main.service
 }
-function uninstall_service(){
+function uninstall_main_service(){
   cd "${scriptdir}"
-  systemctl stop aging.service
-  systemctl disable aging.service
-  rm -f /usr/lib/systemd/system/aging.service
+  systemctl stop aging-main.service
+  systemctl disable aging-main.service
+  rm -f /usr/lib/systemd/system/aging-main.service
   systemctl daemon-reload
 }
 
@@ -229,32 +229,32 @@ function uninstall_background_service(){
 
 function install_logmonitor_service(){
   cd "${scriptdir}"
-  cp logmonitor.service /usr/lib/systemd/system
+  cp aging-logmonitor.service /usr/lib/systemd/system
   systemctl daemon-reload
-  systemctl enable logmonitor.service
-  systemctl start logmonitor.service
-  systemctl status logmonitor.service
+  systemctl enable aging-logmonitor.service
+  systemctl start aging-logmonitor.service
+  systemctl status aging-logmonitor.service
 }
 function uninstall_logmonitor_service(){
   cd "${scriptdir}"
-  systemctl stop logmonitor.service
-  systemctl disable logmonitor.service
-  rm -f /usr/lib/systemd/system/logmonitor.service
+  systemctl stop aging-logmonitor.service
+  systemctl disable aging-logmonitor.service
+  rm -f /usr/lib/systemd/system/aging-logmonitor.service
   systemctl daemon-reload
 }
 function install_gotool_service(){
   cd "${scriptdir}"
-  cp gotool.service /usr/lib/systemd/system
+  cp aging-gotool.service /usr/lib/systemd/system
   systemctl daemon-reload
-  systemctl enable gotool.service
-  systemctl start gotool.service
-  systemctl status gotool.service
+  systemctl enable aging-gotool.service
+  systemctl start aging-gotool.service
+  systemctl status aging-gotool.service
 }
 function uninstall_gotool_service(){
   cd "${scriptdir}"
-  systemctl stop gotool.service
-  systemctl disable gotool.service
-  rm -f /usr/lib/systemd/system/gotool.service
+  systemctl stop aging-gotool.service
+  systemctl disable aging-gotool.service
+  rm -f /usr/lib/systemd/system/aging-gotool.service
   systemctl daemon-reload
 }
 
@@ -292,11 +292,11 @@ function option8(){
   green "option8 done!"
 }
 function option9(){
-  install_service
+  install_main_service
   green "option9 done!"
 }
 function option10(){
-  uninstall_service
+  uninstall_main_service
   green "option10 done!"
 }
 function option11(){
@@ -335,8 +335,8 @@ cat << eof
 6) clone codes from github (-)
 7) permission control (-)
 8) user configuration
-9) install service (make sure NO run --start)
-10) uninstall service (-)
+9) install main service
+10) uninstall main service
 11) install background service (cloud upload & local purge periodically) (-)
 12) uninstall background service (-)
 13) install logmonitor service
