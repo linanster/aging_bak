@@ -18,7 +18,6 @@ app/fcode.py
 
 # 4.exceptions that not ignore
 !**/*.bak
-!go/gotool
 !go/.gitkeep
 !logs/.gitkeep
 !pub/.gitkeep
