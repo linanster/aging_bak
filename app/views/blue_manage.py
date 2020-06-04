@@ -47,8 +47,8 @@ def vf_device():
     if fcode == 0:
         results = Device.query.all()
     elif fcode in (1, 2, 3, 4, 5):
-        # factory = Factory.query.get(fcode)
-        factory = Factory.query.filter(Factory.code.__eq__(fcode)).first()
+        # factory = Factory.query.filter(Factory.code.__eq__(fcode)).first()
+        factory = Factory.query.filter(Factory.code == fcode).first()
         results = factory.devices
     else:
         results = list()
