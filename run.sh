@@ -110,8 +110,13 @@ function run_logmonitor() {
     activate_venv
     if [ "$1" == "--start" ]; then
         cd logmonitor
-        gunicorn --daemon --workers 1 --bind 0.0.0.0:5001 --timeout 300 --worker-class eventlet app:app_aging_logmonitor
-        echo "gunicorn --daemon --workers 1 --bind 0.0.0.0:5001 --timeout 300 --worker-class eventlet app:app_aging_logmonitor"
+        if [ "$2" == '--nodaemon' ]; then
+            gunicorn --workers 1 --bind 0.0.0.0:5001 --timeout 300 --worker-class eventlet app:app_aging_logmonitor
+            echo "gunicorn --workers 1 --bind 0.0.0.0:5001 --timeout 300 --worker-class eventlet app:app_aging_logmonitor"
+        else
+            gunicorn --daemon --workers 1 --bind 0.0.0.0:5001 --timeout 300 --worker-class eventlet app:app_aging_logmonitor
+            echo "gunicorn --daemon --workers 1 --bind 0.0.0.0:5001 --timeout 300 --worker-class eventlet app:app_aging_logmonitor"
+        fi
         pid=$(ps -ef | fgrep "gunicorn" | grep "app_aging_logmonitor" | awk '{if($3==1) print $2}')
         echo "$pid"
     elif [ "$1" == "--stop" ]; then
@@ -197,7 +202,7 @@ if [ $# -ge 1 ]; then
         run_upgrade $2
         ;;
     --logmonitor)
-        run_logmonitor $2
+        run_logmonitor $2 $3
         ;;
     --gotool)
         run_gotool $2
