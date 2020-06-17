@@ -6,6 +6,7 @@ import time
 import os
 import subprocess
 import datetime
+from sqlalchemy import or_, and_
 
 from .execsql import get_running_state_sql, reset_running_state_sql
 from .execsql import get_retried_sql, set_retried_sql, reset_retried_sql
@@ -28,7 +29,7 @@ from .mylogger import logger_app
 from .mydecorator import processmaker, threadmaker
 from .myutils import gen_excel
 
-
+from app.models.mysql import Testdata
 
 
 def _gosubprocess(cmd):
@@ -45,62 +46,54 @@ def _gosubprocess(cmd):
     p.stderr.close()
     return errno
 
-@threadmaker
-def watch_log_legacy():
-    logfile = os.path.join(logfolder, 'log_app.txt')
-    p = subprocess.Popen("tail -f {}".format(logfile), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    while get_running_state_sql():
-        output = p.stdout.readline().decode('utf-8')[0:-1]
-        socketio.emit('mylog', output, namespace='/test', broadcast=True)
-    p.kill()
 
-
-@threadmaker
-def watch_to_jump_legacy():
-    while True:
-        if get_running_state_sql():
-            # time.sleep(2)
-            socketio.sleep(2)
-        else:
-            logger_app.info('==emit event_done==')
-            socketio.emit('mydone', namespace='/test', broadcast=True)
-            break
-    
-@threadmaker
-def watch_to_jump():
+@processmaker
+def watch_timeout():
     mytimer = 300 # seconds
-    while True:
-        if get_running_state_sql():
-            if mytimer > 0:
-                socketio.sleep(2)
-                mytimer = mytimer - 2
-            else:
-                logger_app.info('==watch running state timeout==')
-                reset_running_state_sql()
-                break
-        else:
-            logger_app.info('==watch running state finished==')
-            break
-    logger_app.info('==emit event done==')
-    socketio.emit('mydone', namespace='/test', broadcast=True)
-    return 0
-
-def watch_to_finish():
-    mytimer = 300 # seconds 
     while True:
         if get_running_state():
             if mytimer > 0:
                 time.sleep(2)
                 mytimer = mytimer - 2
             else:
-                logger_app.info('==watch running state timeout==')
+                logger_app.info('==watch timeout: timeout and reset==')
                 reset_running_state()
                 break
         else:
-            logger_app.info('==watch running state finished==')
+            logger_app.info('==watch tiemout: running state changed and nothing to do==')
             break
-    logger_app.info('==notice api to return==')
     return 0
+
+@threadmaker
+def watch_to_jump():
+    while True:
+        if get_running_state_sql():
+            socketio.sleep(2)
+        else:
+            logger_app.info('==detect running state finished, emit event done==')
+            socketio.emit('mydone', namespace='/test', broadcast=True)
+            break
+    return 0
+
+def watch_to_finish():
+    while True:
+        if get_running_state():
+            time.sleep(2)
+        else:
+            logger_app.info('==detect running state finished, notice api to return==')
+            break
+    return 0
+
+def watch_to_blink():
+    while True:
+        if get_running_state():
+            time.sleep(2)
+        else:
+            logger_app.info('==detect running state finished, auto blink failed bulbs==')
+            blink_failed()
+            break
+    return 0
+
     
 @processmaker
 def start():
@@ -327,6 +320,35 @@ def indicator_b():
     logger_app.info('==indicator_b success==')
     return 0
 
+# @processmaker
+def blink_failed():
+
+    filter_failed = {
+        or_(
+            Testdata.bool_qualified_signal == False,
+            Testdata.bool_qualified_check == False,
+            Testdata.bool_qualified_scan == False,
+            Testdata.bool_qualified_deviceid == False,
+            Testdata.reserve_bool_1 == False,
+        )
+    }
+    datas_all = Testdata.query.all()
+    datas_failed = Testdata.query.filter(*filter_failed).all()
+    num_all = len(datas_all)
+    num_failed = len(datas_failed)
+    if num_all >= 1 and num_all == num_failed:
+        logger_app.warn('==auto blink: {} of {} failed, blink all=='.format(num_failed, num_all))
+        blink_all()
+        return 0
+    logger_app.info('==auto blink: {} of {} failed, blink every single failed one=='.format(num_failed, num_all))
+    macs = list()
+    for data in datas_failed:
+        macs.append(data.mac_ble)
+    for mac in macs:
+        blink_single(mac)
+    return 0
+
+
 ######################
 ## legacy functions ##
 ######################
@@ -397,3 +419,24 @@ def _bulb_cmd_set():
     if Debug:
         print('==_bulb_cmd_set success==')
     return 0
+
+@threadmaker
+def watch_log_legacy():
+    logfile = os.path.join(logfolder, 'log_app.txt')
+    p = subprocess.Popen("tail -f {}".format(logfile), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    while get_running_state_sql():
+        output = p.stdout.readline().decode('utf-8')[0:-1]
+        socketio.emit('mylog', output, namespace='/test', broadcast=True)
+    p.kill()
+
+@threadmaker
+def watch_to_jump_legacy():
+    while True:
+        if get_running_state_sql():
+            # time.sleep(2)
+            socketio.sleep(2)
+        else:
+            logger_app.info('==emit event_done==')
+            socketio.emit('mydone', namespace='/test', broadcast=True)
+            break
+

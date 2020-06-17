@@ -2,7 +2,7 @@ from flask_restful import Api, Resource, marshal_with, fields, reqparse, abort
 import json, copy, datetime, time
 
 from app.lib.mydecorator import viewfunclog
-from app.lib.mycmd import watch_to_finish, start, kickout_all, blink_single, blink_all, blink_stop, turn_on_all, turn_off_all
+from app.lib.mycmd import watch_to_finish, watch_timeout, watch_to_blink, start, kickout_all, blink_single, blink_all, blink_stop, turn_on_all, turn_off_all
 from app.lib.tools import get_errno, set_running_state
 from app.lib.mylogger import logger_app
 
@@ -35,6 +35,8 @@ class ResourceCmdStarttest(Resource):
         logger_app.warn('trigger starttest api')
         set_running_state()
         start()
+        watch_timeout()
+        watch_to_blink()
         watch_to_finish()
 
         response_obj = {
