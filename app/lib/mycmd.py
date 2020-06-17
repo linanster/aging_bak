@@ -66,6 +66,22 @@ def watch_to_jump():
             socketio.emit('mydone', namespace='/test', broadcast=True)
             break
     
+def watch_to_finish():
+    mytimer = 300 # seconds 
+    while True:
+        if get_running_state_sql():
+            if mytimer > 0:
+                time.sleep(2)
+                mytimer = mytimer - 2
+            else:
+                logger_app.info('==starttest timeout, notice api to return==')
+                reset_running_state()
+                break
+        else:
+            logger_app.info('==starttest finished, notice api to return==')
+            break
+    return 0
+    
 @processmaker
 def start():
     # reserve time for frontend to receive event message
