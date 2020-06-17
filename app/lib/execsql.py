@@ -22,6 +22,10 @@ sql_get_running_state = '''
     SELECT value1 FROM runningstates WHERE key='r_running';
 '''
 
+sql_reset_running_state = '''
+    UPDATE runningstates SET value1=0 WHERE key='r_running';
+'''
+
 sql_get_retried = '''
     SELECT value1 FROM runningstates WHERE key='r_retried';
 '''
@@ -61,6 +65,12 @@ def get_running_state_sql():
     cursor = conn.execute(sql_get_running_state)
     res = cursor.fetchone()
     return res[0]
+
+def reset_running_state_sql():
+    conn = sqlite3.connect(dbfile)
+    cursor = conn.execute(sql_reset_running_state)
+    conn.commit()
+    conn.close()
 
 def get_retried_sql():
     conn = sqlite3.connect(dbfile)

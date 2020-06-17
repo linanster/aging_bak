@@ -7,7 +7,7 @@ import os
 import subprocess
 import datetime
 
-from .execsql import get_running_state_sql
+from .execsql import get_running_state_sql, reset_running_state_sql
 from .execsql import get_retried_sql, set_retried_sql, reset_retried_sql
 
 from app.lib.execmodel import testdatas_cleanup
@@ -56,7 +56,7 @@ def watch_log_legacy():
 
 
 @threadmaker
-def watch_to_jump():
+def watch_to_jump_legacy():
     while True:
         if get_running_state_sql():
             # time.sleep(2)
@@ -66,20 +66,40 @@ def watch_to_jump():
             socketio.emit('mydone', namespace='/test', broadcast=True)
             break
     
+@threadmaker
+def watch_to_jump():
+    mytimer = 300 # seconds
+    while True:
+        if get_running_state_sql():
+            if mytimer > 0:
+                socketio.sleep(2)
+                mytimer = mytimer - 2
+            else:
+                logger_app.info('==watch running state timeout==')
+                reset_running_state_sql()
+                break
+        else:
+            logger_app.info('==watch running state finished==')
+            break
+    logger_app.info('==emit event done==')
+    socketio.emit('mydone', namespace='/test', broadcast=True)
+    return 0
+
 def watch_to_finish():
     mytimer = 300 # seconds 
     while True:
-        if get_running_state_sql():
+        if get_running_state():
             if mytimer > 0:
                 time.sleep(2)
                 mytimer = mytimer - 2
             else:
-                logger_app.info('==starttest timeout, notice api to return==')
+                logger_app.info('==watch running state timeout==')
                 reset_running_state()
                 break
         else:
-            logger_app.info('==starttest finished, notice api to return==')
+            logger_app.info('==watch running state finished==')
             break
+    logger_app.info('==notice api to return==')
     return 0
     
 @processmaker
