@@ -4,7 +4,7 @@
 
 
 usage=$"
-Usage: run.sh [--start] [--stop] [--status] [--init] [--upload] [--purge] [--upgrade]
+Usage: $0 [--start] [--stop] [--status] [--init] [--upload] [--purge] [--upgrade]
               [--logmonitor --start/--stop/--status]
               [--gotool --start/--stop/--status]
 "
