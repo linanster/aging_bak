@@ -5,7 +5,7 @@ import datetime
 import os
 
 from app.models import Testdata, Factory, Device
-from app.lib import start, blink_single, blink_all, blink_stop, turn_on_all, turn_off_all, kickout_all, indicator_r, indicator_g, indicator_b
+from app.lib import start, blink_single, blink_all, blink_failed, blink_stop, turn_on_all, turn_off_all, kickout_all, indicator_r, indicator_g, indicator_b
 from app.lib import watch_to_jump, watch_timeout, watch_to_blink
 from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state, set_fwversion, set_mcuversion, set_ble_strength_low, set_wifi_strength_low
 from app.lib import get_errno, get_running_state, get_factorycode
@@ -143,6 +143,13 @@ def vf_cmd_blink_single():
 def vf_cmd_blink_all():
     logger_app.warn('click blink all button')
     blink_all()
+    return redirect(url_for('blue_test.vf_finished'))
+
+@blue_test.route('/cmd_blink_failed', methods=['POST'])
+@viewfunclog
+def vf_cmd_blink_failed():
+    logger_app.warn('click blink failed button')
+    blink_failed()
     return redirect(url_for('blue_test.vf_finished'))
 
 @blue_test.route('/cmd_blink_stop', methods=['POST'])

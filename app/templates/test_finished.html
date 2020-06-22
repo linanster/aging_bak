@@ -19,7 +19,10 @@
             <button type="submit" class="btn btn-danger" {% if results|count == 0 %}disabled{% endif %}>全部熄灭</button>
         </form>
         <form style="display: inline" action="{{ url_for('blue_test.vf_cmd_blink_all') }}" method="post">
-            <button type="submit" class="btn btn-success" {% if results|count == 0 %}disabled{% endif %}>全部闪烁</button>
+            <button type="submit" class="btn btn-success" {% if results|count == 0 %}disabled{% endif %}>闪烁全部</button>
+        </form>
+        <form style="display: inline" action="{{ url_for('blue_test.vf_cmd_blink_failed') }}" method="post">
+            <button type="submit" class="btn btn-success" {% if results|count == 0 %}disabled{% endif %}>闪烁坏灯</button>
         </form>
         <form style="display: inline" action="{{ url_for('blue_test.vf_cmd_blink_stop') }}" method="post">
             <button type="submit" class="btn btn-danger" {% if results|count == 0 %}disabled{% endif %}>停止闪烁</button>
