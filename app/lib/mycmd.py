@@ -68,7 +68,8 @@ def watch_timeout():
 def watch_to_jump():
     while True:
         if get_running_state_sql():
-            socketio.sleep(2)
+            # socketio.sleep(2)
+            time.sleep(2)
         else:
             logger_app.info('==detect running state finished, emit event done==')
             socketio.emit('mydone', namespace='/test', broadcast=True)
@@ -84,12 +85,13 @@ def watch_to_finish():
             break
     return 0
 
+@processmaker
 def watch_to_blink():
     while True:
         if get_running_state():
             time.sleep(2)
         else:
-            logger_app.info('==detect running state finished, auto blink failed bulbs==')
+            logger_app.info('==detect running state finished, blink all failed bulbs==')
             blink_failed()
             break
     return 0
@@ -213,10 +215,10 @@ def start_legacy():
 
 def blink_single(mac):
     segments = mac.split(':')
-    maclist = segments[4] + segments[5]
+    macseg = segments[4] + segments[5]
     loop = 1
-    # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist={}".format(maclist), shell=True, cwd=gofolder):
-    while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist={}".format(maclist)):
+    # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist={}".format(macseg), shell=True, cwd=gofolder):
+    while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist={}".format(macseg)):
         # time.sleep(Timeout)
         # if loop==3:
         if loop==1:
@@ -224,6 +226,32 @@ def blink_single(mac):
             return -1
         loop+=1
     logger_app.info('==blink_single success==')
+    return 0
+
+def blink_group(macs):
+    macgroups = [macs[i:i+4] for i in range(0, len(macs), 4)]
+    # print('==macgroups==', macgroups)
+    macsegs = list()
+    for macgroup in macgroups:
+        # print('==macgroup==', macgroup)
+        macseg = str()
+        for mac in macgroup:
+            parts = mac.split(':')
+            macseg += (parts[4] + parts[5])
+        macsegs.append(macseg)
+    # print('==macsegs==', macsegs)
+
+    for macseg in macsegs:
+        loop = 1
+        # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist={}".format(macseg), shell=True, cwd=gofolder):
+        while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist={}".format(macseg)):
+            # time.sleep(Timeout)
+            # if loop==3:
+            if loop==1:
+                logger_app.error('==blink_group failed==')
+                return -1
+            loop+=1
+        logger_app.info('==blink_group success==')
     return 0
 
 
@@ -344,8 +372,9 @@ def blink_failed():
     macs = list()
     for data in datas_failed:
         macs.append(data.mac_ble)
-    for mac in macs:
-        blink_single(mac)
+    # for mac in macs:
+    #     blink_single(mac)
+    blink_group(macs)
     return 0
 
 
