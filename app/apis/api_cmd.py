@@ -129,9 +129,11 @@ class ResourceCmdAllkickout(Resource):
         }
         return response_obj
 
-def my_check_output(cmd):
+def my_check_output_legacy(cmd):
     try:
-        output = s.check_output([cmd, ])
+        # output = s.check_output([cmd, ])
+        cmd_list = cmd.split(' ')
+        output = s.check_output(cmd_list)
     except s.CalledProcessError as e:
         return str(e)
     except Exception as e:
@@ -140,6 +142,23 @@ def my_check_output(cmd):
         # return output.decode('utf-8')
         return output.decode()
 
+def my_check_output(cmd):
+    try:
+        cmd_list = cmd.split(' ')
+        # print('==cmd_list==', cmd_list)
+        output = s.check_output(cmd_list, stderr=s.STDOUT)
+    except s.CalledProcessError as e:
+        # print('==CalledProcessError==')
+        return e.output.decode()
+    except Exception as e:
+        # print('==Exception==')
+        # print(type(e))
+        try:
+            return e.output.decode()
+        except:
+            return str(e)
+    else:
+        return output.decode()
 
 class ResourceCmdOnlinecmd(Resource):
     @viewfunclog

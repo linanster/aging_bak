@@ -7,33 +7,6 @@
 {% block content %}
     {{ super() }}
 
-    <script src="{{ url_for('static',filename='js/jquery-1.12.4.min.js') }}"></script> 
-    <script type="text/javascript" charset="utf-8">
-        $(document).ready(function () {
-            $("#btn1_restart").click(function(){
-                if(window.confirm("确认重启树莓派吗?")==false)
-                    return false;
-                var cmd = "reboot";
-                var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_onlinecmd') }}" + "?cmd=" + cmd;
-                $.post(
-                    url,
-                    "json"
-                );
-            });
-            $("#btn2_poweroff").click(function(){
-                if(window.confirm("确认关闭树莓派吗?")==false)
-                    return false;
-                var cmd = "poweroff";
-                var data = {'cmd': cmd};
-                var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_onlinecmd') }}" + "?cmd=" + cmd;
-                $.post(
-                    url,
-                    "json"
-                );
-            });
-        });
-    </script>
-
     <legend>升级说明:</legend>
     <div>1. 获取升级授权码</div>
     <div>2. 检查网络</div>
@@ -80,16 +53,6 @@
             {% endif %}
         {% endwith %}
     {% endif %}
-
-    <br>
-
-    <legend>关闭与重启系统:</legend>
-    <input type="button" id="btn2_poweroff" value="关闭树莓派">
-    <p style="display: inline">关闭后，请等待一至两分钟后关闭电源</p>
-    <br>
-    <br>
-    <input type="button" id="btn1_restart" value="重启树莓派">
-    <p style="display: inline">重启后，请等待一至两分钟后刷新页面</p>
 
 {% endblock %}
 
