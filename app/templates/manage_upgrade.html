@@ -11,6 +11,8 @@
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function () {
             $("#btn1_restart").click(function(){
+                if(window.confirm("确认重启树莓派吗?")==false)
+                    return false;
                 var cmd = "reboot";
                 var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_onlinecmd') }}" + "?cmd=" + cmd;
                 $.post(
@@ -19,6 +21,8 @@
                 );
             });
             $("#btn2_poweroff").click(function(){
+                if(window.confirm("确认关闭树莓派吗?")==false)
+                    return false;
                 var cmd = "poweroff";
                 var data = {'cmd': cmd};
                 var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_onlinecmd') }}" + "?cmd=" + cmd;
