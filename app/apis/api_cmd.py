@@ -1,5 +1,6 @@
 from flask_restful import Api, Resource, marshal_with, fields, reqparse, abort
 import json, copy, datetime, time
+import subprocess as s
 
 from app.lib.mydecorator import viewfunclog
 from app.lib.mycmd import watch_to_finish, watch_timeout, watch_to_blink, start, kickout_all, blink_single, blink_all, blink_stop, turn_on_all, turn_off_all
@@ -20,6 +21,7 @@ api_cmd = Api(prefix='/api/cmd/')
 
 parser = reqparse.RequestParser()
 parser.add_argument('mac', type=str, location=['args'])
+parser.add_argument('cmd', type=str, location=['args', 'form'])
 
 
 
@@ -127,6 +129,33 @@ class ResourceCmdAllkickout(Resource):
         }
         return response_obj
 
+def my_check_output(cmd):
+    try:
+        output = s.check_output([cmd, ])
+    except s.CalledProcessError as e:
+        return str(e)
+    except Exception as e:
+        return str(e)
+    else:
+        # return output.decode('utf-8')
+        return output.decode()
+
+
+class ResourceCmdOnlinecmd(Resource):
+    @viewfunclog
+    def post(self):
+        # cmd = request.form.get('cmd')
+        args = parser.parse_args()
+        cmd = args.get('cmd')
+        output = my_check_output(cmd)
+        # print('==cmd==', cmd)
+        # print('==output==', output)
+        return {
+            'msg': 'ok',
+            'method': 'post',
+            'output': output,
+        }
+
 
 
 ##############################
@@ -141,6 +170,7 @@ api_cmd.add_resource(ResourceCmdBlinkstop, '/blinkstop')
 api_cmd.add_resource(ResourceCmdAllon, '/allon')
 api_cmd.add_resource(ResourceCmdAlloff, '/alloff')
 api_cmd.add_resource(ResourceCmdAllkickout, '/allkickout')
+api_cmd.add_resource(ResourceCmdOnlinecmd, '/onlinecmd', endpoint='api_cmd_onlinecmd')
 
 
 

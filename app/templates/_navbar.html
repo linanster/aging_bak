@@ -48,7 +48,7 @@
                         <li class="divider"></li>
                         <li><a href="{{ url_for('blue_manage.vf_go') }}">Go程序管理</a></li>
                         <li class="divider"></li>
-                        <li><a href="{{ url_for('blue_manage.vf_upgrade') }}">系统升级</a></li>
+                        <li><a href="{{ url_for('blue_manage.vf_upgrade') }}">升级与重启</a></li>
                     </ul>
                 </li>
                 <li id='about' {% if request.path in [url_for('blue_about.about'),] %}class='active'{% endif %}><a
