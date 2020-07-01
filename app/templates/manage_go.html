@@ -5,27 +5,28 @@
 
     <legend>Go程序管理 (admin only)</legend>
 
+    <div style="padding-left: 10px">
     <table border="1">
         <tr>
-            <th>Index</th>
-            <th>File</th>
-            <th>Operation</th>
+            <th>#</th>
+            <th>文件</th>
+            <th>操作</th>
         </tr>
         {% for file in filelist %}
             <tr>
-                <td>{{ loop.index }}</td>
+                <td>&nbsp;{{ loop.index }}&nbsp;</td>
                 <td>&nbsp;{{ file }}&nbsp;</td>
                 <td>
                     &nbsp;
-                    <a href="{{ url_for('blue_manage.cmd_view_go', filename=file) }}">view</a>&nbsp;
-                    <a href="{{ url_for('blue_manage.cmd_download_go', filename=file) }}">download</a>&nbsp; &nbsp;
-                    <a href="{{ url_for('blue_manage.cmd_delete_go', filename=file) }}" style="color: orangered"
-                       οnclick="{if(confirm('Delete confirmed?')){this.document.formname.submit();return true;}return false;}">delete</a>&nbsp;
+                    <a href="{{ url_for('blue_manage.cmd_view_go', filename=file) }}">查看</a>&nbsp;
+                    <a href="{{ url_for('blue_manage.cmd_download_go', filename=file) }}">下载</a>&nbsp; &nbsp;
+                    <a href="{{ url_for('blue_manage.cmd_delete_go', filename=file) }}" style="color: orangered" onClick="return confirm('确定删除吗?');">删除</a>&nbsp;
                 </td>
             </tr>
         {% else %}
         {% endfor %}
     </table>
+    </div>
     <a href="{{ url_for('blue_manage.vf_go') }}">refresh</a>
 
     <br>
