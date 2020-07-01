@@ -42,6 +42,36 @@
                     "json"
                 );
             });
+            $("#btn4_restart_aging-main").click(function(){
+                if(window.confirm("确认重启aging-main服务吗?")==false)
+                    return false;
+                var cmd = "systemctl restart aging-main.service";
+                var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_onlinecmd') }}" + "?cmd=" + cmd;
+                $.post(
+                    url,
+                    "json"
+                );
+            });
+            $("#btn5_restart_aging-logmonitor").click(function(){
+                if(window.confirm("确认重启aging-logmonitor服务吗?")==false)
+                    return false;
+                var cmd = "systemctl restart aging-logmonitor.service";
+                var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_onlinecmd') }}" + "?cmd=" + cmd;
+                $.post(
+                    url,
+                    "json"
+                );
+            });
+            $("#btn6_restart_aging-gotool").click(function(){
+                if(window.confirm("确认重启aging-gotool服务吗?")==false)
+                    return false;
+                var cmd = "systemctl restart aging-gotool.service";
+                var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_onlinecmd') }}" + "?cmd=" + cmd;
+                $.post(
+                    url,
+                    "json"
+                );
+            });
         });
     </script>
 
@@ -55,6 +85,18 @@
     <br>
     <input type="button" id="btn3_reset" value="重置系统">
     <p style="display: inline">重置Sqlite中系统运行数据，如运行状态，错误代码</p>
+    <br>
+    <br>
+    <input type="button" id="btn4_restart_aging-main" value="重启aging-main服务">
+    <p style="display: inline"></p>
+    <br>
+    <br>
+    <input type="button" id="btn5_restart_aging-logmonitor" value="重启aging-logmonitor服务">
+    <p style="display: inline"></p>
+    <br>
+    <br>
+    <input type="button" id="btn6_restart_aging-gotool" value="重启aging-gotool服务">
+    <p style="display: inline"></p>
 
 
 {% endblock %}
