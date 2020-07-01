@@ -23,13 +23,11 @@
             // 2. run button click event
             $("#btn1_run").click(function(){
                 var cmd = $("#cmd_input").val();
-                var data = {'cmd': cmd};
+                // var data = {'cmd': cmd};
                 var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_onlinecmd') }}" + "?cmd=" + cmd;
-                // alert(cmd)
-                // alert(url);
                 $.post(
                     url,
-                    data,
+                    // data,
                     function(data){
                         // alert(data.output);
                         $('#cmd_output').append('<br>' + $('<div/>').text(data.output).html());

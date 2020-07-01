@@ -162,6 +162,16 @@ def my_check_output(cmd):
     else:
         return output.decode()
 
+def my_check_retcode(cmd):
+    try:
+        cmd_list = cmd.split(' ')
+        retcode = s.call(cmd_list)
+    except Exception as e:
+        print(str(e))
+        retcode = -100
+    finally:
+        return retcode
+
 class ResourceCmdOnlinecmd(Resource):
     @viewfunclog
     def post(self):
@@ -181,11 +191,28 @@ class ResourceCmdOnlinecmd(Resource):
 class ResourceCmdReset(Resource):
     @viewfunclog
     def post(self):
-        reset_errno()
-        reset_running_state()
+        try:
+            reset_errno()
+            reset_running_state()
+        except Exception as e:
+            print(str(e))
+            retcode = -100
+        else:
+            retcode = 0
         return {
-            'msg': 'ok',
-            'method': 'post',
+            'msg': 'reset sqlite',
+            'retcode': retcode,
+        }
+
+class ResourceCmdGetRetcode(Resource):
+    @viewfunclog
+    def post(self):
+        args = parser.parse_args()
+        cmd = args.get('cmd')
+        retcode = my_check_retcode(cmd)
+        return {
+            'cmd': cmd,
+            'retcode': retcode,
         }
 
 
@@ -203,4 +230,5 @@ api_cmd.add_resource(ResourceCmdAlloff, '/alloff')
 api_cmd.add_resource(ResourceCmdAllkickout, '/allkickout')
 api_cmd.add_resource(ResourceCmdOnlinecmd, '/onlinecmd', endpoint='api_cmd_onlinecmd')
 api_cmd.add_resource(ResourceCmdReset, '/reset', endpoint='api_cmd_reset')
+api_cmd.add_resource(ResourceCmdGetRetcode, '/getretcode', endpoint='api_cmd_retcode')
 

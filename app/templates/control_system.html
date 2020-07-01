@@ -39,6 +39,14 @@
                 var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_reset') }}";
                 $.post(
                     url,
+                    function(data){
+                        if(data.retcode==0)
+                            msg='成功';
+                        else
+                            msg='失败';
+                        $('#p3_reset').css('color', 'red');
+                        $('#p3_reset').html(msg);
+                    },
                     "json"
                 );
             });
@@ -46,9 +54,19 @@
                 if(window.confirm("确认重启aging-main服务吗?")==false)
                     return false;
                 var cmd = "systemctl restart aging-main.service";
-                var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_onlinecmd') }}" + "?cmd=" + cmd;
+                var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_retcode') }}" + "?cmd=" + cmd;
                 $.post(
                     url,
+                    function(data){
+                        if(data.retcode==0)
+                            // msg='成功';
+                            msg='稍后刷新页面，已验证是否重启成功';
+                        else
+                            // msg='失败';
+                            msg='稍后刷新页面，已验证是否重启成功';
+                        $('#p4_restart_aging-main').css('color', 'red');
+                        $('#p4_restart_aging-main').html(msg);
+                    }, 
                     "json"
                 );
             });
@@ -56,9 +74,18 @@
                 if(window.confirm("确认重启aging-logmonitor服务吗?")==false)
                     return false;
                 var cmd = "systemctl restart aging-logmonitor.service";
-                var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_onlinecmd') }}" + "?cmd=" + cmd;
+                var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_retcode') }}" + "?cmd=" + cmd;
                 $.post(
                     url,
+                    function(data){
+                        if(data.retcode==0)
+                            msg='成功';
+                        else
+                            msg='失败';
+                        // $('#p5_restart_aging-logmonitor').html(data.retcode);
+                        $('#p5_restart_aging-logmonitor').css('color', 'red');
+                        $('#p5_restart_aging-logmonitor').html(msg);
+                    },
                     "json"
                 );
             });
@@ -66,9 +93,17 @@
                 if(window.confirm("确认重启aging-gotool服务吗?")==false)
                     return false;
                 var cmd = "systemctl restart aging-gotool.service";
-                var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_onlinecmd') }}" + "?cmd=" + cmd;
+                var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_retcode') }}" + "?cmd=" + cmd;
                 $.post(
                     url,
+                    function(data){
+                        if(data.retcode==0)
+                            msg='成功';
+                        else
+                            msg='失败';
+                        $('#p6_restart_aging-gotool').css('color', 'red');
+                        $('#p6_restart_aging-gotool').html(msg);
+                    },
                     "json"
                 );
             });
@@ -85,18 +120,22 @@
     <br>
     <input type="button" id="btn3_reset" value="重置系统">
     <p style="display: inline">重置Sqlite中系统运行数据，如运行状态，错误代码</p>
+    <p id="p3_reset" style="display: inline"></p>
     <br>
     <br>
     <input type="button" id="btn4_restart_aging-main" value="重启aging-main服务">
-    <p style="display: inline"></p>
+    <p style="display: inline">重启主服务</p>
+    <p id="p4_restart_aging-main" style="display: inline"></p>
     <br>
     <br>
     <input type="button" id="btn5_restart_aging-logmonitor" value="重启aging-logmonitor服务">
-    <p style="display: inline"></p>
+    <p style="display: inline">重启实时日志服务</p>
+    <p id="p5_restart_aging-logmonitor" style="display: inline"></p>
     <br>
     <br>
     <input type="button" id="btn6_restart_aging-gotool" value="重启aging-gotool服务">
-    <p style="display: inline"></p>
+    <p style="display: inline">重启gotool服务</p>
+    <p id="p6_restart_aging-gotool" style="display: inline"></p>
 
 
 {% endblock %}
