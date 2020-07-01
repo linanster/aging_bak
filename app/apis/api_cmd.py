@@ -5,7 +5,9 @@ import subprocess as s
 from app.lib.mydecorator import viewfunclog
 from app.lib.mycmd import watch_to_finish, watch_timeout, watch_to_blink, start, kickout_all, blink_single, blink_all, blink_stop, turn_on_all, turn_off_all
 from app.lib.tools import get_errno, set_running_state
+from app.lib.tools import reset_running_state, reset_errno
 from app.lib.mylogger import logger_app
+
 
 api_cmd = Api(prefix='/api/cmd/')
 
@@ -176,6 +178,16 @@ class ResourceCmdOnlinecmd(Resource):
         }
 
 
+class ResourceCmdReset(Resource):
+    @viewfunclog
+    def post(self):
+        reset_errno()
+        reset_running_state()
+        return {
+            'msg': 'ok',
+            'method': 'post',
+        }
+
 
 ##############################
 ### 4. Resourceful Routing ###
@@ -190,6 +202,5 @@ api_cmd.add_resource(ResourceCmdAllon, '/allon')
 api_cmd.add_resource(ResourceCmdAlloff, '/alloff')
 api_cmd.add_resource(ResourceCmdAllkickout, '/allkickout')
 api_cmd.add_resource(ResourceCmdOnlinecmd, '/onlinecmd', endpoint='api_cmd_onlinecmd')
-
-
+api_cmd.add_resource(ResourceCmdReset, '/reset', endpoint='api_cmd_reset')
 

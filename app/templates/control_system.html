@@ -33,6 +33,15 @@
                     "json"
                 );
             });
+            $("#btn3_reset").click(function(){
+                if(window.confirm("确认重置吗?")==false)
+                    return false;
+                var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_reset') }}";
+                $.post(
+                    url,
+                    "json"
+                );
+            });
         });
     </script>
 
@@ -42,6 +51,10 @@
     <br>
     <input type="button" id="btn2_reboot" value="重启树莓派">
     <p style="display: inline">重启后，请等待一至两分钟后刷新页面</p>
+    <br>
+    <br>
+    <input type="button" id="btn3_reset" value="重置系统">
+    <p style="display: inline">重置Sqlite中系统运行数据，如运行状态，错误代码</p>
 
 
 {% endblock %}
