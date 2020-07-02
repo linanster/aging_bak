@@ -89,8 +89,8 @@ class Device(db_mysql.Model):
     
         d_tonly_55 = Device(55, '0x37', 3, 'Dimmer Switch(0x37)')
         d_tonly_56 = Device(56, '0x38', 3, 'Dimmer Switch(Premium)(0x38)')
-        d_tonly_57 = Device(57, '0x39', 3, 'Switch Toggle(0x3A)')
-        d_tonly_58 = Device(58, '0x3A', 3, 'Switch Paddle(0x39)')
+        d_tonly_57 = Device(58, '0x3A', 3, 'Switch Toggle(0x3A)')
+        d_tonly_58 = Device(57, '0x39', 3, 'Switch Paddle(0x39)')
         d_tonly_59 = Device(59, '0x3B', 3, 'Switch Centre Button(0x3B)')
         d_tonly_81 = Device(81, '0x51', 3, 'Fan Speed Switch(0x51)')
 
