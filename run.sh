@@ -93,13 +93,23 @@ function run_purge(){
     exit "$errno"
 }
 
-function run_upgrade(){
+function run_upgrade_legacy(){
     activate_venv
     if [ "$1" == "--checkout" ]; then
         git checkout origin/upgrade upgrade/pin.txt && { echo "checkout auth code success"; exit 0; } || { echo "checkout auth code error,exit"; exit 11; }
     fi
     sleep 1
     git pull --quiet origin upgrade>/dev/null && { echo "1. pull upgrade success"; } ||  { echo "1. pull upgrade error, exit"; exit 1; }
+    sleep 1
+    systemctl restart --quiet aging-main.service>/dev/null && { echo "2. restart service success"; } ||  { echo "2. restart service error, exit"; exit 2; }
+    sleep 1
+    systemctl status --quiet aging-main.service>/dev/null && { echo "3. check service success"; exit 0; } ||  { echo "3. check service error, exit"; exit 3; }
+}
+
+function run_upgrade(){
+    activate_venv
+    sleep 1
+    git pull --quiet origin master>/dev/null && { echo "1. pull upgrade success"; } ||  { echo "1. pull upgrade error, exit"; exit 1; }
     sleep 1
     systemctl restart --quiet aging-main.service>/dev/null && { echo "2. restart service success"; } ||  { echo "2. restart service error, exit"; exit 2; }
     sleep 1
