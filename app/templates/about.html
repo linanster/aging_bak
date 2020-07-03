@@ -1,13 +1,36 @@
 {% extends '_mybase.html' %}
 
 {% block indent_content %}
+
+    <script src="{{ url_for('static',filename='js/jquery-1.12.4.min.js') }}"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function () {
+            $("#link_version").click(function(){
+                var cmd = "git log --oneline -1";
+                var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_onlinecmd') }}" + "?cmd=" + cmd;
+                $.post(
+                    url,
+                    function(data){
+                        $('#p_gitlog').css('color', 'red');
+                        $('#p_gitlog').html(data.output);
+                    },
+                    "json"
+                );
+            });
+        });
+    </script>
+
+
     <div style="width:50%">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">版本</h3>
             </div>
             <div class="panel-body">
-                <p>version 1.0</p>
+                <a id="link_version" title="查看提交记录" href="#">version 1.0</a>
+                <br>
+                <br>
+                <p id="p_gitlog"></p>
             </div>
         </div>
 
