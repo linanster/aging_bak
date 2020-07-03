@@ -6,7 +6,7 @@
 {% endblock head %}
 
 
-{% block content %}
+{% block indent_content %}
     <form action="{{ url_for('blue_test.vf_cmd_saveconfig') }}" method="post" class="form-horizontal" onsubmit="return validate_form(this)">
         <fieldset>
             <legend>测试配置</legend>

@@ -9,9 +9,11 @@
     {% block footer %}
         <br>
         <br>
-        <footer class="bottom-right" style="position: relative; bottom: 0; padding-bottom: 30px">
-            Copyright 2020 by <a href="https://www.gelighting.com/">GE Lighting</a>
-        </footer>
+        <div style="padding-left: 10px; padding-right: 10px">
+            <footer class="bottom-right" style="position: relative; bottom: 0; padding-bottom: 30px">
+                Copyright 2020 by <a href="https://www.gelighting.com/">GE Lighting</a>
+            </footer>
+        </div>
     {% endblock %}
 {% endblock body %}
 
@@ -23,7 +25,11 @@
 
 {% block content %}
     <br>
-{% endblock %}
+    <div style="padding-left: 10px; padding-right: 10px">
+    {% block indent_content %}
+    {% endblock indent_content %}
+    </div>
+{% endblock content %}
 
 {% block title %}GE Lighting 自动化检测工具{% endblock %}
 

@@ -1,11 +1,10 @@
 {% extends '_mybase.html' %}
 
-{% block content %}
+{% block indent_content %}
     {{ super() }}
 
     <legend>Go程序管理 (admin only)</legend>
 
-    <div style="padding-left: 10px">
     <table border="1">
         <tr>
             <th>#</th>
@@ -26,7 +25,6 @@
         {% else %}
         {% endfor %}
     </table>
-    </div>
     <a href="{{ url_for('blue_manage.vf_go') }}">refresh</a>
 
     <br>
