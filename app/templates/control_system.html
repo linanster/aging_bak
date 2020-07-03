@@ -107,6 +107,24 @@
                     "json"
                 );
             });
+            $("#btn7_reset_db").click(function(){
+                if(window.confirm("确认重置数据库吗?")==false)
+                    return false;
+                var cmd = "/root/aging/run.sh --resetdb";
+                var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_retcode') }}" + "?cmd=" + cmd;
+                $.post(
+                    url,
+                    function(data){
+                        if(data.retcode==0)
+                            msg='成功';
+                        else
+                            msg='失败';
+                        $('#p7_reset_db').css('color', 'red');
+                        $('#p7_reset_db').html(msg);
+                    },
+                    "json"
+                );
+            });
         });
     </script>
 
@@ -116,11 +134,6 @@
     <br>
     <input type="button" id="btn2_reboot" value="重启树莓派">
     <p style="display: inline">重启后，请等待一至两分钟后刷新页面</p>
-    <br>
-    <br>
-    <input type="button" id="btn3_reset" value="重置系统">
-    <p style="display: inline">重置Sqlite中系统运行数据，如运行状态，错误代码</p>
-    <p id="p3_reset" style="display: inline"></p>
     <br>
     <br>
     <input type="button" id="btn4_restart_aging-main" value="重启aging-main服务">
@@ -136,6 +149,16 @@
     <input type="button" id="btn6_restart_aging-gotool" value="重启aging-gotool服务">
     <p style="display: inline">重启gotool服务</p>
     <p id="p6_restart_aging-gotool" style="display: inline"></p>
+    <br>
+    <br>
+    <input type="button" id="btn3_reset" value="重置系统运行数据">
+    <p style="display: inline">重置sqlite中系统运行数据，如运行状态，错误代码</p>
+    <p id="p3_reset" style="display: inline"></p>
+    <br>
+    <br>
+    <input type="button" id="btn7_reset_db" value="重置数据库">
+    <p style="display: inline">清除数据库mysql和sqlite的全部数据，并升级库表 </p>
+    <p id="p7_reset_db" style="display: inline"></p>
 
 
 {% endblock %}

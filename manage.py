@@ -21,40 +21,40 @@ def createdb_sqlite(table=False, data=False):
     from app.fcode import FCODE
     if table:
         db_sqlite.create_all(bind='sqlite')
-        print('==create tables==')
+        print('==create sqlite tables==')
     if data:
         Systeminfo.seed()
         RunningState.seed()
         set_factorycode(FCODE)
-        print('==initialize datas==')
+        print('==initialize sqlite datas==')
 
 @manager.command
 def deletedb_sqlite(table=False, data=False):
     if table:
         db_sqlite.drop_all(bind='sqlite')
-        print('==delete tables==')
+        print('==delete sqlite tables==')
         return
     if data:
         Systeminfo.query.delete()
         RunningState.query.delete()
         db_sqlite.session.commit()
-        print('==delete datas==')
+        print('==delete sqlite datas==')
 
 @manager.command
 def createdb_mysql(table=False, data=False):
     if table:
         db_mysql.create_all(bind='mysql')
-        print('==create tables==')
+        print('==create mysql tables==')
     if data:
         Factory.seed()
         Device.seed()
-        print('==initialize datas==')
+        print('==initialize mysql datas==')
 
 @manager.command
 def deletedb_mysql(table=False, data=False):
     if table:
         db_mysql.drop_all(bind='mysql')
-        print('==delete tables==')
+        print('==delete mysql tables==')
         return
     if data:
         TestdataArchive.query.delete()
@@ -62,7 +62,7 @@ def deletedb_mysql(table=False, data=False):
         Device.query.delete()
         Factory.query.delete()
         db_mysql.session.commit()
-        print('==delete datas==')
+        print('==delete mysql datas==')
 
 @manager.command
 def cleanup(db=False, log=False, pycache=False, all=False):

@@ -7,6 +7,7 @@ usage=$"
 Usage: $0 [--start] [--stop] [--status] [--init] [--upload] [--purge] [--upgrade]
               [--logmonitor --start/--stop/--status]
               [--gotool --start/--stop/--status]
+              [--resetdb]
 "
 
 workdir=$(cd "$(dirname $0)" && pwd)
@@ -179,6 +180,13 @@ function run_gotool() {
     exit 0
 }
 
+function run_resetdb(){
+    python3 manage.py deletedb_mysql --table
+    python3 manage.py deletedb_sqlite --table
+    python3 manage.py createdb_mysql --table --data
+    python3 manage.py createdb_sqlite --table --data
+}
+
 if [ $# -eq 0 ]; then
     echo "${usage}"
     exit 1
@@ -216,6 +224,9 @@ if [ $# -ge 1 ]; then
         ;;
     --gotool)
         run_gotool $2
+        ;;
+    --resetdb)
+        run_resetdb
         ;;
     *)
         echo "$usage"
