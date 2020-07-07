@@ -34,6 +34,7 @@ class RunningState(db_sqlite.Model):
     @staticmethod
     def seed():
         r_running = RunningState('r_running', value1=False, description='Indicate running or not, default is False.')
+        r_eventdone = RunningState('r_eventdone', value1=False, description='Indicate event done received by web client.')
         r_devicecode = RunningState('r_devicecode', value2=0)
         r_totalcount = RunningState('r_totalcount', value2=0) 
         r_progress = RunningState('r_progress', value2=0) 
@@ -44,7 +45,7 @@ class RunningState(db_sqlite.Model):
         r_mcuversion = RunningState('r_mcuversion', value3='noversion') 
         r_ble_strength_low = RunningState('r_ble_strength_low', value2=-100) 
         r_wifi_strength_low = RunningState('r_wifi_strength_low', value2=-100) 
-        seeds = [r_running, r_devicecode, r_totalcount, r_progress, r_phase, r_errno, r_retried, r_fwversion, r_mcuversion, r_ble_strength_low, r_wifi_strength_low]
+        seeds = [r_running, r_devicecode, r_totalcount, r_progress, r_phase, r_errno, r_retried, r_fwversion, r_mcuversion, r_ble_strength_low, r_wifi_strength_low, r_eventdone]
         db_sqlite.session.add_all(seeds)
         db_sqlite.session.commit()
 

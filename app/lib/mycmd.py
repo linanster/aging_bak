@@ -10,6 +10,7 @@ from sqlalchemy import or_, and_
 
 from .execsql import get_running_state_sql, reset_running_state_sql
 from .execsql import get_retried_sql, set_retried_sql, reset_retried_sql
+from app.lib.execsql import get_eventdone_sql, reset_eventdone_sql
 
 from app.lib.execmodel import testdatas_cleanup
 
@@ -47,20 +48,23 @@ def _gosubprocess(cmd):
     return errno
 
 
-@processmaker
+@threadmaker
+# @processmaker
 def watch_timeout():
     mytimer = 300 # seconds
     while True:
-        if get_running_state():
+        if get_running_state_sql():
+        # if get_running_state():
             if mytimer > 0:
                 time.sleep(2)
                 mytimer = mytimer - 2
             else:
                 logger_app.info('==watch timeout: timeout and reset==')
-                reset_running_state()
+                reset_running_state_sql()
+                # reset_running_state()
                 break
         else:
-            logger_app.info('==watch tiemout: running state changed and nothing to do==')
+            logger_app.info('==watch tiemout: detect running state finished within timeout and nothing to do==')
             break
     return 0
 
@@ -68,11 +72,24 @@ def watch_timeout():
 def watch_to_jump():
     while True:
         if get_running_state_sql():
-            # socketio.sleep(2)
-            time.sleep(2)
+            socketio.sleep(2)
+            # time.sleep(2)
         else:
-            logger_app.info('==detect running state finished, emit event done==')
-            socketio.emit('mydone', namespace='/test', broadcast=True)
+            # logger_app.info('==watch to jump: detect running state finished, emit event done==')
+            # socketio.emit('mydone', namespace='/test', broadcast=True)
+            tries = 5
+            while tries > 0:
+                logger_app.info('==watch to jump({}): detect running state finished, emit event done=='.format(tries))
+                socketio.emit('mydone', namespace='/test', broadcast=True)
+                time.sleep(2)
+                if get_eventdone_sql():
+                    break
+                else:
+                    tries -= 1
+                    continue
+            else:
+                logger_app.warn('==watch to jump: seems that web page client failed to receive done message==')
+
             break
     return 0
 
@@ -81,17 +98,17 @@ def watch_to_finish():
         if get_running_state():
             time.sleep(2)
         else:
-            logger_app.info('==detect running state finished, notice api to return==')
+            logger_app.info('==watch to finish: detect running state finished, notice api to return==')
             break
     return 0
 
 @processmaker
 def watch_to_blink():
     while True:
-        if get_running_state():
+        if get_running_state_sql():
             time.sleep(2)
         else:
-            logger_app.info('==detect running state finished, blink all failed bulbs==')
+            logger_app.info('==watch to blink: detect running state finished, blink all failed bulbs==')
             blink_failed()
             break
     return 0
@@ -100,12 +117,13 @@ def watch_to_blink():
 @processmaker
 def start():
     # reserve time for frontend to receive event message
-    time.sleep(3)
+    time.sleep(1)
     logger_app.info('==测试开始==')
     logger_app.info('==starttest begin==')
     testdatas_cleanup()
     reset_errno()
     set_running_state()
+    reset_eventdone_sql()
 
     devicecode = get_devicecode()
     totalcount = get_totalcount()
@@ -180,7 +198,7 @@ def start():
         logger_app.error('==starttest failed==') 
         logger_app.error("==errno:{}==".format(errno))
     # reserve time for frontend to receive event message
-    time.sleep(3)
+    time.sleep(1)
     reset_running_state()
     set_errno(errno)
     logger_app.info('==测试结束==')

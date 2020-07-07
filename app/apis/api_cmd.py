@@ -7,6 +7,7 @@ from app.lib.mycmd import watch_to_finish, watch_timeout, watch_to_blink, start,
 from app.lib.tools import get_errno, set_running_state
 from app.lib.tools import reset_running_state, reset_errno
 from app.lib.mylogger import logger_app
+from app.lib.execsql import reset_eventdone_sql
 
 
 api_cmd = Api(prefix='/api/cmd/')
@@ -194,6 +195,7 @@ class ResourceCmdReset(Resource):
         try:
             reset_errno()
             reset_running_state()
+            reset_eventdone_sql()
         except Exception as e:
             print(str(e))
             retcode = -100

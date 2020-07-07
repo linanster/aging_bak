@@ -26,6 +26,16 @@ sql_reset_running_state = '''
     UPDATE runningstates SET value1=0 WHERE key='r_running';
 '''
 
+sql_get_eventdone = '''
+    SELECT value1 FROM runningstates WHERE key='r_eventdone';
+'''
+sql_set_eventdone = '''
+    UPDATE runningstates SET value1=1 WHERE key='r_eventdone';
+'''
+sql_reset_eventdone = '''
+    UPDATE runningstates SET value1=0 WHERE key='r_eventdone';
+'''
+
 sql_get_retried = '''
     SELECT value1 FROM runningstates WHERE key='r_retried';
 '''
@@ -85,5 +95,21 @@ def set_retried_sql():
 def reset_retried_sql():
     conn = sqlite3.connect(dbfile)
     cursor = conn.execute(sql_reset_retried)
+    conn.commit()
+    conn.close()
+
+def get_eventdone_sql():
+    conn = sqlite3.connect(dbfile)
+    cursor = conn.execute(sql_get_eventdone)
+    res = cursor.fetchone()
+    return res[0]
+def set_eventdone_sql():
+    conn = sqlite3.connect(dbfile)
+    cursor = conn.execute(sql_set_eventdone)
+    conn.commit()
+    conn.close()
+def reset_eventdone_sql():
+    conn = sqlite3.connect(dbfile)
+    cursor = conn.execute(sql_reset_eventdone)
     conn.commit()
     conn.close()

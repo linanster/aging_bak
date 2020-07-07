@@ -1,7 +1,7 @@
 {% extends '_mybase.html' %}
 
 {% block scripts %}
-    {{ super() }}
+    {# {{ super() }} #}
 {% endblock scripts %}
 
 
@@ -32,6 +32,10 @@
             setTimeout("_jump()", 2000)
         }
 
+        function notice_server_redirected_done(){
+
+        }
+
         var c = 0
         var t
         function timedCount() {
@@ -57,6 +61,11 @@
             var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
 
             socket.on('mydone', function () {
+                var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_notice_eventdone') }}";
+                $.post(
+                    url,
+                    "json"
+                );
                 $('#main').attr("class", "jumbotron alert-success");
                 $('#testing').text('测试完成!');
                 $('#loading').hide();

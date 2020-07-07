@@ -83,13 +83,13 @@ def vf_logmonitor():
 @blue_test.route('/cmd_start', methods=['POST'])
 @viewfunclog
 def vf_cmd_start():
-    time.sleep(1)
     logger_app.warn('click start button')
+    # time.sleep(1)
     set_running_state()
     start()
+    watch_to_blink()
     watch_timeout()
     watch_to_jump()
-    watch_to_blink()
     return redirect(url_for('blue_test.vf_running')) 
 
 
