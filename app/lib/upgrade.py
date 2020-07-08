@@ -30,18 +30,6 @@ def check_github_connection():
         else:
             return False
 
-
-def check_upgrade_pin_legacy(pin):
-    pinfile = os.path.join(upgradefolder, 'pin.txt')
-    pin_auth = open(pinfile).readline()
-    pin_auth = pin_auth.replace('\r', '').replace('\n','')
-    # if pin == pin_auth:
-    if pin_auth.startwith(pin):
-        return True
-    else:
-        return False
-
-
 def exec_upgrade(pin):
     # 1. check github available or not
     if not check_github_connection():
@@ -57,7 +45,8 @@ def exec_upgrade(pin):
         output = p.stdout.readline().decode('utf-8')[0:-1]
         logger_app.info('[upgrade] {}'.format(output))
     errno = p.poll()
-    if errno not in [0, -15]:
+    # if errno not in [0, -15]:
+    if errno != 0:
         errmsg = p.stderr.read().decode('utf-8')[:-1]
         logger_app.error('[upgrade] {}'.format(errmsg))
         logger_app.error('[upgrade] errno:{}'.format(errno))

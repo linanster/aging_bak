@@ -110,11 +110,7 @@ function run_upgrade_legacy(){
 function run_upgrade(){
     activate_venv
     sleep 1
-    git pull --quiet origin master>/dev/null && { echo "1. pull upgrade success"; } ||  { echo "1. pull upgrade error, exit"; exit 1; }
-    sleep 1
-    systemctl restart --quiet aging-main.service>/dev/null && { echo "2. restart service success"; } ||  { echo "2. restart service error, exit"; exit 2; }
-    sleep 1
-    systemctl status --quiet aging-main.service>/dev/null && { echo "3. check service success"; exit 0; } ||  { echo "3. check service error, exit"; exit 3; }
+    git pull --quiet origin master>/dev/null && { echo "pull master latest success"; exit 0; } ||  { echo "pull master latest error"; exit 1; }
 }
 
 function run_logmonitor() {

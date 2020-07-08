@@ -8,10 +8,10 @@
     {{ super() }}
 
     <legend>升级说明:</legend>
-    <div>1. 获取升级授权码</div>
+    <div>1. 联系管理员获取升级验证码</div>
     <div>2. 检查网络</div>
     <div>3. 输入升级码，执行升级</div>
-    <div>4. 如果页面打开失败，请重启树莓派</div>
+    <div>4. 重启树莓派</div>
 
     <br>
     <br>
@@ -39,7 +39,7 @@
     <p>2. 执行升级</p>
 
     <form action="{{ url_for('blue_manage.cmd_upgrade') }}" method="post">
-        <input type="text" name="pin" size="35" placeholder="input auth code">
+        <input type="text" name="pin" size="25" placeholder="升级码">
         <input type="submit" value='升级'>
     </form>
 

@@ -190,14 +190,14 @@ def vf_upgrade():
     errno = request.args.get('errno', type=int)
     errmsg = request.args.get('errmsg', type=str)
     network_enabled = request.args.get('network_enabled', type=int)
-    if errno is not None:
+    if errno is not None and errmsg is not None:
         logger_app.info("[upgrade] errno: {}".format(errno))
         logger_app.info("[upgrade] errmsg: {}".format(errmsg))
-        logger_app.info("[upgrade] network_enabled: {}".format(network_enabled))
+        # logger_app.info("[upgrade] network_enabled: {}".format(network_enabled))
         return render_template('manage_upgrade.html', upgrade_errno=errno, upgrade_errmsg=errmsg)
     elif network_enabled is not None:
-        logger_app.info("[upgrade] errno: {}".format(errno))
-        logger_app.info("[upgrade] errmsg: {}".format(errmsg))
+        # logger_app.info("[upgrade] errno: {}".format(errno))
+        # logger_app.info("[upgrade] errmsg: {}".format(errmsg))
         logger_app.info("[upgrade] network_enabled: {}".format(network_enabled))
         return render_template('manage_upgrade.html', network_enabled=network_enabled)
     else:
@@ -210,18 +210,15 @@ def cmd_upgrade():
     logger_app.info('[upgrade] click upgrade button')
     pin = request.form.get('pin', type=str)
     errtable = {
-        0: 'success',
-        1: 'pull upgrade error',
-        2: 'restart service error',
-        3: 'check service status error',
-        11: 'network error',
-        12: 'upgrade auth code error',
-        -15: 'service restarted'
+        0: 'git pull 拉取代码成功',
+        1: 'git pull 拉取代码错误',
+        11: 'Github 网络连接错误',
+        12: '升级验证码错误',
     }
     # call upgrade function
     errno = exec_upgrade(pin)
     errmsg = errtable.get(errno) 
-    if errno in [0, -15]:
+    if errno == 0:
         flash('升级成功({0}):{1}'.format(errno,errmsg))
     else:
         flash('升级失败({0}):{1}'.format(errno,errmsg))
