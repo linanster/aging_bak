@@ -63,6 +63,23 @@ def errno():
     from app.lib import get_errno
     return get_errno()
 
+@application_ge_aging.template_global('errinfo')
+def errinfo():
+    from app.lib import get_errno
+    errno = get_errno()
+    errtab = {
+        1: '1: gotool or config.json file doesn’t exist or their size is zero, please check files in /root/aging/go',
+        2: '2: ble connection failure, sometime you need to restart Raspberry',
+        3: '3: no device can be found, you should power off/on devices, or restart Raspberry',
+        4: '4: Database failure, it is one very rare error',
+        5: '5: test is running, you click button too quick, so your command can’t run',
+        6: '6: dialing timeout, usually you need to restart Raspberry',
+        7: '7: command timeout,  maybe you should restart Raspberry',
+        8: '8:  Session Key is empty, this ble connection is invalid',
+        11: '11: required params is not set',
+    }
+    return errtab.get(errno, 'unknown error')
+
 @application_ge_aging.template_filter('parse_is_qualified')
 def parseIsQualified(mybool):
     return '成功' if mybool else '失败'

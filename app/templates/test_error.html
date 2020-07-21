@@ -6,6 +6,7 @@
     <div class="alert alert-dismissible alert-warning">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <h4>测试失败({{ errno }})</h4>
+       <p>{{ errinfo() }}</p>
         <p>请检查测试环境, <a href="{{ url_for('blue_test.vf_config') }}" class="alert-link">重新测试</a>.</p>
     </div>
 

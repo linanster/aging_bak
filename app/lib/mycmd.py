@@ -41,7 +41,7 @@ def _gosubprocess(cmd):
     errno = p.poll()
     if errno != 0:
         errmsg = p.stderr.read().decode('utf-8')[:-1]
-        logger_app.error('{ble-backend] errno: {}'.format(errno))
+        logger_app.error('[ble-backend] errno: {}'.format(errno))
         logger_app.error('[ble-backend] {}'.format(errmsg))
     p.stdout.close()
     p.stderr.close()
@@ -140,7 +140,7 @@ def start():
     logger_app.info('==config wifi_strength_low: %s==' % wifi_strength_low)
     # return, if either is not set by test_config setp
     if totalcount is None or devicecode is None or fwversion is None:
-        errno = 2
+        errno = 11
         reset_running_state()
         set_errno(errno)
         return errno
@@ -185,7 +185,7 @@ def start():
         else:
             testdatas_cleanup()
             # todo
-            errno = 1
+            # errno = 1
             time.sleep(Timeout)
             # subprocess.call("./ble-backend -command=allkickout", shell=True, cwd=gofolder)
             _gosubprocess("./ble-backend -command=allkickout")
