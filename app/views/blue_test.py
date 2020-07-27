@@ -79,6 +79,11 @@ def vf_finished():
 def vf_logmonitor():
     return render_template('test_logmonitor.html')
 
+@blue_test.route('/reset')
+@viewfunclog
+def vf_reset():
+    return render_template('test_reset.html')
+
 # button & command
 
 @blue_test.route('/cmd_start', methods=['POST'])

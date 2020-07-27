@@ -1,0 +1,29 @@
+{% extends '_mybase.html' %}
+
+{% block head %}
+    {{ super() }}
+{% endblock head %}
+
+
+{% block indent_content %}
+
+    {{ super() }}
+
+    <script src="{{ url_for('static',filename='js/jquery-1.12.4.min.js') }}"></script> 
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function () {
+            $("#reset").click(function(){
+                if(window.confirm("确认重置吗?")==false)
+                    return false;
+            });
+        });
+    </script>
+
+
+    <form style="display: inline" id='reset' action="{{ url_for('blue_test.cmd_reset') }}" method="post">
+        <button type="submit" class="btn btn-success">重置</button>
+    </form>
+    <p style="display: inline">重置mesh状态</p>
+
+{% endblock %}
+
