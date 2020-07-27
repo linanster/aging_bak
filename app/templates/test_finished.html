@@ -50,7 +50,7 @@
         {% include '_thead.html' %}
         <tbody>
         {% for result in results %}
-            {% if not result.bool_qualified_signal or not result.bool_qualified_check or not result.bool_qualified_scan or not result.bool_qualified_deviceid or not result.reserve_bool_1 %}
+            {% if not result.bool_qualified_signal or not result.bool_qualified_check or not result.bool_qualified_scan or not result.bool_qualified_deviceid or not result.reserve_bool_1 or result.reserve_int_1 != 0 %}
                 {% if loop.index|string == control_index %}
                     <tr class="warning">
                 {% else %}
@@ -71,7 +71,7 @@
         {% endfor %}
 
         {% for result in results %}
-            {% if result.bool_qualified_signal and result.bool_qualified_check and result.bool_qualified_scan and result.bool_qualified_deviceid and result.reserve_bool_1%}
+            {% if result.bool_qualified_signal and result.bool_qualified_check and result.bool_qualified_scan and result.bool_qualified_deviceid and result.reserve_bool_1 and result.reserve_int_1 == 0 %}
                 <tr class="default">
                     <td>{{ loop.index }}</td>
                     {% include '_resulttable.html' %}

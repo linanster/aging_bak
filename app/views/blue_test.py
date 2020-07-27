@@ -104,6 +104,14 @@ def vf_cmd_saveconfig():
     mcuversion = request.form.get('mcuversion', type=str)
     ble_strength_low = request.form.get('ble_strength_low', type=int)
     wifi_strength_low = request.form.get('wifi_strength_low', type=int)
+    wifi_mac_low = request.form.get('wifi_mac_low', type=str) or '000000000000'
+    wifi_mac_high = request.form.get('wifi_mac_high', type=str) or '000000000000'
+    ble_mac_low = request.form.get('ble_mac_low', type=str) or '000000000000'
+    ble_mac_high = request.form.get('ble_mac_high', type=str) or '000000000000'
+    # print('==wifi_mac_low==', wifi_mac_low)
+    # print('==wifi_mac_high', wifi_mac_high)
+    # print('==ble_mac_low==', ble_mac_low)
+    # print('==ble_mac_high==', ble_mac_high)
     if len(mcuversion) == 0:
         mcuversion = '0'
     if ble_strength_low is None:
@@ -124,6 +132,10 @@ def vf_cmd_saveconfig():
         'mcuversion': mcuversion,
         'ble_strength_low': ble_strength_low,
         'wifi_strength_low': wifi_strength_low,
+        'wifi_mac_low': wifi_mac_low,
+        'wifi_mac_high': wifi_mac_high,
+        'ble_mac_low': ble_mac_low,
+        'ble_mac_high': ble_mac_high,
     }
     filename = os.path.join(gofolder, 'params.json')
     write_json_to_file(dict_params, filename)

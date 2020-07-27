@@ -12,4 +12,5 @@
         <td {% if not result.bool_qualified_scan %} class="alert-warning" {% endif %} >{{ result.bool_qualified_scan|parse_is_qualified }}</td>
         <td {% if not result.bool_qualified_deviceid %} class="alert-warning" {% endif %} >{{ result.bool_qualified_deviceid|parse_is_qualified }}</td>
         <td {% if not result.reserve_bool_1 %} class="alert-warning" {% endif %} >{{ result.reserve_bool_1|parse_is_qualified }}</td>
+        <td {% if result.reserve_int_1 != 0 %} class="alert-warning" {% endif %} >{{ result.reserve_int_1|parse_mac_is_qualified }}({{result.reserve_int_1}})</td>
         <td>{{ result.datetime }}</td>

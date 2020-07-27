@@ -172,8 +172,11 @@ class Testdata(db_mysql.Model):
     bool_qualified_scan = db_mysql.Column(db_mysql.Boolean)
     bool_qualified_deviceid = db_mysql.Column(db_mysql.Boolean)
     datetime = db_mysql.Column(db_mysql.DateTime, default=datetime.datetime.now())
+    # mac address check result
     reserve_int_1 = db_mysql.Column(db_mysql.Integer, nullable=True, server_default=str(0))
+    # MCU version string
     reserve_str_1 = db_mysql.Column(db_mysql.String(100), nullable=True, server_default=str(''))
+    # version check result success or not
     reserve_bool_1 = db_mysql.Column(db_mysql.Boolean, nullable=True, server_default=str(0))
     def __init__(self, devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_uploaded, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime, reserve_str_1, reserve_bool_1):
         self.devicecode = devicecode
