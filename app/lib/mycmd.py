@@ -395,6 +395,14 @@ def blink_failed():
     blink_group(macs)
     return 0
 
+def reset_all():
+    res = _gosubprocess("./ble-backend -command=reset")
+    if res == 0:
+        logger_app.info('==ble-backend reset success==')
+    else:
+        logger_app.error('==ble-backend erset failed==') 
+    return 0
+
 
 ######################
 ## legacy functions ##

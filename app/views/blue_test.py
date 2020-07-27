@@ -14,6 +14,7 @@ from app.lib import viewfunclog
 from app.lib import logger_app
 from app.lib import gen_excel, empty_folder
 from app.lib.myutils import write_json_to_file
+from app.lib.mycmd import reset_all
 
 from app.myglobals import topdir, gofolder
 
@@ -225,3 +226,9 @@ def cmd_indicator_b():
     indicator_b()
     return redirect(url_for('blue_test.vf_finished'))
 
+@blue_test.route('/cmd_reset', methods=['POST'])
+@viewfunclog
+def cmd_reset():
+    logger_app.warn('click reset button')
+    reset_all()
+    return redirect(url_for('blue_test.vf_start'))
