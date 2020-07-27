@@ -36,7 +36,7 @@
             <th rowspan="2">MAC_BLE</th>
             <th rowspan="2">MAC_WIFI</th>
             <th rowspan="2">MCU</th>
-            <th colspan="5">检测结果</th>
+            <th colspan="6">检测结果</th>
             <th rowspan="2">时间</th>
         </tr>
         <tr>
@@ -45,12 +45,13 @@
             <th>广播扫描</th>
             <th>设备类型</th>
             <th>版本检测</th>
+            <th>MAC检测</th>
         </tr>
         </thead>
 
         <tbody>
         {% for result in results %}
-            {% if not result.bool_qualified_signal or not result.bool_qualified_check or not result.bool_qualified_scan or not result.bool_qualified_deviceid or not result.reserve_bool_1%}
+            {% if not result.bool_qualified_signal or not result.bool_qualified_check or not result.bool_qualified_scan or not result.bool_qualified_deviceid or not result.reserve_bool_1 or result.reserve_int_1 != 0 %}
                 <tr class="info">
             {% else %}
                 <tr class="default">
