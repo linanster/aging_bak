@@ -23,7 +23,7 @@
     <form style="display: inline" id='reset' action="{{ url_for('blue_test.cmd_reset') }}" method="post">
         <button type="submit" class="btn btn-success">重置</button>
     </form>
-    <p style="display: inline">重置mesh状态</p>
+    <p style="display: inline">复位设备状态标志, 以便树莓派能继续测试, 首先搜索新的ble mesh 网络名, 如果没有发现设备,将搜索缺省的telink_mesh1网络名。</p>
 
 {% endblock %}
 

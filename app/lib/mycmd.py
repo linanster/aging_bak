@@ -19,6 +19,7 @@ from .tools import reset_progress, add_progress
 from .tools import reset_running_state, set_running_state, get_running_state
 from .tools import reset_phase, set_phase
 from .tools import reset_errno, set_errno
+from app.lib.tools import get_sqlite_value3
 
 from app.ext.mysocketio import socketio
 from flask_socketio import send
@@ -131,6 +132,10 @@ def start():
     mcuversion = get_mcuversion()
     ble_strength_low = get_ble_strength_low()
     wifi_strength_low = get_wifi_strength_low()
+    wifi_mac_low = get_sqlite_value3('r_wifi_mac_low')
+    wifi_mac_high = get_sqlite_value3('r_wifi_mac_high')
+    ble_mac_low = get_sqlite_value3('r_ble_mac_low')
+    ble_mac_high = get_sqlite_value3('r_ble_mac_high')
 
     logger_app.info('==config devicecode: %s==' % devicecode)
     logger_app.info('==config totalcount: %s==' % totalcount)
@@ -138,6 +143,10 @@ def start():
     logger_app.info('==config mcuversion: %s==' % mcuversion)
     logger_app.info('==config ble_strength_low: %s==' % ble_strength_low)
     logger_app.info('==config wifi_strength_low: %s==' % wifi_strength_low)
+    logger_app.info('==config wifi_mac_low: %s==' % wifi_mac_low)
+    logger_app.info('==config wifi_mac_high: %s==' % wifi_mac_high)
+    logger_app.info('==config ble_mac_low: %s==' % ble_mac_low)
+    logger_app.info('==config ble_mac_high: %s==' % ble_mac_high)
     # return, if either is not set by test_config setp
     if totalcount is None or devicecode is None or fwversion is None:
         errno = 11
@@ -246,16 +255,26 @@ def blink_single(mac):
     logger_app.info('==blink_single success==')
     return 0
 
+# 旧ble mac地址形式
+# ==macs== ['f4:bc:da:70:4c:21', 'f4:bc:da:70:4c:22', 'f4:bc:da:70:4c:23', 'f4:bc:da:70:4c:24', 'f4:bc:da:70:4c:25', 'f4:bc:da:70:4c:26']
+# ==macgroups== [['f4:bc:da:70:4c:21', 'f4:bc:da:70:4c:22', 'f4:bc:da:70:4c:23', 'f4:bc:da:70:4c:24'], ['f4:bc:da:70:4c:25', 'f4:bc:da:70:4c:26']]
+# ==macsegs== ['4c214c224c234c24', '4c254c26']
+# 新ble mac地址形式
+# ==macs== ['f4bcda704c21', 'f4bcda704c22', 'f4bcda704c23', 'f4bcda704c24', 'f4bcda704c25', 'f4bcda704c26']
+# ==macgroups== [['f4bcda704c21', 'f4bcda704c22', 'f4bcda704c23', 'f4bcda704c24'], ['f4bcda704c25', 'f4bcda704c26']]
+# ==macsegs== ['4c214c224c234c24', '4c254c26']
+
 def blink_group(macs):
     macgroups = [macs[i:i+4] for i in range(0, len(macs), 4)]
     # print('==macgroups==', macgroups)
     macsegs = list()
     for macgroup in macgroups:
-        # print('==macgroup==', macgroup)
         macseg = str()
         for mac in macgroup:
-            parts = mac.split(':')
-            macseg += (parts[4] + parts[5])
+            # parts = mac.split(':')
+            # macseg += (parts[4] + parts[5])
+            last4 = mac[-4:]
+            macseg += last4
         macsegs.append(macseg)
     # print('==macsegs==', macsegs)
 
@@ -376,6 +395,7 @@ def blink_failed():
             Testdata.bool_qualified_scan == False,
             Testdata.bool_qualified_deviceid == False,
             Testdata.reserve_bool_1 == False,
+            Testdata.reserve_int_1 != 0,
         )
     }
     datas_all = Testdata.query.all()
@@ -392,6 +412,7 @@ def blink_failed():
         macs.append(data.mac_ble)
     # for mac in macs:
     #     blink_single(mac)
+    # print('==macs==', macs)
     blink_group(macs)
     return 0
 

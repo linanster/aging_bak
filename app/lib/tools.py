@@ -139,3 +139,10 @@ def set_wifi_strength_low(num):
     r.value2 = num
     db_sqlite.session.commit() 
 
+def set_sqlite_value3(key, value):
+    r = RunningState.query.filter_by(key=key).first()
+    r.value3 = value
+    db_sqlite.session.commit()
+def get_sqlite_value3(key):
+    r = RunningState.query.filter_by(key=key).first()
+    return r.value3

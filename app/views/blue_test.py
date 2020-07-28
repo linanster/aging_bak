@@ -15,6 +15,7 @@ from app.lib import logger_app
 from app.lib import gen_excel, empty_folder
 from app.lib.myutils import write_json_to_file
 from app.lib.mycmd import reset_all
+from app.lib.tools import set_sqlite_value3
 
 from app.myglobals import topdir, gofolder
 
@@ -129,6 +130,10 @@ def vf_cmd_saveconfig():
     set_mcuversion(mcuversion)
     set_ble_strength_low(ble_strength_low)
     set_wifi_strength_low(wifi_strength_low)
+    set_sqlite_value3('r_wifi_mac_low', wifi_mac_low)
+    set_sqlite_value3('r_wifi_mac_high', wifi_mac_high)
+    set_sqlite_value3('r_ble_mac_low', ble_mac_low)
+    set_sqlite_value3('r_ble_mac_high', ble_mac_high)
 
     dict_params = {
         'devicecode': devicecode,
