@@ -39,6 +39,9 @@ def vf_config():
         # factory = Factory.query.filter(Factory.code.__eq__(fcode)).first()
         factory = Factory.query.filter(Factory.code == fcode).first()
         devices = factory.devices
+    elif fcode in (6, ):
+        d_leedarson_128 = Device.query.filter(Device.code == 128).first()
+        devices = [d_leedarson_128, ]
     else:
         devices = list()
     

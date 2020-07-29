@@ -31,7 +31,8 @@ class Factory(db_mysql.Model):
         f3 = Factory(3, 'Tonly', '')
         f4 = Factory(4, 'Changhong', '')
         f5 = Factory(5, 'TestFactory', '')
-        db_mysql.session.add_all([f0, f1, f2, f3, f4, f5])
+        f6 = Factory(6, 'Topstar', '')
+        db_mysql.session.add_all([f0, f1, f2, f3, f4, f5, f6])
         db_mysql.session.commit()
 
 
@@ -96,8 +97,12 @@ class Device(db_mysql.Model):
 
         d_changhong_66 = Device(66, '0x42', 4, 'Indoor Plug GEN2(Ox42)')
 
+        # same device id as d_leedarson_128
+        # d_topstar_254 = Device(254, '0xFE', 6, 'Dual Mode Soft White Lamp(0x80)', 'Device ID 冲突')
+
         # todo
         d_test_255 = Device(255, '0xFF', 5, 'TestDevice(0xFF)')
+
 
         devices_all = [
             d_leedarson_09,
@@ -138,7 +143,8 @@ class Device(db_mysql.Model):
             d_tonly_58,
             d_tonly_59,
             d_tonly_81,
-            d_changhong_66
+            d_changhong_66,
+            # d_topstar_254,
         ]
 
         devices_test = [d_test_255,]

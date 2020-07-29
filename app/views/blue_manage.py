@@ -28,7 +28,7 @@ def vf_factory():
     fcode = get_factorycode() 
     if fcode == 0:
         results = Factory.query.all()
-    elif fcode in (1, 2, 3, 4, 5):
+    elif fcode in (1, 2, 3, 4, 5, 6):
         result = Factory.query.filter_by(code=fcode).first()
         results = [result,]
     else:
@@ -50,6 +50,9 @@ def vf_device():
         # factory = Factory.query.filter(Factory.code.__eq__(fcode)).first()
         factory = Factory.query.filter(Factory.code == fcode).first()
         results = factory.devices
+    elif fcode in (6,):
+        d_leedarson_128 = Device.query.filter(Device.code == 128).first()
+        results = [d_leedarson_128, ]
     else:
         results = list()
     return render_template('manage_device.html', results=results)
