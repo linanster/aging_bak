@@ -43,6 +43,23 @@ def wifi_strength_low():
     from app.lib import get_wifi_strength_low
     return get_wifi_strength_low()
 
+@application_ge_aging.template_global('wifi_mac_low')
+def wifi_mac_low():
+    from app.lib.tools import get_sqlite_value3
+    return get_sqlite_value3('r_wifi_mac_low')
+@application_ge_aging.template_global('wifi_mac_high')
+def wifi_mac_high():
+    from app.lib.tools import get_sqlite_value3
+    return get_sqlite_value3('r_wifi_mac_high')
+@application_ge_aging.template_global('ble_mac_low')
+def ble_mac_low():
+    from app.lib.tools import get_sqlite_value3
+    return get_sqlite_value3('r_ble_mac_low')
+@application_ge_aging.template_global('ble_mac_high')
+def ble_mac_high():
+    from app.lib.tools import get_sqlite_value3
+    return get_sqlite_value3('r_ble_mac_high')
+
 @application_ge_aging.template_global('progress')
 def progress():
     from app.lib import get_progress
