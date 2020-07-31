@@ -212,9 +212,10 @@ def process_finished():
     running = get_running_state()
     if running:
         return redirect(url_for('blue_test.vf_running'))
+    testdatas_archive()
     errno = get_errno()
     if errno == 0:
-        testdatas_archive()
+        # testdatas_archive()
         return redirect(url_for('blue_test.vf_finished'))
     else:
         return redirect(url_for('blue_test.vf_error', errno=errno))
