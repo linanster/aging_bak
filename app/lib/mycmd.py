@@ -241,8 +241,11 @@ def start_legacy():
 
 
 def blink_single(mac):
-    segments = mac.split(':')
-    macseg = segments[4] + segments[5]
+    # 旧mac地址形式(有冒号)
+    # segments = mac.split(':')
+    # macseg = segments[4] + segments[5]
+    # 新mac地址形式(没有冒号)
+    macseg = mac[-4:]
     loop = 1
     # while 0 != subprocess.call("./ble-backend -command=nok_ident -maclist={}".format(macseg), shell=True, cwd=gofolder):
     while 0 != _gosubprocess("./ble-backend -command=nok_ident -maclist={}".format(macseg)):
