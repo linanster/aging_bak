@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, flash, redirect, url_for, send_from_directory
+from flask import Blueprint, request, render_template, flash, redirect, url_for, send_from_directory, Response
 from flask_paginate import Pagination, get_page_parameter
 import time
 import datetime
@@ -229,7 +229,20 @@ def cmd_download_testdatas():
     filename = os.path.join(excelfolder, excelname)
     empty_folder(excelfolder)    
     gen_excel(Testdata, filename)
-    return send_from_directory(excelfolder, excelname, as_attachment=True)
+    # 普通下载
+    # return send_from_directory(excelfolder, excelname, as_attachment=True)
+    # 流式读取
+    def send_file():
+        with open(filename, 'rb') as filestream:
+            while True:
+                data = filestream.read(1024*1024) # 每次读取1M大小
+                if not data:
+                    break
+                yield data
+    response = Response(send_file(), content_type='application/octet-stream')
+    response.headers["Content-disposition"] = 'attachment; filename=%s' % excelname
+    return response
+
 
 @blue_test.route('/cmd_indicator_r', methods=['POST'])
 @viewfunclog
