@@ -15,8 +15,12 @@ upgradefolder = os.path.abspath(os.path.join(topdir, "upgrade"))
 RETENTION = 7
 
 # gecloud IP address
+# local
 # gecloud_ip = '10.30.30.101'
-gecloud_ip = '47.101.215.138'
+# mycloud aliyun
+# gecloud_ip = '47.101.215.138'
+# gecloud1 aws
+gecloud_ip = '18.163.189.66'
 
 
 # called by lib.mycmd.py

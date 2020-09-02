@@ -33,6 +33,7 @@ class RunningState(db_sqlite.Model):
         self.description = description
     @staticmethod
     def seed():
+        r_gecloud_online = RunningState('r_gecloud_online', value1=False, description='Indicate gecloud reachable or not, default is False.')
         r_running = RunningState('r_running', value1=False, description='Indicate running or not, default is False.')
         r_eventdone = RunningState('r_eventdone', value1=False, description='Indicate event done received by web client.')
         r_devicecode = RunningState('r_devicecode', value2=0)
@@ -49,7 +50,7 @@ class RunningState(db_sqlite.Model):
         r_wifi_mac_high = RunningState('r_wifi_mac_high', value3='000000000000')
         r_ble_mac_low = RunningState('r_ble_mac_low', value3='000000000000')
         r_ble_mac_high = RunningState('r_ble_mac_high', value3='000000000000')
-        seeds = [r_running, r_devicecode, r_totalcount, r_progress, r_phase, r_errno, r_retried, r_fwversion, r_mcuversion, r_ble_strength_low, r_wifi_strength_low, r_eventdone,
+        seeds = [r_gecloud_online, r_running, r_devicecode, r_totalcount, r_progress, r_phase, r_errno, r_retried, r_fwversion, r_mcuversion, r_ble_strength_low, r_wifi_strength_low, r_eventdone,
             r_wifi_mac_low, r_wifi_mac_high, r_ble_mac_low, r_ble_mac_high
         ]
         db_sqlite.session.add_all(seeds)

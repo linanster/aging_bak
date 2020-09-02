@@ -1,6 +1,20 @@
 from app.models import db_sqlite, RunningState, Systeminfo
 from app.models import db_mysql, Factory, Device
 
+def get_gecloud_online():
+    r = RunningState.query.filter_by(key='r_gecloud_online').first()
+    return r.value1
+
+def set_gecloud_online():
+    r = RunningState.query.filter_by(key='r_gecloud_online').first()
+    r.value1 = True
+    db_sqlite.session.commit()
+
+def reset_gecloud_online():
+    r = RunningState.query.filter_by(key='r_gecloud_online').first()
+    r.value1 = False
+    db_sqlite.session.commit()
+
 def get_running_state():
     r = RunningState.query.filter_by(key='r_running').first()
     return r.value1

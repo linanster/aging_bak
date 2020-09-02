@@ -1,3 +1,20 @@
+<script src="{{ url_for('static',filename='js/jquery-1.12.4.min.js') }}"></script>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function () {
+        $("#btn_online").click(function () {
+            // console.log('hello');
+            var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_notice_updategecloudonline') }}";
+            // console.log(url);
+            $.post(
+                url,
+                "json"
+            );
+            // window.location.reload();
+            setTimeout("window.location.reload()", 2000)
+        });
+    });
+</script>
+
 <!--<nav class="navbar navbar-default">-->
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
@@ -70,6 +87,7 @@
 
             <ul class="nav navbar-nav navbar-right">
               <li><a href="#" onclick=openUrl_log()>实时日志</a></li>
+              <li><a id="btn_online" href="#" style="color:red">{{ gecloud_online_status() }}</a></li>
             </ul>
 
         </div>

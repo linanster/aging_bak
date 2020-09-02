@@ -97,6 +97,14 @@ def errinfo():
     }
     return errtab.get(errno, 'unknown error')
 
+@application_ge_aging.template_global('gecloud_online_status')
+def gecloud_online_status():
+    from app.lib.tools import get_gecloud_online
+    if get_gecloud_online():
+        return '在线'
+    else:
+        return '离线'
+
 @application_ge_aging.template_filter('parse_is_qualified')
 def parseIsQualified(mybool):
     return '成功' if mybool else '失败'
