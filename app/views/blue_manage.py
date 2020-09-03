@@ -43,18 +43,19 @@ def vf_factory():
 @blue_manage.route('/device', methods=['GET'])
 @viewfunclog
 def vf_device():
-    fcode = get_factorycode() 
-    if fcode == 0:
-        results = Device.query.all()
-    elif fcode in (1, 2, 3, 4, 5):
-        # factory = Factory.query.filter(Factory.code.__eq__(fcode)).first()
-        factory = Factory.query.filter(Factory.code == fcode).first()
-        results = factory.devices
-    elif fcode in (6,):
-        d_leedarson_128 = Device.query.filter(Device.code == 128).first()
-        results = [d_leedarson_128, ]
-    else:
-        results = list()
+    # fcode = get_factorycode()
+    # if fcode == 0:
+    #     results = Device.query.all()
+    # elif fcode in (1, 2, 3, 4, 5):
+    #     # factory = Factory.query.filter(Factory.code.__eq__(fcode)).first()
+    #     factory = Factory.query.filter(Factory.code == fcode).first()
+    #     results = factory.devices
+    # elif fcode in (6,):
+    #     d_leedarson_128 = Device.query.filter(Device.code == 128).first()
+    #     results = [d_leedarson_128, ]
+    # else:
+    #     results = list()
+    results = Device.query.all()
     return render_template('manage_device.html', results=results)
 
 

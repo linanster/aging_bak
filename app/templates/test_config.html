@@ -17,7 +17,7 @@
                     <select class="form-control" id="devicecode" name="devicecode">
                         <option value="" style='display: none'>-</option>
                         {% for device in devices %}
-                            <option value={{ device.code }}>{{ device.name }}</option>
+                            <option value={{ device.code }}>{{ device.name }}({{device.code_hex}})</option>
                         {% endfor %}
                     </select>
                     <br>
