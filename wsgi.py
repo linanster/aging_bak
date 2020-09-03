@@ -94,6 +94,7 @@ def errinfo():
         7: '7: command timeout,  maybe you should restart Raspberry',
         8: '8:  Session Key is empty, this ble connection is invalid',
         11: '11: required params is not set',
+        21: '21: test mode is production, but offline',
     }
     return errtab.get(errno, 'unknown error')
 
@@ -104,6 +105,11 @@ def gecloud_online_status():
         return '在线'
     else:
         return '离线'
+
+@application_ge_aging.template_global('test_mode')
+def get_test_mode():
+    from app.lib.tools import get_sqlite_value3
+    return get_sqlite_value3('r_test_mode')
 
 @application_ge_aging.template_filter('parse_is_qualified')
 def parseIsQualified(mybool):

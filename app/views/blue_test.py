@@ -8,14 +8,15 @@ from app.models import Testdata, Factory, Device
 from app.lib import start, blink_single, blink_all, blink_failed, blink_stop, turn_on_all, turn_off_all, kickout_all, indicator_r, indicator_g, indicator_b
 from app.lib import watch_to_jump, watch_timeout, watch_to_blink
 from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state, set_fwversion, set_mcuversion, set_ble_strength_low, set_wifi_strength_low
-from app.lib import get_errno, get_running_state, get_factorycode
+from app.lib import get_errno, set_errno, get_running_state, get_factorycode
 from app.lib import testdatas_archive
 from app.lib import viewfunclog
 from app.lib import logger_app
 from app.lib import gen_excel, empty_folder
 from app.lib.myutils import write_json_to_file
 from app.lib.mycmd import reset_all
-from app.lib.tools import set_sqlite_value3
+from app.lib.tools import set_sqlite_value3, get_sqlite_value3
+from app.lib.cloudhandler import check_gecloud_connection
 
 from app.myglobals import topdir, gofolder
 
@@ -90,17 +91,48 @@ def vf_reset():
 
 # button & command
 
-@blue_test.route('/cmd_start', methods=['POST'])
+@blue_test.route('/pre_cmd_start', methods=['POST'])
 @viewfunclog
-def vf_cmd_start():
+def pre_cmd_start():
     logger_app.warn('click start button')
-    # time.sleep(1)
+
+    mode = request.form.get('mode', type=str)
+    # gecloud_online = get_gecloud_online()
+    gecloud_online = check_gecloud_connection()
+    set_sqlite_value3('r_test_mode', mode)
     set_running_state()
+
+    if mode == 'production' and not gecloud_online:
+        errno = 21
+        set_errno(errno)
+        return redirect(url_for('blue_test.vf_error', errno=errno))
+
+    return redirect(url_for('blue_test.cmd_start')) 
+
+@blue_test.route('/cmd_start', methods=['POST', 'GET'])
+@viewfunclog
+def cmd_start():
     start()
     watch_to_blink()
     watch_timeout()
     watch_to_jump()
     return redirect(url_for('blue_test.vf_running')) 
+
+@blue_test.route('/post_cmd_start')
+@viewfunclog
+def post_cmd_start():
+    running = get_running_state()
+    test_mode = test_mode = get_sqlite_value3('r_test_mode')
+    if running:
+        return redirect(url_for('blue_test.vf_running'))
+    if test_mode == 'production':
+        testdatas_archive()
+    errno = get_errno()
+    if errno == 0:
+        # testdatas_archive()
+        return redirect(url_for('blue_test.vf_finished'))
+    else:
+        return redirect(url_for('blue_test.vf_error', errno=errno))
 
 
 @blue_test.route('/cmd_saveconfig', methods=['POST'])
@@ -205,20 +237,6 @@ def cmd_kickout():
     logger_app.warn('click kickout button')
     kickout_all()
     return redirect(url_for('blue_test.vf_finished'))
-
-@blue_test.route('/process_finished')
-@viewfunclog
-def process_finished():
-    running = get_running_state()
-    if running:
-        return redirect(url_for('blue_test.vf_running'))
-    testdatas_archive()
-    errno = get_errno()
-    if errno == 0:
-        # testdatas_archive()
-        return redirect(url_for('blue_test.vf_finished'))
-    else:
-        return redirect(url_for('blue_test.vf_error', errno=errno))
 
 @blue_test.route('/cmd_download_testdatas', methods=['POST'])
 @viewfunclog

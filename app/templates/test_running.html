@@ -9,9 +9,7 @@
     {{ super() }}
     {% include '_configinfo.html' %}
 
-    <form style="display: inline" id='start' action="{{ url_for('blue_test.vf_cmd_start') }}" method="post">
-        <button type="submit" class="btn btn-success disabled">开始</button>
-    </form>
+    <lable>模式: {{ test_mode() }} </label>
     &nbsp;&nbsp;&nbsp;
 
     <table class="table table-striped table-hover ">
@@ -25,7 +23,7 @@
     <script type="text/javascript" charset="utf-8">
 
         function _jump() {
-            window.location.replace("{{url_for('blue_test.process_finished')}}");
+            window.location.replace("{{url_for('blue_test.post_cmd_start')}}");
         }
 
         function jump() {
@@ -89,7 +87,7 @@
         <br>
         <span id="tip1">1. 程序运行中，请勿刷新或关闭此页面！</span>
         <br>
-        <span id="tip2">2. 如果页面长时间未自动跳转，请<a style="display: inline" href="{{ url_for('blue_test.process_finished') }}" class="btn btn-link">手动转到</a>测试结果页面。</span>
+        <span id="tip2">2. 如果页面长时间未自动跳转，请<a style="display: inline" href="{{ url_for('blue_test.post_cmd_start') }}" class="btn btn-link">手动转到</a>测试结果页面。</span>
         <br>
         <span id="tip3">3. 计时: </span>
         <span id="timer"></span>

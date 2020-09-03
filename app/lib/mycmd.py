@@ -123,9 +123,10 @@ def start():
     logger_app.info('==starttest begin==')
     testdatas_cleanup()
     reset_errno()
-    set_running_state()
+    # set_running_state()
     reset_eventdone_sql()
 
+    test_mode = get_sqlite_value3('r_test_mode')
     devicecode = get_devicecode()
     totalcount = get_totalcount()
     fwversion = get_fwversion()
@@ -137,6 +138,7 @@ def start():
     ble_mac_low = get_sqlite_value3('r_ble_mac_low')
     ble_mac_high = get_sqlite_value3('r_ble_mac_high')
 
+    logger_app.info('==test mode: %s==' % test_mode)
     logger_app.info('==config devicecode: %s==' % devicecode)
     logger_app.info('==config totalcount: %s==' % totalcount)
     logger_app.info('==config fwversion: %s==' % fwversion)
