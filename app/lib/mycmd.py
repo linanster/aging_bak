@@ -150,7 +150,7 @@ def start():
     logger_app.info('==config ble_mac_low: %s==' % ble_mac_low)
     logger_app.info('==config ble_mac_high: %s==' % ble_mac_high)
     # return, if either is not set by test_config setp
-    if totalcount is None or devicecode is None or fwversion is None:
+    if totalcount is None or devicecode is None or fwversion is None or devicecode == 0:
         errno = 11
         reset_running_state()
         set_errno(errno)

@@ -8,7 +8,7 @@ from app.models import Testdata, Factory, Device
 from app.lib import start, blink_single, blink_all, blink_failed, blink_stop, turn_on_all, turn_off_all, kickout_all, indicator_r, indicator_g, indicator_b
 from app.lib import watch_to_jump, watch_timeout, watch_to_blink
 from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state, set_fwversion, set_mcuversion, set_ble_strength_low, set_wifi_strength_low
-from app.lib import get_errno, set_errno, get_running_state, get_factorycode
+from app.lib import get_errno, set_errno, get_running_state, get_factorycode, get_devicecode
 from app.lib import testdatas_archive
 from app.lib import viewfunclog
 from app.lib import logger_app
@@ -17,6 +17,7 @@ from app.lib.myutils import write_json_to_file
 from app.lib.mycmd import reset_all
 from app.lib.tools import set_sqlite_value3, get_sqlite_value3
 from app.lib.cloudhandler import check_gecloud_connection, upload_to_cloud
+from app.lib.execmodel import update_testdatas_fcode, update_testdatas_devicecode
 
 from app.myglobals import topdir, gofolder
 
@@ -122,13 +123,24 @@ def cmd_start():
 @blue_test.route('/post_cmd_start')
 @viewfunclog
 def post_cmd_start():
+    fcode = get_factorycode()
+    devicecode = get_devicecode()
     running = get_running_state()
     test_mode = test_mode = get_sqlite_value3('r_test_mode')
+
+    # 1. return if still running
     if running:
         return redirect(url_for('blue_test.vf_running'))
+
+    # 2. adjust datas in testdatas table
+    # update_testdatas_fcode(fcode)
+    # update_testdatas_devicecode(devicecode)
+
+    # 3. production related actions
     if test_mode == 'production':
-        # todo exception handler
+        # 3.1 archive
         testdatas_archive()
+        # 3.2 upload
         try:
             upload_to_cloud()
         except Exception as e:

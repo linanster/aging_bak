@@ -37,3 +37,35 @@ def testdatas_archive():
     db_mysql.session.add_all(testdatasarchive_list)
     db_mysql.session.commit()
 
+def update_testdatas_fcode(fcode):
+    datas_raw = Testdata.query.all()
+    try:
+        for item in datas_raw:
+            item.factorycode = fcode
+            db_mysql.session.add(item)
+    except Exception as e:
+        db_mysql.session.rollback()
+        # logger_app.error('update_testdatas_fcode:')
+        # logger_app.error(str(e))
+        # return 4
+    else:
+        db_mysql.session.commit()
+        # logger_app.info('update_testdatas_fcode: success(count: {})'.format(len(datas_raw)))
+        # return 0
+
+
+def update_testdatas_devicecode(dcode):
+    datas_raw = Testdata.query.all()
+    try:
+        for item in datas_raw:
+            item.devicecode = dcode
+            db_mysql.session.add(item)
+    except Exception as e:
+        db_mysql.session.rollback()
+        # logger_app.error('update_testdatas_devicecode:')
+        # logger_app.error(str(e))
+        # return 4
+    else:
+        db_mysql.session.commit()
+        # logger_app.info('update_testdatas_devicecode: success(count: {})'.format(len(datas_raw)))
+        # return 0
