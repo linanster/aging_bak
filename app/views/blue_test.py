@@ -126,10 +126,15 @@ def post_cmd_start():
     if running:
         return redirect(url_for('blue_test.vf_running'))
     if test_mode == 'production':
+        # todo exception handler
         testdatas_archive()
+        try:
+            upload_to_cloud()
+        except Exception as e:
+            logger_app.error('[upload] {}'.format(str(e)))
+
     errno = get_errno()
     if errno == 0:
-        # testdatas_archive()
         return redirect(url_for('blue_test.vf_finished'))
     else:
         return redirect(url_for('blue_test.vf_error', errno=errno))
