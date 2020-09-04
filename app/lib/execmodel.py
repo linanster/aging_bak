@@ -1,12 +1,22 @@
 from app.models import db_mysql, Testdata, TestdataArchive
+from app.lib.mylogger import logger_app
 
 def testdatas_cleanup():
     Testdata.query.delete()
     db_mysql.session.commit()
 
 def testdatasarchive_cleanup():
-    TestdataArchive.query.delete()
-    db_mysql.session.commit()
+    try:
+        # TestdataArchive.query.delete()
+        count = TestdataArchive.query.filter_by(bool_uploaded=True).delete(synchronize_session=False)
+    except Exception as e:
+        logger_app.error('[testdatasarchive_cleanup]:')
+        logger_app.error(str(e))
+        db_mysql.session.rollback()
+        return -1
+    else:
+        db_mysql.session.commit()
+        return count
 
 def testdatas_archive():
     testdatas_list = Testdata.query.all()

@@ -38,7 +38,8 @@
             <button id="btn_delete" type="submit" class="btn btn-danger">清除数据</button>
         </form>
     </div>
-    {% if upload_count %}<span style="display: inline" class="text-success">上传 <strong>{{ upload_count }}</strong> 条记录</span>{% endif %}
+    {% if upload_count %}<span style="display: inline" class="text-success">上传了 <strong>{{ upload_count }}</strong> 条记录</span>{% endif %}
+    {% if delete_count %}<span style="display: inline" class="text-success">删除了 <strong>{{ delete_count }}</strong> 条记录</span>{% endif %}
 
     <table class="table table-striped table-hover ">
         <thead>

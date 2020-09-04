@@ -68,6 +68,7 @@ def vf_device():
 @viewfunclog
 def vf_data():
     upload_count = request.args.get('upload_count')
+    delete_count = request.args.get('delete_count')
     results = TestdataArchive.query.all()
 
     # pagination code
@@ -77,13 +78,13 @@ def vf_data():
     end = page * PER_PAGE if len(results) > page * PER_PAGE else len(results)
     pagination = Pagination(page=page, total=len(results), per_page=PER_PAGE, bs_version=3)
     ret = TestdataArchive.query.slice(start, end)
-    return render_template('manage_data.html', pagination=pagination, results=ret, upload_count=upload_count)
+    return render_template('manage_data.html', pagination=pagination, results=ret, upload_count=upload_count, delete_count=delete_count)
 
 @blue_manage.route('/cmd_deletearchive', methods=['POST'])
 @viewfunclog
 def cmd_deletearchive():
-    testdatasarchive_cleanup()
-    return redirect(url_for('blue_manage.vf_data'))
+    count = testdatasarchive_cleanup()
+    return redirect(url_for('blue_manage.vf_data', delete_count = count))
 
 @blue_manage.route('/cmd_download_testdatasarchive', methods=['POST'])
 @viewfunclog
