@@ -109,7 +109,13 @@ def gecloud_online_status():
 @application_ge_aging.template_global('test_mode')
 def get_test_mode():
     from app.lib.tools import get_sqlite_value3
-    return get_sqlite_value3('r_test_mode')
+    test_mode = get_sqlite_value3('r_test_mode')
+    if test_mode == 'production':
+        return '生产'
+    elif test_mode == 'test':
+        return '测试'
+    else:
+        return 'error'
 
 @application_ge_aging.template_filter('parse_is_qualified')
 def parseIsQualified(mybool):

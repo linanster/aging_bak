@@ -3,6 +3,21 @@
 {% block indent_content %}
     {{ super() }}
 
+    <script src="{{ url_for('static',filename='js/jquery-1.12.4.min.js') }}"></script> 
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function () {
+            $("#btn_delete").click(function(){
+                if(window.confirm("确认删除数据吗?")==false)
+                    return false;
+            });
+            $("#btn_upload").click(function(){
+                if(window.confirm("确认上传数据吗?")==false)
+                    return false;
+            });
+        });
+    </script>
+
+
     <legend>查看测试数据</legend>
     <div>
         {{ pagination.info }}
@@ -16,13 +31,14 @@
         <form style="display: inline" action="{{ url_for('blue_manage.cmd_download_testdatasarchive') }}" method="post">
             <button type="submit" class="btn btn-primary" >下载报表</button>
         </form>
-        <form style="display: inline" action="#" method="post">
-            <button type="submit" class="btn btn-success" disabled>上传数据</button>
+        <form style="display: inline" action="{{ url_for('blue_manage.cmd_upload') }}" method="post">
+            <button id="btn_upload" type="submit" class="btn btn-success">上传数据</button>
         </form>
         <form style="display: inline" action="{{ url_for('blue_manage.cmd_deletearchive') }}" method="post">
-            <button type="submit" class="btn btn-danger">清除数据</button>
+            <button id="btn_delete" type="submit" class="btn btn-danger">清除数据</button>
         </form>
     </div>
+    {% if upload_count %}<span style="display: inline" class="text-success">上传 <strong>{{ upload_count }}</strong> 条记录</span>{% endif %}
 
     <table class="table table-striped table-hover ">
         <thead>

@@ -99,15 +99,15 @@ def pre_cmd_start():
     logger_app.warn('click start button')
 
     mode = request.form.get('mode', type=str)
-    # gecloud_online = get_gecloud_online()
-    gecloud_online = check_gecloud_connection()
     set_sqlite_value3('r_test_mode', mode)
     set_running_state()
 
-    if mode == 'production' and not gecloud_online:
-        errno = 21
-        set_errno(errno)
-        return redirect(url_for('blue_test.vf_error', errno=errno))
+    # gecloud_online = check_gecloud_connection()
+    # if mode == 'production' and not gecloud_online:
+    #     logger_app.warn('production mode start, but gecloud is not reachable')
+    #     errno = 21
+    #     set_errno(errno)
+    #     return redirect(url_for('blue_test.vf_error', errno=errno))
 
     return redirect(url_for('blue_test.cmd_start')) 
 
@@ -142,7 +142,8 @@ def post_cmd_start():
         testdatas_archive()
         # 3.2 upload
         try:
-            upload_to_cloud()
+            pass
+            # upload_to_cloud()
         except Exception as e:
             logger_app.error('[upload] {}'.format(str(e)))
 

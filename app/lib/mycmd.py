@@ -126,7 +126,6 @@ def start():
     # set_running_state()
     reset_eventdone_sql()
 
-    test_mode = get_sqlite_value3('r_test_mode')
     devicecode = get_devicecode()
     totalcount = get_totalcount()
     fwversion = get_fwversion()
@@ -137,8 +136,8 @@ def start():
     wifi_mac_high = get_sqlite_value3('r_wifi_mac_high')
     ble_mac_low = get_sqlite_value3('r_ble_mac_low')
     ble_mac_high = get_sqlite_value3('r_ble_mac_high')
+    test_mode = get_sqlite_value3('r_test_mode')
 
-    logger_app.info('==test mode: %s==' % test_mode)
     logger_app.info('==config devicecode: %s==' % devicecode)
     logger_app.info('==config totalcount: %s==' % totalcount)
     logger_app.info('==config fwversion: %s==' % fwversion)
@@ -149,6 +148,7 @@ def start():
     logger_app.info('==config wifi_mac_high: %s==' % wifi_mac_high)
     logger_app.info('==config ble_mac_low: %s==' % ble_mac_low)
     logger_app.info('==config ble_mac_high: %s==' % ble_mac_high)
+    logger_app.info('==test mode: %s==' % test_mode)
     # return, if either is not set by test_config setp
     if totalcount is None or devicecode is None or fwversion is None or devicecode == 0:
         errno = 11

@@ -8,11 +8,13 @@
     {{ super() }}
     {% include '_configinfo.html' %}
 
-    <form style="display: inline" id='start' action="{{ url_for('blue_test.pre_cmd_start') }}" method="post">
-        <button type="submit" class="btn btn-success">开始</button>
-        <label><input type="radio" name="mode" value="production" checked="checked" /> 生产</label>
-        <label><input type="radio" name="mode" value="test" /> 测试</label>
-    </form>
+    <div class="btn-group">
+        <form style="display: inline" id='start' action="{{ url_for('blue_test.pre_cmd_start') }}" method="post">
+            <button type="submit" class="btn btn-success">开始</button>
+            <label><input type="radio" name="mode" value="test" /> 测试</label>
+            <label><input type="radio" name="mode" value="production"  checked="checked" /> 生产</label>
+        </form>
+    </div>
     &nbsp;&nbsp;&nbsp;
 
     <table class="table table-striped table-hover ">

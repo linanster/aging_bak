@@ -12,6 +12,7 @@ from app.lib import get_factorycode
 from app.lib import viewfunclog, logger_app
 from app.lib import gen_excel, empty_folder
 from app.lib import exec_upgrade, check_github_connection
+from app.lib.cloudhandler import upload_to_cloud
 
 from app.myglobals import logfolder, gofolder, topdir
 
@@ -66,6 +67,7 @@ def vf_device():
 @blue_manage.route('/data', methods=['GET'])
 @viewfunclog
 def vf_data():
+    upload_count = request.args.get('upload_count')
     results = TestdataArchive.query.all()
 
     # pagination code
@@ -75,7 +77,7 @@ def vf_data():
     end = page * PER_PAGE if len(results) > page * PER_PAGE else len(results)
     pagination = Pagination(page=page, total=len(results), per_page=PER_PAGE, bs_version=3)
     ret = TestdataArchive.query.slice(start, end)
-    return render_template('manage_data.html', pagination=pagination, results=ret)
+    return render_template('manage_data.html', pagination=pagination, results=ret, upload_count=upload_count)
 
 @blue_manage.route('/cmd_deletearchive', methods=['POST'])
 @viewfunclog
@@ -105,6 +107,16 @@ def cmd_download_testdatasarchive():
     response = Response(send_file(), content_type='application/octet-stream')
     response.headers["Content-disposition"] = 'attachment; filename=%s' % excelname
     return response
+
+@blue_manage.route('/cmd_upload', methods=['POST'])
+@viewfunclog
+def cmd_upload():
+    count = upload_to_cloud()
+    if count == -1:
+        logger_app.error('[upload] error({}), please refer to logger_cloud'.format(count))
+    else:
+        logger_app.info('[upload] success(count: {})'.format(count))
+    return redirect(url_for('blue_manage.vf_data', upload_count=count))
 
 ################
 ## log module ##

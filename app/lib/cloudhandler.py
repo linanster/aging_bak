@@ -51,7 +51,7 @@ def upload_to_cloud():
     # 0. check network status
     if not check_gecloud_connection():
         logger_cloud.error('upload_to_cloud: connection error')
-        return 1
+        return -1
 
     try:
         # 1. fetch data from database
@@ -69,6 +69,12 @@ def upload_to_cloud():
             entry.update(datetime_dict)
             entry.update(bool_uploaded_dict)
             datas_rdy.append(entry)
+        num_raw = len(datas_raw)
+        num_rdy = len(datas_rdy)
+        if not num_raw == num_rdy:
+            logger_cloud.error('upload_to_cloud: num_raw({}) and num_rdy({}) is not equal'.format(num_raw, num_rdy))
+            return -1
+        num_send = num_rdy
     
         # 2. assemble api request message
         request_msg = dict()
@@ -76,9 +82,11 @@ def upload_to_cloud():
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')    
         dict_pin = {'pin': pin}
         dict_timestamp = {'timestamp': timestamp}
+        dict_count = {'count': num_send}
         dict_data = {'testdatas': datas_rdy}
         request_msg.update(dict_pin)
         request_msg.update(dict_timestamp)
+        request_msg.update(dict_count)
         request_msg.update(dict_data)
     
         # 3. send message via http post method
@@ -99,22 +107,33 @@ def upload_to_cloud():
         
         # 5. take response
         response_msg = response.json()
+        resp_errno = response_msg.get('errno')
+        resp_msg = response_msg.get('msg')
    
     except Exception as e:
         logger_cloud.error('upload_to_cloud: exception when uploading data to cloud')
         logger_cloud.error(str(e))
-        return 5
+        return -1
     
 
     # 6. error handler
-    if response_msg.get('errno') == 1:
-        logger_cloud.error('upload_to_cloud: response errno error')
-        return 2
+    if resp_errno != 0:
+        logger_cloud.error('upload_to_cloud: response error')
+        logger_cloud.error(resp_msg)
+        return -1
     if response_msg.get('pin') != pin:
         logger_cloud.error('cloud_to_cloud: pin mismatch error')
-        return 3
+        logger_cloud.error(resp_msg)
+        return -1
+    num_recv = response_msg.get('count')
+    if num_recv != num_send:
+        logger_cloud.error('cloud_to_cloud: number send({}) and recv({}) mismatch error'.format(num_send, num_recv))
+        logger_cloud.error(resp_msg)
+        return -1
 
-    # 7. save data entries into database
+    num_uploaded = num_recv
+
+    # 7. update bool_uploaded segment at local database
     try:
         for item in datas_raw:
             item.bool_uploaded = True
@@ -123,11 +142,13 @@ def upload_to_cloud():
         db_mysql.session.rollback()
         logger_cloud.error('upload_to_cloud: exception when updating database field bool_uploaded')
         logger_cloud.error(str(e))
-        return 4
+        return -1
     else:
         db_mysql.session.commit()
-        logger_cloud.info('upload_to_cloud: success(count: {})'.format(len(datas_raw)))
-        return 0
+
+    # 8. write into log
+    logger_cloud.info('upload_to_cloud: success(count: {})'.format(num_uploaded))
+    return num_uploaded
 
 
 def purge_local_archive():

@@ -9,7 +9,13 @@
     {{ super() }}
     {% include '_configinfo.html' %}
 
-    <lable>模式: {{ test_mode() }} </label>
+    <div class="btn-group">
+        <form style="display: inline" action="#" method="post">
+            <button type="submit" class="btn btn-success" disabled>开始</button>
+        </form>
+    </div>
+
+    <p style="display: inline"><strong>模式</strong>:</span> <span class="text-success"> {{ test_mode() }}</p>
     &nbsp;&nbsp;&nbsp;
 
     <table class="table table-striped table-hover ">
