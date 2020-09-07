@@ -4,7 +4,7 @@ import sys
 from flask_script import Manager
 
 from app import create_app
-from app.models.mysql import db_mysql, Device, Factory, Testdata, TestdataArchive
+from app.models.mysql import db_mysql, Device, Factory, Testdata, TestdataStage, TestdataArchive
 from app.models.sqlite import db_sqlite, Systeminfo, RunningState
 
 app = create_app()
@@ -58,6 +58,7 @@ def deletedb_mysql(table=False, data=False):
         return
     if data:
         TestdataArchive.query.delete()
+        TestdataStage.query.delete()
         Testdata.query.delete()
         Device.query.delete()
         Factory.query.delete()

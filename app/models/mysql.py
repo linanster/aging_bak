@@ -159,9 +159,9 @@ class Testdata(db_mysql.Model):
     __tablename__ = 'testdatas'
     id = db_mysql.Column(db_mysql.Integer, nullable=False, autoincrement=True, primary_key = True)
     # devicecode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey('devices.code'), nullable=False)
-    # factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey('factories.code'), nullable=True, server_default=str(FCODE)) 
+    # factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey('factories.code'), nullable=True, server_default=str(FCODE))
     devicecode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Device.code), nullable=False)
-    factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Factory.code), nullable=True, server_default=str(FCODE)) 
+    factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Factory.code), nullable=True, server_default=str(FCODE))
     fw_version = db_mysql.Column(db_mysql.String(20))
     rssi_ble1 = db_mysql.Column(db_mysql.Integer)
     rssi_ble2 = db_mysql.Column(db_mysql.Integer)
@@ -209,13 +209,61 @@ class Testdata(db_mysql.Model):
         pass
 
 
+class TestdataStage(db_mysql.Model):
+    __bind_key__ = 'mysql'
+    __tablename__ = 'testdatasstage'
+    id = db_mysql.Column(db_mysql.Integer, nullable=False, autoincrement=True, primary_key = True)
+    devicecode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Device.code), nullable=False)
+    # factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Factory.code), nullable=True, server_default=str(FCODE))
+    factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Factory.code), nullable=True)
+    fw_version = db_mysql.Column(db_mysql.String(20))
+    rssi_ble1 = db_mysql.Column(db_mysql.Integer)
+    rssi_ble2 = db_mysql.Column(db_mysql.Integer)
+    rssi_wifi1 = db_mysql.Column(db_mysql.Integer)
+    rssi_wifi2 = db_mysql.Column(db_mysql.Integer)
+    mac_ble = db_mysql.Column(db_mysql.String(18))
+    mac_wifi = db_mysql.Column(db_mysql.String(18))
+    status_cmd_check1 = db_mysql.Column(db_mysql.Integer)
+    status_cmd_check2 = db_mysql.Column(db_mysql.Integer)
+    bool_uploaded = db_mysql.Column(db_mysql.Boolean)
+    bool_qualified_signal = db_mysql.Column(db_mysql.Boolean)
+    bool_qualified_check = db_mysql.Column(db_mysql.Boolean)
+    bool_qualified_scan = db_mysql.Column(db_mysql.Boolean)
+    bool_qualified_deviceid = db_mysql.Column(db_mysql.Boolean)
+    datetime = db_mysql.Column(db_mysql.DateTime, default=datetime.datetime.now())
+    reserve_int_1 = db_mysql.Column(db_mysql.Integer, nullable=True, server_default=str(0))
+    reserve_str_1 = db_mysql.Column(db_mysql.String(100), nullable=True, server_default=str(''))
+    reserve_bool_1 = db_mysql.Column(db_mysql.Boolean, nullable=True, server_default=str(0))
+    def __init__(self, devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_uploaded, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime, reserve_int_1, reserve_str_1, reserve_bool_1):
+        self.devicecode = devicecode
+        self.factorycode = factorycode
+        self.fw_version = fw_version
+        self.rssi_ble1 = rssi_ble1
+        self.rssi_ble2 = rssi_ble2
+        self.rssi_wifi1 = rssi_wifi1
+        self.rssi_wifi2 = rssi_wifi2
+        self.mac_ble = mac_ble
+        self.mac_wifi = mac_wifi
+        self.status_cmd_check1 = status_cmd_check1
+        self.status_cmd_check2 = status_cmd_check2
+        self.bool_uploaded = bool_uploaded
+        self.bool_qualified_signal = bool_qualified_signal
+        self.bool_qualified_check = bool_qualified_check
+        self.bool_qualified_scan = bool_qualified_scan
+        self.bool_qualified_deviceid = bool_qualified_deviceid
+        self.datetime = datetime
+        self.reserve_int_1 = reserve_int_1
+        self.reserve_str_1 = reserve_str_1
+        self.reserve_bool_1 = reserve_bool_1
+
+
 class TestdataArchive(db_mysql.Model):
     __bind_key__ = 'mysql'
     __tablename__ = 'testdatasarchive'
     id = db_mysql.Column(db_mysql.Integer, nullable=False, autoincrement=True, primary_key = True)
     devicecode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Device.code), nullable=False)
-    # factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Factory.code), nullable=True, server_default=str(FCODE)) 
-    factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Factory.code), nullable=True) 
+    # factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Factory.code), nullable=True, server_default=str(FCODE))
+    factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Factory.code), nullable=True)
     fw_version = db_mysql.Column(db_mysql.String(20))
     rssi_ble1 = db_mysql.Column(db_mysql.Integer)
     rssi_ble2 = db_mysql.Column(db_mysql.Integer)
