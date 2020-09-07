@@ -1,0 +1,48 @@
+{% extends '_mybase.html' %}
+
+{% block indent_content %}
+    {{ super() }}
+
+    <script src="{{ url_for('static',filename='js/jquery-1.12.4.min.js') }}"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function () {
+            $("#btn_upload").click(function(){
+                if(window.confirm("确认上传数据吗?")==false)
+                    return false;
+            });
+        });
+    </script>
+
+
+    <legend>同步测试数据至云端</legend>
+
+    <p><span class="text-success">当前共 <strong>{{ count_upload_todo }}</strong></span> 条记录未同步</p>
+
+    <div class="btn-group">
+        <form style="display: inline" action="{{ url_for('blue_upload.cmd_upload_stage') }}" method="post">
+            <button id="btn_upload" type="submit" class="btn btn-success">上传</button>
+        </form>
+    </div>    
+    
+    {% if count_upload_done %}<span style="display: inline" class="text-success">上传了 <strong>{{ count_upload_done }}</strong> 条记录</span>{% endif %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p class="text-warning" style="display: inline">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <br>
+    <br>
+    <br>
+
+    <legend>同步说明:</legend>
+    <div>1. 同步前，请确保网络连通(右上角在线/离线指示，点击可刷新状态)。</div>
+    <div>2. <strong>测试模式</strong>数据不需要同步，<strong>生产模式</strong>数据需要同步。</div>
+    <div>3. 未同步数据只显示数量，同步后可在<a href="{{ url_for('blue_manage.vf_data') }}">历史数据</a></li>页面查看。</div>
+    <div>4. 请及时联网并完成同步，当未同步数据数量大于 <span class="text-danger"><strong>10,000</strong></span> 时，测试功能禁用。</div>
+
+
+{% endblock %}
+

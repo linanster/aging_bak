@@ -117,6 +117,21 @@ def get_test_mode():
     else:
         return 'error'
 
+@application_ge_aging.template_global('get_count_stage')
+def get_count_stage():
+    from app.lib.tools import get_count_stage
+    return get_count_stage()
+
+@application_ge_aging.template_global('count_stage_qualified')
+def count_stage_qualified():
+    from app.lib.tools import get_count_stage
+    count = get_count_stage()
+    # 当stage数据大于10000时，禁用测试开始按钮
+    if count > 10000:
+        return False
+    else:
+        return True
+
 @application_ge_aging.template_filter('parse_is_qualified')
 def parseIsQualified(mybool):
     return '成功' if mybool else '失败'

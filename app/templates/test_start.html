@@ -10,7 +10,8 @@
 
     <div class="btn-group">
         <form style="display: inline" id='start' action="{{ url_for('blue_test.pre_cmd_start') }}" method="post">
-            <button type="submit" class="btn btn-success">开始</button>
+            {# <button type="submit" class="btn btn-success" {% if get_count_stage()>10000 %}disabled{% endif %}>开始</button> #}
+            <button type="submit" class="btn btn-success" {% if not count_stage_qualified() %}disabled{% endif %}>开始</button>
             <label><input type="radio" name="mode" value="test" /> 测试</label>
             <label><input type="radio" name="mode" value="production"  checked="checked" /> 生产</label>
         </form>

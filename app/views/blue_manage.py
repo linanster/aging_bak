@@ -5,7 +5,7 @@ import os
 import stat
 from werkzeug.utils import secure_filename
 
-from app.models import Device, Factory, TestdataArchive
+from app.models import Device, Factory, TestdataStage, TestdataArchive
 from app.lib.execmodel import testdatasarchive_cleanup
 
 from app.lib import get_factorycode
@@ -109,15 +109,6 @@ def cmd_download_testdatasarchive():
     response.headers["Content-disposition"] = 'attachment; filename=%s' % excelname
     return response
 
-@blue_manage.route('/cmd_upload', methods=['POST'])
-@viewfunclog
-def cmd_upload():
-    count = upload_to_cloud()
-    if count == -1:
-        logger_app.error('[upload] error({}), please refer to logger_cloud'.format(count))
-    else:
-        logger_app.info('[upload] success(count: {})'.format(count))
-    return redirect(url_for('blue_manage.vf_data', upload_count=count))
 
 ################
 ## log module ##

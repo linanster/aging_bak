@@ -49,7 +49,9 @@ sql_reset_retried = '''
 sql_truncate_testdatas = '''
     TRUNCATE table testdatas;
 '''
-
+sql_truncate_testdatasstage = '''
+    TRUNCATE table testdatasstage;
+'''
 sql_truncate_testdatasarchive = '''
     TRUNCATE table testdatasarchive;
 '''
@@ -58,6 +60,14 @@ def sql_testdatas_cleanup():
     conn = pymysql.Connect(host=db_addr, port=db_port, user=db_user, passwd=db_passwd, db=db_name)
     cursor = conn.cursor()
     cursor.execute(sql_truncate_testdatas)
+    cursor.close()
+    conn.commit()
+    conn.close()
+
+def sql_testdatasstage_cleanup():
+    conn = pymysql.Connect(host=db_addr, port=db_port, user=db_user, passwd=db_passwd, db=db_name)
+    cursor = conn.cursor()
+    cursor.execute(sql_truncate_testdatasstage)
     cursor.close()
     conn.commit()
     conn.close()

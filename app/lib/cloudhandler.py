@@ -4,11 +4,10 @@ import time
 import datetime
 import requests
 
-from app.models import db_mysql, Testdata, TestdataArchive
-
+from app.models import db_mysql, Testdata, TestdataStage, TestdataArchive
 from app.myglobals import RETENTION, gecloud_ip
-
 from .mylogger import logger_cloud
+from app.lib.execmodel import testdatas_archive, testdatasstage_cleanup
 
 def check_gecloud_connection():
     method = 'GET'
@@ -56,7 +55,8 @@ def upload_to_cloud():
     try:
         # 1. fetch data from database
         # datas_raw = TestdataArchive.query.all()
-        datas_raw = TestdataArchive.query.filter_by(bool_uploaded=False).all()
+        # datas_raw = TestdataArchive.query.filter_by(bool_uploaded=False).all()
+        datas_raw = TestdataStage.query.all()
         datas_rdy = list()
         for item in datas_raw:
             entry = copy.deepcopy(item.__dict__)
@@ -73,7 +73,7 @@ def upload_to_cloud():
         num_rdy = len(datas_rdy)
         if not num_raw == num_rdy:
             logger_cloud.error('upload_to_cloud: num_raw({}) and num_rdy({}) is not equal'.format(num_raw, num_rdy))
-            return -1
+            return -2
         num_send = num_rdy
     
         # 2. assemble api request message
@@ -113,23 +113,23 @@ def upload_to_cloud():
     except Exception as e:
         logger_cloud.error('upload_to_cloud: exception when uploading data to cloud')
         logger_cloud.error(str(e))
-        return -1
+        return -3
     
 
     # 6. error handler
     if resp_errno != 0:
         logger_cloud.error('upload_to_cloud: response error')
         logger_cloud.error(resp_msg)
-        return -1
+        return -4
     if response_msg.get('pin') != pin:
-        logger_cloud.error('cloud_to_cloud: pin mismatch error')
+        logger_cloud.error('upload_to_cloud: pin mismatch error')
         logger_cloud.error(resp_msg)
-        return -1
+        return -5
     num_recv = response_msg.get('count')
     if num_recv != num_send:
-        logger_cloud.error('cloud_to_cloud: number send({}) and recv({}) mismatch error'.format(num_send, num_recv))
+        logger_cloud.error('upload_to_cloud: number send({}) and recv({}) mismatch error'.format(num_send, num_recv))
         logger_cloud.error(resp_msg)
-        return -1
+        return -6
 
     num_uploaded = num_recv
 
@@ -142,11 +142,33 @@ def upload_to_cloud():
         db_mysql.session.rollback()
         logger_cloud.error('upload_to_cloud: exception when updating database field bool_uploaded')
         logger_cloud.error(str(e))
-        return -1
+        return -7
     else:
         db_mysql.session.commit()
 
-    # 8. write into log
+    # 8. move data from stage to archive
+    try:
+        testdatas_archive()
+    except Exception as e:
+        db_mysql.session.rollback()
+        logger_cloud.error('upload_to_cloud: exception when move data from stage to archive')
+        logger_cloud.error(str(e))
+        return -8
+    else:
+        db_mysql.session.commit()
+
+    # 9. clean up stage
+    try:
+        testdatasstage_cleanup()
+    except Exception as e:
+        db_mysql.session.rollback()
+        logger_cloud.error('upload_to_cloud: exception when clean up stage db')
+        logger_cloud.error(str(e))
+        return -9
+    else:
+        db_mysql.session.commit()
+
+    # 10. write into log
     logger_cloud.info('upload_to_cloud: success(count: {})'.format(num_uploaded))
     return num_uploaded
 

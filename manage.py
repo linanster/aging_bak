@@ -67,11 +67,12 @@ def deletedb_mysql(table=False, data=False):
 
 @manager.command
 def cleanup(db=False, log=False, pycache=False, all=False):
-    from app.lib.execsql import sql_testdatas_cleanup, sql_testdatasarchive_cleanup
+    from app.lib.execsql import sql_testdatas_cleanup, sql_testdatasstage_cleanup, sql_testdatasarchive_cleanup
     from app.lib.myutils import cleanup_log, cleanup_pycache
     if all or db:
         print('==cleanup database==')
         sql_testdatas_cleanup()
+        sql_testdatasstage_cleanup()
         sql_testdatasarchive_cleanup()
     if all or log:
         print('==cleanup log==')

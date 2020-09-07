@@ -1,5 +1,8 @@
 from app.models import db_sqlite, RunningState, Systeminfo
-from app.models import db_mysql, Factory, Device
+from app.models import db_mysql, Factory, Device, TestdataStage
+
+def get_count_stage():
+    return len(TestdataStage.query.all())
 
 def get_gecloud_online():
     r = RunningState.query.filter_by(key='r_gecloud_online').first()

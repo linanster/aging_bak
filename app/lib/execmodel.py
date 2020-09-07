@@ -1,11 +1,38 @@
-from app.models import db_mysql, Testdata, TestdataArchive
+from app.models import db_mysql, Testdata, TestdataStage, TestdataArchive
 from app.lib.mylogger import logger_app
 
 def testdatas_cleanup():
-    Testdata.query.delete()
+    try:
+        Testdata.query.delete()
+    except Exception as e:
+        raise e
+        db_mysql.session.rollback()
+    else:
+        db_mysql.session.commit()
+    db_mysql.session.commit()
+
+def testdatasstage_cleanup():
+    try:
+        TestdataStage.query.delete()
+    except Exception as e:
+        raise e
+        db_mysql.session.rollback()
+    else:
+        db_mysql.session.commit()
     db_mysql.session.commit()
 
 def testdatasarchive_cleanup():
+    try:
+        TestdataArchive.query.delete()
+    except Exception as e:
+        raise e
+        db_mysql.session.rollback()
+    else:
+        db_mysql.session.commit()
+    db_mysql.session.commit()
+
+
+def testdatasarchive_cleanup_legacy():
     try:
         # TestdataArchive.query.delete()
         count = TestdataArchive.query.filter_by(bool_uploaded=True).delete(synchronize_session=False)
@@ -18,8 +45,41 @@ def testdatasarchive_cleanup():
         db_mysql.session.commit()
         return count
 
-def testdatas_archive():
+
+# copy data from testdatas to testdatasstage table
+def testdatas_stage():
     testdatas_list = Testdata.query.all()
+    testdatasstage_list = list()
+    for item in testdatas_list:
+        devicecode = item.devicecode
+        factorycode = item.factorycode
+        fw_version = item.fw_version
+        rssi_ble1 = item.rssi_ble1
+        rssi_ble2 = item.rssi_ble2
+        rssi_wifi1 = item.rssi_wifi1
+        rssi_wifi2 = item.rssi_wifi2
+        mac_ble = item.mac_ble
+        mac_wifi = item.mac_wifi
+        status_cmd_check1 = item.status_cmd_check1
+        status_cmd_check2 = item.status_cmd_check2
+        bool_uploaded = item.bool_uploaded
+        bool_qualified_signal = item.bool_qualified_signal
+        bool_qualified_check = item.bool_qualified_check
+        bool_qualified_scan = item.bool_qualified_scan
+        bool_qualified_deviceid = item.bool_qualified_deviceid
+        datetime = item.datetime
+        reserve_int_1 = item.reserve_int_1
+        reserve_str_1 = item.reserve_str_1
+        reserve_bool_1 = item.reserve_bool_1
+        obj = TestdataStage(devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_uploaded, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime, reserve_int_1, reserve_str_1, reserve_bool_1)
+        testdatasstage_list.append(obj)
+    db_mysql.session.add_all(testdatasstage_list)
+    db_mysql.session.commit()
+
+
+# copy data from testdatasstage to testdatasarchive table
+def testdatas_archive():
+    testdatas_list = TestdataStage.query.all()
     testdatasarchive_list = list()
     for item in testdatas_list:
         devicecode = item.devicecode
@@ -46,6 +106,7 @@ def testdatas_archive():
         testdatasarchive_list.append(obj)
     db_mysql.session.add_all(testdatasarchive_list)
     db_mysql.session.commit()
+
 
 def update_testdatas_fcode(fcode):
     datas_raw = Testdata.query.all()

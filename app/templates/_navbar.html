@@ -81,8 +81,12 @@
                     </ul>
                 </li>
 
-                <li id='about' {% if request.path in [url_for('blue_about.about'),] %}class='active'{% endif %}><a
-                        href="{{ url_for('blue_about.about') }}">关于</a></li>
+                <li id='upload' {% if request.path in [url_for('blue_upload.vf_upload'),] %}class='active'{% endif %}>
+                    <a href="{{ url_for('blue_upload.vf_upload') }}">同步</a>
+                </li>
+                <li id='about' {% if request.path in [url_for('blue_about.about'),] %}class='active'{% endif %}>
+                    <a href="{{ url_for('blue_about.about') }}">关于</a>
+                </li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
