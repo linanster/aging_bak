@@ -9,7 +9,6 @@ def testdatas_cleanup():
         db_mysql.session.rollback()
     else:
         db_mysql.session.commit()
-    db_mysql.session.commit()
 
 def testdatasstage_cleanup():
     try:
@@ -19,17 +18,17 @@ def testdatasstage_cleanup():
         db_mysql.session.rollback()
     else:
         db_mysql.session.commit()
-    db_mysql.session.commit()
 
 def testdatasarchive_cleanup():
     try:
-        TestdataArchive.query.delete()
+        count = TestdataArchive.query.delete()
     except Exception as e:
         raise e
         db_mysql.session.rollback()
     else:
         db_mysql.session.commit()
-    db_mysql.session.commit()
+    finally:
+        return count
 
 
 def testdatasarchive_cleanup_legacy():

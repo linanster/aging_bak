@@ -37,6 +37,15 @@
         </form>
     </div>
 
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p class="text-warning" style="display: inline">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+
     <br>
     <br>
 

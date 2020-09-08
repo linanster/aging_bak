@@ -25,7 +25,6 @@
         </form>
     </div>    
     
-    {% if count_upload_done %}<span style="display: inline" class="text-success">上传了 <strong>{{ count_upload_done }}</strong> 条记录</span>{% endif %}
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}

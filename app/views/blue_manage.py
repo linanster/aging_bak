@@ -95,6 +95,7 @@ def vf_data():
 @viewfunclog
 def cmd_deletearchive():
     count = testdatasarchive_cleanup()
+    flash('删除了 {} 条数据'.format(count))
     return redirect(url_for('blue_manage.vf_data', delete_count = count))
 
 @blue_manage.route('/cmd_search', methods=['POST'])
