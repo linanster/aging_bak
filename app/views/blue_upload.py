@@ -3,7 +3,7 @@ from flask import Blueprint, request, render_template, flash, redirect, url_for,
 from app.models import Device, Factory, TestdataStage, TestdataArchive
 from app.lib import viewfunclog, logger_app
 
-from app.lib.cloudhandler import upload_to_cloud
+from app.lib.cloudhandler import upload_to_cloud, refresh_gecloud_online
 
 
 blue_upload = Blueprint('blue_upload', __name__, url_prefix='/upload')
@@ -12,6 +12,7 @@ blue_upload = Blueprint('blue_upload', __name__, url_prefix='/upload')
 @blue_upload.route('/stage', methods=['GET'])
 @viewfunclog
 def vf_upload():
+    refresh_gecloud_online()
     count_upload_todo = len(TestdataStage.query.all())
     # count_upload_done = request.args.get('count_upload_done')
     return render_template('upload_index.html', count_upload_todo=count_upload_todo)

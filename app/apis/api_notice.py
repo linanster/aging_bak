@@ -5,8 +5,8 @@ import subprocess as s
 from app.lib.mydecorator import viewfunclog
 from app.lib.mylogger import logger_app
 from app.lib.execsql import set_eventdone_sql
-from app.lib.cloudhandler import check_gecloud_connection
-from app.lib.tools import set_gecloud_online, reset_gecloud_online
+from app.lib.cloudhandler import refresh_gecloud_online
+
 
 api_notice = Api(prefix='/api/notice/')
 
@@ -42,11 +42,9 @@ class ResourceNoticeEventdone(Resource):
 class ResourceNoticeUpdateGEcloudOnline(Resource):
     @viewfunclog
     def post(self):
-        if check_gecloud_connection():
-            set_gecloud_online()
+        if refresh_gecloud_online():
             msg = 'gecloud online and sqlite updated'
         else:
-            reset_gecloud_online()
             msg = 'gecloud not online and sqlite updated'
         return {
             'msg': msg,

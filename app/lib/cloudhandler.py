@@ -8,6 +8,8 @@ from app.models import db_mysql, Testdata, TestdataStage, TestdataArchive
 from app.myglobals import RETENTION, gecloud_ip
 from .mylogger import logger_cloud
 from app.lib.execmodel import testdatas_archive, testdatasstage_cleanup
+from app.lib.tools import set_gecloud_online, reset_gecloud_online
+
 
 def check_gecloud_connection():
     method = 'GET'
@@ -171,6 +173,14 @@ def upload_to_cloud():
     # 10. write into log
     logger_cloud.info('upload_to_cloud: success(count: {})'.format(num_uploaded))
     return num_uploaded
+
+def refresh_gecloud_online():
+    if check_gecloud_connection():
+        set_gecloud_online()
+        return True
+    else:
+        reset_gecloud_online()
+        return False
 
 
 def purge_local_archive():
