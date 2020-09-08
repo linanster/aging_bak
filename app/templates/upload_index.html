@@ -20,7 +20,8 @@
 
     <div class="btn-group">
         <form style="display: inline" action="{{ url_for('blue_upload.cmd_upload_stage') }}" method="post">
-            <button id="btn_upload" type="submit" class="btn btn-success">上传</button>
+            {# <button id="btn_upload" type="submit" class="btn btn-success" {% if get_count_stage()==0 %}disabled{% endif %}>上传</button> #}
+            <button id="btn_upload" type="submit" class="btn btn-success" {% if count_stage_zero() %}disabled{% endif %}>上传</button>
         </form>
     </div>    
     
@@ -37,7 +38,7 @@
     <br>
     <br>
 
-    <legend>同步说明:</legend>
+    <legend>说明:</legend>
     <div>1. 同步前，请确保网络连通(右上角在线/离线指示，点击可刷新状态)。</div>
     <div>2. <strong>测试模式</strong>数据不需要同步，<strong>生产模式</strong>数据需要同步。</div>
     <div>3. 未同步数据只显示数量，同步后可在<a href="{{ url_for('blue_manage.vf_data') }}">历史数据</a></li>页面查看。</div>

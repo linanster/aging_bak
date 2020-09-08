@@ -122,15 +122,25 @@ def get_count_stage():
     from app.lib.tools import get_count_stage
     return get_count_stage()
 
-@application_ge_aging.template_global('count_stage_qualified')
-def count_stage_qualified():
+# 当stage数据为0时，禁用上传按钮
+@application_ge_aging.template_global('count_stage_zero')
+def count_stage_zero():
     from app.lib.tools import get_count_stage
     count = get_count_stage()
-    # 当stage数据大于10000时，禁用测试开始按钮
-    if count > 10000:
-        return False
-    else:
+    if count == 0:
         return True
+    else:
+        return False
+
+# 当stage数据大于10000时，禁用测试开始按钮
+@application_ge_aging.template_global('count_stage_exceed')
+def count_stage_exceed():
+    from app.lib.tools import get_count_stage
+    count = get_count_stage()
+    if count > 1:
+        return True
+    else:
+        return False
 
 @application_ge_aging.template_filter('parse_is_qualified')
 def parseIsQualified(mybool):
