@@ -1,5 +1,6 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for, send_from_directory, Response
 from flask_paginate import Pagination, get_page_parameter
+from sqlalchemy import text
 import datetime
 import os
 import stat
@@ -67,24 +68,45 @@ def vf_device():
 @blue_manage.route('/data', methods=['GET'])
 @viewfunclog
 def vf_data():
-    upload_count = request.args.get('upload_count')
     delete_count = request.args.get('delete_count')
-    results = TestdataArchive.query.all()
+    search_devicecode = request.args.get('devicecode')
+    search_blemac = request.args.get('blemac')
+
+    myquery = TestdataArchive.query.filter(
+        TestdataArchive.devicecode.like("%"+search_devicecode+"%") if search_devicecode is not None else text(""),
+        TestdataArchive.mac_ble.like("%"+search_blemac+"%") if search_blemac is not None else text(""),
+        )
+    # datas = TestdataArchive.query.all()
+    datas = myquery.all()
+
+    total_count = len(datas)
 
     # pagination code
     PER_PAGE = 50
     page = request.args.get(get_page_parameter(), type=int, default=1) #获取页码，默认为第一页
     start = (page-1)*PER_PAGE
-    end = page * PER_PAGE if len(results) > page * PER_PAGE else len(results)
-    pagination = Pagination(page=page, total=len(results), per_page=PER_PAGE, bs_version=3)
-    ret = TestdataArchive.query.slice(start, end)
-    return render_template('manage_data.html', pagination=pagination, results=ret, upload_count=upload_count, delete_count=delete_count)
+    end = page * PER_PAGE if total_count > page * PER_PAGE else total_count
+    pagination = Pagination(page=page, total=total_count, per_page=PER_PAGE, bs_version=3)
+    # ret = TestdataArchive.query.slice(start, end)
+    ret = myquery.slice(start, end)
+    return render_template('manage_data.html', pagination=pagination, results=ret, delete_count=delete_count)
 
 @blue_manage.route('/cmd_deletearchive', methods=['POST'])
 @viewfunclog
 def cmd_deletearchive():
     count = testdatasarchive_cleanup()
     return redirect(url_for('blue_manage.vf_data', delete_count = count))
+
+@blue_manage.route('/cmd_search', methods=['POST'])
+@viewfunclog
+def cmd_search():
+    # 如果设备类型未选择，devicecode此时为None
+    devicecode = request.form.get('devicecode', type=int)
+    # 如果Ble Mac栏为空，blemac此时为“”。注意，不是None
+    blemac = request.form.get('blemac', type=str)
+    if len(blemac) == 0:
+        blemac = None
+    return redirect(url_for('blue_manage.vf_data', devicecode=devicecode, blemac=blemac))
 
 @blue_manage.route('/cmd_download_testdatasarchive', methods=['POST'])
 @viewfunclog

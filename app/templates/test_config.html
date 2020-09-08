@@ -16,7 +16,8 @@
                 <div class="col-lg-10">
                     <select class="form-control" id="devicecode" name="devicecode">
                         <option value="" style='display: none'>-</option>
-                        {% for device in devices %}
+                        {# {% for device in devices %} #}
+                        {% for device in get_devices() %}
                             <option value={{ device.code }}>{{ device.name }}({{device.code_hex}})</option>
                         {% endfor %}
                     </select>

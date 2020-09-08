@@ -46,9 +46,11 @@ def vf_config():
     #     devices = [d_leedarson_128, ]
     # else:
     #     devices = list()
-    devices = Device.query.all()
-    
-    return render_template('test_config.html', devices=devices)
+
+    # devices = Device.query.all()
+    # return render_template('test_config.html', devices=devices)
+
+    return render_template('test_config.html')
 
 @blue_test.route('/tips_mcu')
 @viewfunclog

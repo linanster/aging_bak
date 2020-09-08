@@ -142,6 +142,12 @@ def count_stage_exceed():
     else:
         return False
 
+@application_ge_aging.template_global('get_devices')
+def get_devices():
+    from app.models.mysql import Device
+    devices = Device.query.all()
+    return devices
+
 @application_ge_aging.template_filter('parse_is_qualified')
 def parseIsQualified(mybool):
     return '成功' if mybool else '失败'

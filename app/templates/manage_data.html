@@ -19,12 +19,13 @@
 
 
     <legend>查看历史测试数据 (已同步)</legend>
-    <div>
-        {{ pagination.info }}
-        {{ pagination.links }}
+    <div class="pagination-sm">
+        <div style="display: inline">{{ pagination.info }}</div>
+        <div style="display: inline">{{ pagination.links }}</div>
     </div>
 
-    <div class="btn-group">
+
+    <div class="btn-group" style="display:inline">
         <form style="display: inline" action="{{ url_for('blue_manage.vf_data') }}" method="get">
             <button type="submit" class="btn btn-primary ">刷新</button>
         </form>
@@ -36,12 +37,29 @@
         </form>
     </div>
 
+    <br>
+    <br>
+
+    <div id="search" class="btn-group" style="display:inline">
+        <form action="{{url_for('blue_manage.cmd_search')}}" method="post">
+            <input type="submit" value="搜索">
+            设备类型:
+            <select id="devicecode" name="devicecode">
+                <option value="" style='display: none'>-</option>
+                {% for device in get_devices() %}
+                    <option value={{ device.code }}>{{ device.name }}({{device.code_hex}})</option>
+                {% endfor %}
+            </select>
+            Ble Mac: <input type="text" name="blemac" value="">
+        </form>
+    <div>
+
     <table class="table table-striped table-hover ">
         <thead>
         <tr>
             <th rowspan="2">#</th>
             <th rowspan="2">设备类型</th>
-            <th rowspan="2">工厂</th>
+            <th rowspan="2">厂家</th>
             <th rowspan="2">固件版本</th>
             <th rowspan="2">RSSI_BLE</th>
             <th rowspan="2">RSSI_WIFI</th>
