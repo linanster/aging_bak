@@ -142,6 +142,16 @@ def count_stage_exceed():
     else:
         return False
 
+# 当archive数据为0时，禁用下载和删除按钮
+@application_ge_aging.template_global('count_archive_zero')
+def count_archive_zero():
+    from app.lib.tools import get_count_archive
+    count = get_count_archive()
+    if count == 0:
+        return True
+    else:
+        return False
+
 @application_ge_aging.template_global('get_devices')
 def get_devices():
     from app.models.mysql import Device
