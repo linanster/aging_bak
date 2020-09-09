@@ -65,12 +65,16 @@ def vf_device():
 ## manage data module ##
 ########################
 
-@blue_manage.route('/data', methods=['GET'])
+@blue_manage.route('/data', methods=['GET', 'post'])
 @viewfunclog
 def vf_data():
     delete_count = request.args.get('delete_count')
-    search_devicecode = request.args.get('devicecode')
-    search_blemac = request.args.get('blemac')
+    # 如果设备类型未选择，devicecode此时为None
+    search_devicecode = request.form.get('devicecode', type=str)
+    # 如果Ble Mac栏为空，blemac此时为“”。注意，不是None
+    search_blemac = request.form.get('blemac', type=str)
+    # if len(search_blemac) == 0:
+    #     search_blemac = None
 
     myquery = TestdataArchive.query.filter(
         TestdataArchive.devicecode.like("%"+search_devicecode+"%") if search_devicecode is not None else text(""),
@@ -89,7 +93,7 @@ def vf_data():
     pagination = Pagination(page=page, total=total_count, per_page=PER_PAGE, bs_version=3)
     # ret = TestdataArchive.query.slice(start, end)
     ret = myquery.slice(start, end)
-    return render_template('manage_data.html', pagination=pagination, results=ret, delete_count=delete_count)
+    return render_template('manage_data.html', pagination=pagination, results=ret, delete_count=delete_count, search_devicecode=search_devicecode, search_blemac=search_blemac)
 
 @blue_manage.route('/cmd_deletearchive', methods=['POST'])
 @viewfunclog
@@ -98,16 +102,6 @@ def cmd_deletearchive():
     flash('删除了 {} 条数据'.format(count))
     return redirect(url_for('blue_manage.vf_data', delete_count = count))
 
-@blue_manage.route('/cmd_search', methods=['POST'])
-@viewfunclog
-def cmd_search():
-    # 如果设备类型未选择，devicecode此时为None
-    devicecode = request.form.get('devicecode', type=int)
-    # 如果Ble Mac栏为空，blemac此时为“”。注意，不是None
-    blemac = request.form.get('blemac', type=str)
-    if len(blemac) == 0:
-        blemac = None
-    return redirect(url_for('blue_manage.vf_data', devicecode=devicecode, blemac=blemac))
 
 @blue_manage.route('/cmd_download_testdatasarchive', methods=['POST'])
 @viewfunclog
