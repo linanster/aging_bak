@@ -11,7 +11,7 @@ from app.lib.execmodel import testdatasarchive_cleanup
 
 from app.lib import get_factorycode
 from app.lib import viewfunclog, logger_app
-from app.lib import gen_excel, empty_folder
+from app.lib import gen_excel, empty_folder, gen_csv
 from app.lib import exec_upgrade, check_github_connection
 from app.lib.cloudhandler import upload_to_cloud
 
@@ -107,9 +107,9 @@ def cmd_deletearchive():
 @viewfunclog
 def cmd_download_testdatasarchive():
     timestamp = datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
-    excelname = 'TestdatasArchive-' + timestamp + '.xls'
+    filename = 'TestdatasArchive-' + timestamp + '.xls'
     excelfolder = os.path.join(topdir, 'pub','excel')
-    filename = os.path.join(excelfolder, excelname)
+    filename = os.path.join(excelfolder, filename)
     empty_folder(excelfolder)
     gen_excel(TestdataArchive, filename)
     # 普通下载
@@ -123,9 +123,31 @@ def cmd_download_testdatasarchive():
                     break
                 yield data
     response = Response(send_file(), content_type='application/octet-stream')
-    response.headers["Content-disposition"] = 'attachment; filename=%s' % excelname
+    response.headers["Content-disposition"] = 'attachment; filename=%s' % filename
     return response
 
+@blue_manage.route('/cmd_download_csv', methods=['POST'])
+@viewfunclog
+def cmd_download_csv():
+    timestamp = datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
+    filename = 'TestdatasArchive-' + timestamp + '.csv'
+    excelfolder = os.path.join(topdir, 'pub','excel')
+    filename = os.path.join(excelfolder, filename)
+    empty_folder(excelfolder)
+    gen_csv(TestdataArchive, filename)
+    # 普通下载
+    # return send_from_directory(excelfolder, excelname, as_attachment=True)
+    # 流式读取
+    def send_file():
+        with open(filename, 'rb') as filestream:
+            while True:
+                data = filestream.read(1024*1024) # 每次读取1M大小
+                if not data:
+                    break
+                yield data
+    response = Response(send_file(), content_type='application/octet-stream')
+    response.headers["Content-disposition"] = 'attachment; filename=%s' % filename
+    return response
 
 ################
 ## log module ##

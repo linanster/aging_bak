@@ -4,10 +4,36 @@ import os
 import datetime
 import shutil
 import json
+import csv
 
 from app.models import db_mysql, Testdata, TestdataArchive
 
 from app.myglobals import logfolder, appfolder, gofolder
+
+def gen_csv(tableclass, filename):
+    # 1.prepare table heads
+    tablename = tableclass.__tablename__
+    heads_raw = db_mysql.metadata.tables.get(tablename).c
+    heads = list()
+    for item in heads_raw:
+        heads.append(str(item).replace(tablename+'.','',1))
+    # 2.prepare table data
+    datas = tableclass.query.all()
+    # 3.prepare csv writer
+    f = open(filename, 'w')
+    csv_writer = csv.writer(f)
+    # 4. insert table head row
+    csv_writer.writerow(heads)
+    # 5.insert data rows
+    for data in datas:
+        data_dict = data.__dict__
+        data_dict.pop('_sa_instance_state')
+        data_dict.update({'datetime': data_dict.get('datetime').strftime('%Y-%m-%d %H:%M:%S')})
+        data_list = list(data_dict.values())
+        # todo: sort data_list
+        csv_writer.writerow(data_list)
+    # 6.save
+    f.close()
 
 def gen_excel(tableclass, filename):
     # 1.prepare table heads

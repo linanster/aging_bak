@@ -35,7 +35,10 @@
             <button type="submit" class="btn btn-primary ">刷新</button>
         </form>
         <form style="display: inline" action="{{ url_for('blue_manage.cmd_download_testdatasarchive') }}" method="post">
-            <button type="submit" class="btn btn-primary" {% if count_archive_zero() %}disabled{% endif %}>下载报表</button>
+            <button type="submit" class="btn btn-primary" {% if count_archive_zero() %}disabled{% endif %}>下载Excel</button>
+        </form>
+        <form style="display: inline" action="{{ url_for('blue_manage.cmd_download_csv') }}" method="post">
+            <button type="submit" class="btn btn-primary" {% if count_archive_zero() %}disabled{% endif %}>下载CSV</button>
         </form>
         <form style="display: inline" action="{{ url_for('blue_manage.cmd_deletearchive') }}" method="post">
             <button id="btn_delete" type="submit" class="btn btn-danger" {% if count_archive_zero() %}disabled{% endif %}>清除数据</button>
