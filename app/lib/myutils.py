@@ -1,4 +1,5 @@
 import xlwt
+import openpyxl
 import os
 import datetime
 import shutil
@@ -9,6 +10,40 @@ from app.models import db_mysql, Testdata, TestdataArchive
 from app.myglobals import logfolder, appfolder, gofolder
 
 def gen_excel(tableclass, filename):
+    # 1.prepare table heads
+    tablename = tableclass.__tablename__
+    heads_raw = db_mysql.metadata.tables.get(tablename).c
+    heads = list()
+    for item in heads_raw:
+        heads.append(str(item).replace(tablename+'.','',1))
+    # 2.prepare table data
+    datas = tableclass.query.all()
+    # 3.prepare excel object
+    book = openpyxl.Workbook()
+    sheet1 = book.create_sheet(index=0, title='sheet1')
+    # 4. insert table head row
+    # diff with xlwt, openpyxl row start at least 1
+    row = 1
+    for col,field in enumerate(heads):
+        # sheet1.write(0, col, field)
+        sheet1.cell(row, col+1).value = field
+    # 5.insert data rows
+    row += 1
+    for data in datas:
+        col = 0
+        while col < len(heads):
+            cell = data.__dict__.get(heads[col])
+            if heads[col] == 'datetime':
+                cell = cell.strftime('%Y-%m-%d %H:%M:%S')
+            # sheet1.write(row, col, cell)
+            # diff with xlwt, openpyxl col start at least 1
+            sheet1.cell(row, col+1).value = cell
+            col += 1
+        row += 1
+    # 6.save
+    book.save(filename)
+
+def gen_excel_legacy(tableclass, filename):
     # 1.prepare table heads
     # heads_raw = db_mysql.metadata.tables.get('testdatas').c
     tablename = tableclass.__tablename__
@@ -46,7 +81,6 @@ def gen_excel(tableclass, filename):
     # filename = 'testdatas-' + timestamp + '.xls'
     # filename = os.path.join(topdir, 'updownload', filename)
     book.save(filename)
-
 
 # please be very careful to call this function
 def empty_folder(folder):
