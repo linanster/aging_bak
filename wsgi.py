@@ -137,7 +137,7 @@ def count_stage_zero():
 def count_stage_exceed():
     from app.lib.tools import get_count_stage
     count = get_count_stage()
-    if count > 1:
+    if count > 10000:
         return True
     else:
         return False
