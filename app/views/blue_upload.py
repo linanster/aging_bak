@@ -21,9 +21,24 @@ def vf_upload():
 @viewfunclog
 def cmd_upload_stage():
     count = upload_to_cloud()
+    errtable = {
+        0: '成功',
+        -1: '网络连接错误',
+        -2: '本地数据准备错误',
+        -3: '本地发送请求异常',
+        -4: '云端返回错误消息码',
+        -5: '云端返回校验码不匹配',
+        -6: '云端返回收到数据数目与本地发送数目不相等',
+        -7: '更新本地stage数据库bool_uploaded错误',
+        -8: 'stage到archive数据库迁移错误',
+        -9: '清除stage数据库错误',
+    }
+
     if count < 0:
-        logger_app.error('[upload] error({}), please refer to logger_cloud'.format(count))
-        flash('上传失败(errno: {})'.format(count))
+        errno = count
+        errmsg = errtable.get(errno)
+        logger_app.error('[upload] error({}), please refer to logger_cloud'.format(errno))
+        flash('上传失败({}): {}'.format(errno, errmsg))
     else:
         logger_app.info('[upload] success(count: {})'.format(count))
         flash('上传成功，共 {} 条记录同步至云端'.format(count))
