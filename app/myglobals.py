@@ -20,7 +20,7 @@ RETENTION = 7
 # mycloud aliyun
 # gecloud_ip = '47.101.215.138'
 # gecloud1 aws
-gecloud_ip = '18.163.189.66'
+gecloud_ip = '18.163.185.136'
 
 
 # called by lib.mycmd.py
@@ -29,3 +29,5 @@ Debug = True
 # timeout for go binary
 Timeout = 5
 
+# called by wsgi.py/count_stage_exceed()
+MAX_UNUPLOAD_ALLOWED = 10000
