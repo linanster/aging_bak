@@ -78,7 +78,7 @@ def watch_to_jump():
         else:
             # logger_app.info('==watch to jump: detect running state finished, emit event done==')
             # socketio.emit('mydone', namespace='/test', broadcast=True)
-            tries = 5
+            tries = 10
             while tries > 0:
                 logger_app.info('==watch to jump({}): detect running state finished, emit event done=='.format(tries))
                 socketio.emit('mydone', namespace='/test', broadcast=True)

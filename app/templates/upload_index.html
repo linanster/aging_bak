@@ -16,7 +16,10 @@
 
     <legend>同步测试数据至云端</legend>
 
-    <p><span class="text-success">当前共 <strong>{{ count_upload_todo }}</strong></span> 条记录未同步</p>
+    <p>
+        <span class="text-success">当前共 <strong>{{ count_stage_uploaded_false }}</strong></span> 条记录未同步
+        (<span class="text-success">共 <strong>{{ count_stage_uploaded_true }}</strong></span> 未归档)
+    </p>
 
     <div class="btn-group">
         <form style="display: inline" action="{{ url_for('blue_upload.cmd_upload_stage') }}" method="post">

@@ -183,7 +183,8 @@ class Testdata(db_mysql.Model):
     reserve_str_1 = db_mysql.Column(db_mysql.String(100), nullable=True, server_default=str(''))
     # version check result success or not
     reserve_bool_1 = db_mysql.Column(db_mysql.Boolean, nullable=True, server_default=str(0))
-    def __init__(self, devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_uploaded, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime, reserve_str_1, reserve_bool_1):
+    bool_qualified_overall = db_mysql.Column(db_mysql.Boolean, nullable=True, server_default=str(1))
+    def __init__(self, devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_uploaded, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime, reserve_str_1, reserve_bool_1, bool_qualified_overall):
         self.devicecode = devicecode
         self.factorycode = factorycode
         self.fw_version = fw_version
@@ -204,6 +205,7 @@ class Testdata(db_mysql.Model):
         self.datetime = datetime
         self.reserve_str_1 = reserve_str_1
         self.reserve_bool_1 = reserve_bool_1
+        self.bool_qualified_overall = bool_qualified_overall
     @staticmethod
     def seed():
         pass
@@ -214,7 +216,6 @@ class TestdataStage(db_mysql.Model):
     __tablename__ = 'testdatasstage'
     id = db_mysql.Column(db_mysql.Integer, nullable=False, autoincrement=True, primary_key = True)
     devicecode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Device.code), nullable=False)
-    # factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Factory.code), nullable=True, server_default=str(FCODE))
     factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Factory.code), nullable=True)
     fw_version = db_mysql.Column(db_mysql.String(20))
     rssi_ble1 = db_mysql.Column(db_mysql.Integer)
@@ -230,11 +231,16 @@ class TestdataStage(db_mysql.Model):
     bool_qualified_check = db_mysql.Column(db_mysql.Boolean)
     bool_qualified_scan = db_mysql.Column(db_mysql.Boolean)
     bool_qualified_deviceid = db_mysql.Column(db_mysql.Boolean)
-    datetime = db_mysql.Column(db_mysql.DateTime, default=datetime.datetime.now())
-    reserve_int_1 = db_mysql.Column(db_mysql.Integer, nullable=True, server_default=str(0))
-    reserve_str_1 = db_mysql.Column(db_mysql.String(100), nullable=True, server_default=str(''))
-    reserve_bool_1 = db_mysql.Column(db_mysql.Boolean, nullable=True, server_default=str(0))
-    def __init__(self, devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_uploaded, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime, reserve_int_1, reserve_str_1, reserve_bool_1):
+    # datetime = db_mysql.Column(db_mysql.DateTime, default=datetime.datetime.now())
+    # reserve_int_1 = db_mysql.Column(db_mysql.Integer, nullable=True, server_default=str(0))
+    # reserve_str_1 = db_mysql.Column(db_mysql.String(100), nullable=True, server_default=str(''))
+    # reserve_bool_1 = db_mysql.Column(db_mysql.Boolean, nullable=True, server_default=str(0))
+    datetime = db_mysql.Column(db_mysql.DateTime)
+    reserve_int_1 = db_mysql.Column(db_mysql.Integer)
+    reserve_str_1 = db_mysql.Column(db_mysql.String(100))
+    reserve_bool_1 = db_mysql.Column(db_mysql.Boolean)
+    bool_qualified_overall = db_mysql.Column(db_mysql.Boolean)
+    def __init__(self, devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_uploaded, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime, reserve_int_1, reserve_str_1, reserve_bool_1, bool_qualified_overall):
         self.devicecode = devicecode
         self.factorycode = factorycode
         self.fw_version = fw_version
@@ -255,6 +261,7 @@ class TestdataStage(db_mysql.Model):
         self.reserve_int_1 = reserve_int_1
         self.reserve_str_1 = reserve_str_1
         self.reserve_bool_1 = reserve_bool_1
+        self.bool_qualified_overall = bool_qualified_overall
 
 
 class TestdataArchive(db_mysql.Model):
@@ -278,11 +285,16 @@ class TestdataArchive(db_mysql.Model):
     bool_qualified_check = db_mysql.Column(db_mysql.Boolean)
     bool_qualified_scan = db_mysql.Column(db_mysql.Boolean)
     bool_qualified_deviceid = db_mysql.Column(db_mysql.Boolean)
-    datetime = db_mysql.Column(db_mysql.DateTime, default=datetime.datetime.now())
-    reserve_int_1 = db_mysql.Column(db_mysql.Integer, nullable=True, server_default=str(0))
-    reserve_str_1 = db_mysql.Column(db_mysql.String(100), nullable=True, server_default=str(''))
-    reserve_bool_1 = db_mysql.Column(db_mysql.Boolean, nullable=True, server_default=str(0))
-    def __init__(self, devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_uploaded, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime, reserve_int_1, reserve_str_1, reserve_bool_1):
+    # datetime = db_mysql.Column(db_mysql.DateTime, default=datetime.datetime.now())
+    # reserve_int_1 = db_mysql.Column(db_mysql.Integer, nullable=True, server_default=str(0))
+    # reserve_str_1 = db_mysql.Column(db_mysql.String(100), nullable=True, server_default=str(''))
+    # reserve_bool_1 = db_mysql.Column(db_mysql.Boolean, nullable=True, server_default=str(0))
+    datetime = db_mysql.Column(db_mysql.DateTime)
+    reserve_int_1 = db_mysql.Column(db_mysql.Integer)
+    reserve_str_1 = db_mysql.Column(db_mysql.String(100))
+    reserve_bool_1 = db_mysql.Column(db_mysql.Boolean)
+    bool_qualified_overall = db_mysql.Column(db_mysql.Boolean)
+    def __init__(self, devicecode, factorycode, fw_version, rssi_ble1, rssi_ble2, rssi_wifi1, rssi_wifi2, mac_ble, mac_wifi, status_cmd_check1, status_cmd_check2, bool_uploaded, bool_qualified_signal, bool_qualified_check, bool_qualified_scan, bool_qualified_deviceid, datetime, reserve_int_1, reserve_str_1, reserve_bool_1, bool_qualified_overall):
         self.devicecode = devicecode
         self.factorycode = factorycode
         self.fw_version = fw_version
@@ -303,4 +315,5 @@ class TestdataArchive(db_mysql.Model):
         self.reserve_int_1 = reserve_int_1
         self.reserve_str_1 = reserve_str_1
         self.reserve_bool_1 = reserve_bool_1
+        self.bool_qualified_overall = bool_qualified_overall
 

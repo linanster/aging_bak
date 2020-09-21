@@ -7,7 +7,7 @@ import requests
 from app.models import db_mysql, Testdata, TestdataStage, TestdataArchive
 from app.myglobals import RETENTION, gecloud_ip
 from .mylogger import logger_cloud
-from app.lib.execmodel import testdatas_archive, testdatasstage_cleanup
+from app.lib.execmodel import testdatas_archive, testdatasstage_cleanup_archived
 from app.lib.tools import set_gecloud_online, reset_gecloud_online
 
 
@@ -58,7 +58,8 @@ def upload_to_cloud():
         # 1. fetch data from database
         # datas_raw = TestdataArchive.query.all()
         # datas_raw = TestdataArchive.query.filter_by(bool_uploaded=False).all()
-        datas_raw = TestdataStage.query.all()
+        # datas_raw = TestdataStage.query.all()
+        datas_raw = TestdataStage.query.filter_by(bool_uploaded=False).all()
         datas_rdy = list()
         for item in datas_raw:
             entry = copy.deepcopy(item.__dict__)
@@ -135,7 +136,7 @@ def upload_to_cloud():
 
     num_uploaded = num_recv
 
-    # 7. update bool_uploaded segment at local database
+    # 7. update bool_uploaded segment at local database testdatasstage
     try:
         for item in datas_raw:
             item.bool_uploaded = True
@@ -149,28 +150,28 @@ def upload_to_cloud():
         db_mysql.session.commit()
 
     # 8. move data from stage to archive
+    # 8.1 copy uploaded data from stage to archive
     try:
-        testdatas_archive()
+        num = testdatas_archive()
+        logger_cloud.info('upload_to_cloud: archive success(count: {})'.format(num))
     except Exception as e:
         db_mysql.session.rollback()
-        logger_cloud.error('upload_to_cloud: exception when move data from stage to archive')
+        logger_cloud.error('upload_to_cloud: exception when copy uploaded data from stage to archive')
         logger_cloud.error(str(e))
         return -8
-    else:
-        db_mysql.session.commit()
-
-    # 9. clean up stage
+    # 8.2 clean up uploaded data at stage
     try:
-        testdatasstage_cleanup()
+        num = testdatasstage_cleanup_archived()
+        logger_cloud.info('upload_to_cloud: stage cleanup success(count: {})'.format(num))
     except Exception as e:
         db_mysql.session.rollback()
-        logger_cloud.error('upload_to_cloud: exception when clean up stage db')
+        logger_cloud.error('upload_to_cloud: exception when clean up upladed data at stage')
         logger_cloud.error(str(e))
         return -9
     else:
         db_mysql.session.commit()
 
-    # 10. write into log
+    # 9. write into log
     logger_cloud.info('upload_to_cloud: success(count: {})'.format(num_uploaded))
     return num_uploaded
 

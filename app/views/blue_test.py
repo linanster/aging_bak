@@ -128,7 +128,7 @@ def post_cmd_start():
     fcode = get_factorycode()
     devicecode = get_devicecode()
     running = get_running_state()
-    test_mode = test_mode = get_sqlite_value3('r_test_mode')
+    test_mode = get_sqlite_value3('r_test_mode')
 
     # 1. return if still running
     if running:
