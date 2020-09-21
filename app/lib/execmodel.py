@@ -120,7 +120,7 @@ def update_testdatas_fcode(fcode):
     try:
         for item in datas_raw:
             item.factorycode = fcode
-            db_mysql.session.add(item)
+            # db_mysql.session.add(item)
     except Exception as e:
         db_mysql.session.rollback()
         # logger_app.error('update_testdatas_fcode:')
@@ -137,7 +137,7 @@ def update_testdatas_devicecode(dcode):
     try:
         for item in datas_raw:
             item.devicecode = dcode
-            db_mysql.session.add(item)
+            # db_mysql.session.add(item)
     except Exception as e:
         db_mysql.session.rollback()
         # logger_app.error('update_testdatas_devicecode:')
@@ -161,7 +161,7 @@ def update_testdatas_bool_qualified_overall():
     try:
         for data in datas:
             data.bool_qualified_overall = False
-        db_mysql.session.add_all(datas)
+        # db_mysql.session.add_all(datas)
     except Exception as e:
         db_mysql.session.rollback()
         logger_app.error('update_testdatas_bool_qualified_overall:')
