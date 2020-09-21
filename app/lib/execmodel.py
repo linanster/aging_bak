@@ -148,7 +148,7 @@ def update_testdatas_devicecode(dcode):
         # logger_app.info('update_testdatas_devicecode: success(count: {})'.format(len(datas_raw)))
         # return 0
 
-def update_testdatas_bool_qualified_overall():
+def update_testdatas_bool_qualified_overall_legacy():
     datas = Testdata.query.filter(
         or_(
             Testdata.bool_qualified_signal == False,
@@ -162,6 +162,25 @@ def update_testdatas_bool_qualified_overall():
         for data in datas:
             data.bool_qualified_overall = False
         # db_mysql.session.add_all(datas)
+    except Exception as e:
+        db_mysql.session.rollback()
+        logger_app.error('update_testdatas_bool_qualified_overall:')
+        logger_app.error(str(e))
+    else:
+        db_mysql.session.commit()
+
+def update_testdatas_bool_qualified_overall():
+    try:
+        # datas = Testdata.query.filter(Testdata.bool_qualified_overall==None).all()
+        # datas = Testdata.query.filter(Testdata.bool_qualified_overall==True).all()
+        # datas = Testdata.query.filter(Testdata.bool_qualified_overall==False).all()
+        datas = Testdata.query.all()
+        for data in datas:
+            if data.bool_qualified_signal and data.bool_qualified_check and data.bool_qualified_scan and data.bool_qualified_deviceid and data.reserve_bool_1:
+                data.bool_qualified_overall = True
+            else:
+                data.bool_qualified_overall = False
+
     except Exception as e:
         db_mysql.session.rollback()
         logger_app.error('update_testdatas_bool_qualified_overall:')
