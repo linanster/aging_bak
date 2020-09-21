@@ -1,5 +1,6 @@
 from app.models import db_mysql, Testdata, TestdataStage, TestdataArchive
 from app.lib.mylogger import logger_app
+from sqlalchemy import or_
 
 def get_count_stage_uploaded_true():
     return len(TestdataStage.query.filter_by(bool_uploaded=True).all())
@@ -146,3 +147,24 @@ def update_testdatas_devicecode(dcode):
         db_mysql.session.commit()
         # logger_app.info('update_testdatas_devicecode: success(count: {})'.format(len(datas_raw)))
         # return 0
+
+def update_testdatas_bool_qualified_overall():
+    datas = Testdata.query.filter(
+        or_(
+            Testdata.bool_qualified_signal == False,
+            Testdata.bool_qualified_check == False,
+            Testdata.bool_qualified_scan == False,
+            Testdata.bool_qualified_deviceid == False,
+            Testdata.reserve_bool_1 == False,
+        )
+    ).all()
+    try:
+        for data in datas:
+            data.bool_qualified_overall = False
+        db_mysql.session.add_all(datas)
+    except Exception as e:
+        db_mysql.session.rollback()
+        logger_app.error('update_testdatas_bool_qualified_overall:')
+        logger_app.error(str(e))
+    else:
+        db_mysql.session.commit()

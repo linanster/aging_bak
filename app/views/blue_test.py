@@ -17,7 +17,7 @@ from app.lib.myutils import write_json_to_file
 from app.lib.mycmd import reset_all
 from app.lib.tools import set_sqlite_value3, get_sqlite_value3
 from app.lib.cloudhandler import check_gecloud_connection, upload_to_cloud
-from app.lib.execmodel import update_testdatas_fcode, update_testdatas_devicecode
+from app.lib.execmodel import update_testdatas_fcode, update_testdatas_devicecode, update_testdatas_bool_qualified_overall
 
 from app.myglobals import topdir, gofolder
 
@@ -137,6 +137,7 @@ def post_cmd_start():
     # 2. adjust datas in testdatas table
     # update_testdatas_fcode(fcode)
     # update_testdatas_devicecode(devicecode)
+    update_testdatas_bool_qualified_overall()
 
     # 3. production related actions
     if test_mode == 'production':
