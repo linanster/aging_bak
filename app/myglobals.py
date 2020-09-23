@@ -16,11 +16,11 @@ RETENTION = 7
 
 # gecloud IP address
 # local
-gecloud_ip = '10.30.30.101'
+# gecloud_ip = '10.30.30.101'
 # mycloud aliyun
 # gecloud_ip = '47.101.215.138'
 # gecloud1 aws
-# gecloud_ip = '18.163.185.136'
+gecloud_ip = '18.163.185.136'
 
 
 # called by lib.mycmd.py
@@ -30,4 +30,4 @@ Debug = True
 Timeout = 5
 
 # called by wsgi.py/count_stage_exceed()
-MAX_UNUPLOAD_ALLOWED = 10000
+MAX_UNUPLOAD_ALLOWED = 15000
