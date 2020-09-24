@@ -153,6 +153,14 @@ def count_archive_zero():
     else:
         return False
 
+@application_ge_aging.template_global('get_version')
+def get_version():
+    import os
+    from app.lib.myutils import read_textfile_oneline
+    from app.myglobals import appfolder
+    versionfile = os.path.abspath(os.path.join(appfolder, "version.txt"))
+    return read_textfile_oneline(versionfile)
+
 @application_ge_aging.template_global('get_devices')
 def get_devices():
     from app.models.mysql import Device

@@ -150,3 +150,7 @@ def write_json_to_file(o_dict, filename):
     with open(filename, 'w') as f:
         json.dump(o_dict, f, indent=4)
 
+def read_textfile_oneline(filename):
+    content = open(filename).readline()
+    content = content.replace('\r', '').replace('\n','')
+    return content
