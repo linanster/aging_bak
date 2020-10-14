@@ -106,6 +106,11 @@ def gecloud_online_status():
     else:
         return '离线'
 
+@application_ge_aging.template_global('gecloud_online_bool')
+def gecloud_online_bool():
+    from app.lib.tools import get_gecloud_online
+    return get_gecloud_online()
+
 @application_ge_aging.template_global('test_mode')
 def get_test_mode():
     from app.lib.tools import get_sqlite_value3
