@@ -5,7 +5,7 @@ import datetime
 import requests
 
 from app.models import db_mysql, Testdata, TestdataStage, TestdataArchive
-from app.myglobals import RETENTION, gecloud_ip
+from app.myglobals import RETENTION, gecloud_ip, gecloud_port, gecloud_protocol
 from .mylogger import logger_cloud
 from app.lib.execmodel import testdatas_archive, testdatasstage_cleanup_archived
 from app.lib.tools import set_gecloud_online, reset_gecloud_online
@@ -14,12 +14,12 @@ from app.lib.tools import set_gecloud_online, reset_gecloud_online
 def check_gecloud_connection():
     method = 'GET'
     ############################################
-    url = "http://{}:5100/api/rasp/ping".format(gecloud_ip)
+    url = "{}://{}:{}/api/rasp/ping".format(gecloud_protocol, gecloud_ip, gecloud_port)
     ############################################
     headers = {}
     payload = {}
     try:
-        response = requests.request(method=method, url=url, headers=headers, data=payload, timeout=10)
+        response = requests.request(method=method, url=url, headers=headers, data=payload, timeout=10, verify=False)
         # msg = response.content
         # msg = response.text
     except Exception as e:
@@ -36,13 +36,13 @@ def check_upgrade_pin(pin):
     if pin == 'youdonotknowme':
         return True
     ############################################
-    url = 'http://{}:5100/api/rasp/verifypin'.format(gecloud_ip)
+    url = '{}://{}:{}/api/rasp/verifypin'.format(gecloud_protocol, gecloud_ip, gecloud_port)
     ############################################
     payload = 'pin={}'.format(pin)
     headers = {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
-    response = requests.request("POST", url, headers=headers, data = payload)
+    response = requests.request("POST", url, headers=headers, data = payload, verify=False)
     return response.json().get('verified')
 
     
@@ -95,7 +95,7 @@ def upload_to_cloud():
         # 3. send message via http post method
         method = 'PUT'
         ############################################
-        url = "http://{}:5100/api/rasp/upload".format(gecloud_ip)
+        url = "{}://{}:{}/api/rasp/upload".format(gecloud_protocol, gecloud_ip, gecloud_port)
         ############################################
         headers = {
             'Authorization': 'Basic dXNlcjE6MTIzNDU2',
@@ -106,7 +106,7 @@ def upload_to_cloud():
         payload = json.dumps(request_msg)
         
         # 4. send request
-        response = requests.request(method=method, url=url, headers=headers, data=payload, timeout=60)
+        response = requests.request(method=method, url=url, headers=headers, data=payload, timeout=60, verify=False)
         
         # 5. take response
         response_msg = response.json()

@@ -22,6 +22,10 @@ RETENTION = 7
 # gecloud1 aws
 # gecloud_ip = '18.163.185.136'
 gecloud_ip = 'www.gelightingsh.com'
+# gecloud_port = 5100
+gecloud_port = 5101
+# gecloud_protocol = 'http'
+gecloud_protocol = 'https'
 
 
 # called by lib.mycmd.py
