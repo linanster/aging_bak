@@ -20,7 +20,8 @@ RETENTION = 7
 # mycloud aliyun
 # gecloud_ip = '47.101.215.138'
 # gecloud1 aws
-gecloud_ip = '18.163.185.136'
+# gecloud_ip = '18.163.185.136'
+gecloud_ip = 'www.gelightingsh.com'
 
 
 # called by lib.mycmd.py
