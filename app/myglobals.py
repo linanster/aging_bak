@@ -21,7 +21,8 @@ RETENTION = 7
 # gecloud_ip = '47.101.215.138'
 # gecloud1 aws
 # gecloud_ip = '18.163.185.136'
-gecloud_ip = 'www.gelightingsh.com'
+# gecloud_ip = 'www.gelightingsh.com'
+gecloud_ip = 'api.gelightingsh.com'
 # gecloud_port = 5100
 gecloud_port = 5101
 # gecloud_protocol = 'http'
