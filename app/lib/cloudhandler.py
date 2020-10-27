@@ -9,6 +9,7 @@ from app.myglobals import RETENTION, gecloud_ip, gecloud_port, gecloud_protocol
 from .mylogger import logger_cloud
 from app.lib.execmodel import testdatas_archive, testdatasstage_cleanup_archived
 from app.lib.tools import set_gecloud_online, reset_gecloud_online
+from app.fcode import FCODE
 
 
 def check_gecloud_connection():
@@ -83,10 +84,12 @@ def upload_to_cloud():
         request_msg = dict()
         pin = str(time.time())
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')    
+        dict_fcode = {'fcode': FCODE}
         dict_pin = {'pin': pin}
         dict_timestamp = {'timestamp': timestamp}
         dict_count = {'count': num_send}
         dict_data = {'testdatas': datas_rdy}
+        request_msg.update(dict_fcode)
         request_msg.update(dict_pin)
         request_msg.update(dict_timestamp)
         request_msg.update(dict_count)
