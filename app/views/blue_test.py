@@ -9,7 +9,7 @@ from app.lib import start, blink_single, blink_all, blink_failed, blink_stop, tu
 from app.lib import watch_to_jump, watch_timeout, watch_to_blink
 from app.lib import set_factorycode, set_devicecode, set_totalcount, set_running_state, set_fwversion, set_mcuversion, set_ble_strength_low, set_wifi_strength_low
 from app.lib import get_errno, set_errno, get_running_state, get_factorycode, get_devicecode
-from app.lib import testdatas_stage, testdatas_archive
+from app.lib import testdatas_stage
 from app.lib import viewfunclog
 from app.lib import logger_app
 from app.lib import gen_excel, empty_folder

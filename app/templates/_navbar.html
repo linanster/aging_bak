@@ -91,7 +91,7 @@
 
             <ul class="nav navbar-nav navbar-right">
               <li><a href="#" onclick=openUrl_log()>实时日志</a></li>
-              <li><a id="btn_online" href="#" style="color:{% if gecloud_online_bool() %}green{% else %}red{% endif %}" title="刷新在线状态">{{ gecloud_online_status() }}</a></li>
+              <li><a id="btn_online" href="#" style="color:{% if gecloud_online_bool() %}green{% else %}red{% endif %}" title="刷新在线状态({{ gecloud_ip() }})">{{ gecloud_online_status() }}</a></li>
             </ul>
 
         </div>

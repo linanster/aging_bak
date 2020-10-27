@@ -82,7 +82,7 @@ def testdatas_stage():
 
 
 # copy data from testdatasstage to testdatasarchive table
-def testdatas_archive():
+def testdatasstage_archive():
     # testdatas_list = TestdataStage.query.all()
     testdatas_list = TestdataStage.query.filter_by(bool_uploaded=True).all()
     testdatasarchive_list = list()

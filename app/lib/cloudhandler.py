@@ -7,7 +7,7 @@ import requests
 from app.models import db_mysql, Testdata, TestdataStage, TestdataArchive
 from app.myglobals import RETENTION, gecloud_ip, gecloud_port, gecloud_protocol
 from .mylogger import logger_cloud
-from app.lib.execmodel import testdatas_archive, testdatasstage_cleanup_archived
+from app.lib.execmodel import testdatasstage_archive, testdatasstage_cleanup_archived
 from app.lib.tools import set_gecloud_online, reset_gecloud_online
 from app.fcode import FCODE
 
@@ -155,7 +155,7 @@ def upload_to_cloud():
     # 8. move data from stage to archive
     # 8.1 copy uploaded data from stage to archive
     try:
-        num = testdatas_archive()
+        num = testdatasstage_archive()
         logger_cloud.info('upload_to_cloud: archive success(count: {})'.format(num))
     except Exception as e:
         db_mysql.session.rollback()
