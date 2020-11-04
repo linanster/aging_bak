@@ -176,7 +176,7 @@ def update_testdatas_bool_qualified_overall():
         # datas = Testdata.query.filter(Testdata.bool_qualified_overall==False).all()
         datas = Testdata.query.all()
         for data in datas:
-            if data.bool_qualified_signal and data.bool_qualified_check and data.bool_qualified_scan and data.bool_qualified_deviceid and data.reserve_bool_1:
+            if data.bool_qualified_signal and data.bool_qualified_check and data.bool_qualified_scan and data.bool_qualified_deviceid and data.reserve_bool_1 and data.reserve_int_1 == 0:
                 data.bool_qualified_overall = True
             else:
                 data.bool_qualified_overall = False
