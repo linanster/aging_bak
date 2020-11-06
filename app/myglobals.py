@@ -24,7 +24,8 @@ RETENTION = 7
 # gecloud_ip = 'www.gelightingsh.com'
 gecloud_ip = 'api.gelightingsh.com'
 # gecloud_port = 5100
-gecloud_port = 5101
+# gecloud_port = 5101
+gecloud_port = 8443
 # gecloud_protocol = 'http'
 gecloud_protocol = 'https'
 

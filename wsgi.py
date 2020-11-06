@@ -172,10 +172,10 @@ def get_devices():
     devices = Device.query.all()
     return devices
 
-@application_ge_aging.template_global('gecloud_ip')
-def gecloud_ip():
-    from app.myglobals import gecloud_ip
-    return gecloud_ip
+@application_ge_aging.template_global('gecloud_conn_info')
+def gecloud_conn_info():
+    from app.myglobals import gecloud_ip, gecloud_port, gecloud_protocol
+    return "{}://{}:{}".format(gecloud_protocol, gecloud_ip, gecloud_port)
 
 @application_ge_aging.template_filter('parse_is_qualified')
 def parseIsQualified(mybool):
