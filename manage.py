@@ -17,6 +17,7 @@ def hello():
 
 @manager.command
 def createdb_sqlite(table=False, data=False):
+    "--table --data"
     from app.lib import set_factorycode
     from app.fcode import FCODE
     if table:
@@ -30,6 +31,7 @@ def createdb_sqlite(table=False, data=False):
 
 @manager.command
 def deletedb_sqlite(table=False, data=False):
+    "--table --data"
     if table:
         db_sqlite.drop_all(bind='sqlite')
         print('==delete sqlite tables==')
@@ -42,6 +44,7 @@ def deletedb_sqlite(table=False, data=False):
 
 @manager.command
 def createdb_mysql(table=False, data=False):
+    "--table --data"
     if table:
         db_mysql.create_all(bind='mysql')
         print('==create mysql tables==')
@@ -52,6 +55,7 @@ def createdb_mysql(table=False, data=False):
 
 @manager.command
 def deletedb_mysql(table=False, data=False):
+    "--table --data"
     if table:
         db_mysql.drop_all(bind='mysql')
         print('==delete mysql tables==')
@@ -67,6 +71,7 @@ def deletedb_mysql(table=False, data=False):
 
 @manager.command
 def cleanup(db=False, log=False, pycache=False, all=False):
+    "--db --log --pycache --all"
     from app.lib.execsql import sql_testdatas_cleanup, sql_testdatasstage_cleanup, sql_testdatasarchive_cleanup
     from app.lib.myutils import cleanup_log, cleanup_pycache
     if all or db:
@@ -91,6 +96,7 @@ def updatefcode():
 
 @manager.option('--fcode', dest="code")
 def setfcode(code):
+    "--fcode <fcode>"
     from app.lib import set_factorycode
     set_factorycode(code)
 
