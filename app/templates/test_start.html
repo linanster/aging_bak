@@ -11,13 +11,14 @@
     <div class="btn-group">
         <form style="display: inline" id='start' action="{{ url_for('blue_test.pre_cmd_start') }}" method="post">
             {# <button type="submit" class="btn btn-success" {% if get_count_stage()>10000 %}disabled{% endif %}>开始</button> #}
-            <button type="submit" class="btn btn-success" style="display:inline" {% if count_stage_exceed() %}disabled{% endif %}>开始</button>
+            <button type="submit" class="btn btn-success" style="display:inline" {% if count_stage_exceed() or count_archive_exceed() %}disabled{% endif %}>开始</button>
             <div class="radio" style="display:inline"><label><input type="radio" name="mode" value="test" /> 测试</label></div>
             <div class="radio" style="display:inline"><label><input type="radio" name="mode" value="production"  checked="checked" /> 生产</label></div>
         </form>
     </div>
     <span class="text-warning">
         {% if count_stage_exceed() %}未同步数据( {{ get_count_stage()}} )过多，请先 <a href="{{ url_for('blue_upload.vf_upload') }}">同步</a> 至云端!{% endif %}
+        {% if count_archive_exceed() %}历史数据( {{ get_count_archive()}} )过多，请先 <a href="{{ url_for('blue_manage.vf_data') }}">导出(如需)并清除</a> 历史数据!{% endif %}
     </span>
     &nbsp;&nbsp;&nbsp;
 

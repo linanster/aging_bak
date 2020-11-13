@@ -127,6 +127,11 @@ def get_count_stage():
     from app.lib.tools import get_count_stage
     return get_count_stage()
 
+@application_ge_aging.template_global('get_count_archive')
+def get_count_archive():
+    from app.lib.tools import get_count_archive
+    return get_count_archive()
+
 # 当stage数据为0时，禁用上传按钮
 @application_ge_aging.template_global('count_stage_zero')
 def count_stage_zero():
@@ -137,13 +142,24 @@ def count_stage_zero():
     else:
         return False
 
-# 当stage数据大于10000时，禁用测试开始按钮
+# 当stage数据大于15000时，禁用测试开始按钮
 @application_ge_aging.template_global('count_stage_exceed')
 def count_stage_exceed():
     from app.lib.tools import get_count_stage
-    count = get_count_stage()
     from app.myglobals import MAX_UNUPLOAD_ALLOWED
+    count = get_count_stage()
     if count > MAX_UNUPLOAD_ALLOWED:
+        return True
+    else:
+        return False
+
+# 当archive数据大于65000时，禁用测试开始按钮
+@application_ge_aging.template_global('count_archive_exceed')
+def count_archive_exceed():
+    from app.lib.tools import get_count_archive
+    from app.myglobals import MAX_ARCHIVED_ALLOWED
+    count = get_count_archive()
+    if count > MAX_ARCHIVED_ALLOWED:
         return True
     else:
         return False

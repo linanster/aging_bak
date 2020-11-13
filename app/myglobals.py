@@ -38,3 +38,7 @@ Timeout = 5
 
 # called by wsgi.py/count_stage_exceed()
 MAX_UNUPLOAD_ALLOWED = 15000
+
+# called by wsgi.py/count_archive_exceed()
+# MAX_ARCHIVED_ALLOWED = 300
+MAX_ARCHIVED_ALLOWED = 65000
