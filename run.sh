@@ -4,10 +4,17 @@
 
 
 usage=$"
-Usage: $0 [--start] [--stop] [--status] [--init] [--upload] [--purge] [--upgrade]
-              [--logmonitor --start/--stop/--status]
-              [--gotool --start/--stop/--status]
-              [--resetdb]
+Usage: run.sh --start [--nodaemon]
+              --stop
+              --status
+              --init
+              --requirements
+              --upload
+              --purge
+              --upgrade
+              --logmonitor --start/--stop/--status
+              --gotool --start/--stop/--status
+              --resetdb
 "
 
 workdir=$(cd "$(dirname $0)" && pwd)
@@ -21,6 +28,11 @@ function activate_venv() {
     echo "==venv error=="
     exit 1
   fi
+}
+
+function get_pid(){
+    pid=$(ps -ef | fgrep "gunicorn" | grep "application_ge_aging" | awk '{if($3==1) print $2}')
+    echo "$pid"
 }
 
 
@@ -39,23 +51,44 @@ function run_init(){
     fi
 }
 
+function run_requirements(){
+    activate_venv
+    # pip3 install -r requirements.txt
+    pip3 install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+    if [ $? -eq 0 ]; then
+        echo "==pip install requirements complete=="
+        exit 0
+    else
+        echo "==pip install requirements fail=="
+        exit 1
+    fi
+}
+
+
 function run_start() {
     activate_venv
     # todo --user user1 --group user1
-    if [ "$1" == '--nodaemon' ]; then
-        gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging
-        echo "gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging"
-    else
-        gunicorn --daemon --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging
-        echo "gunicorn --daemon --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging"
-    fi
-    ps -ef | fgrep "gunicorn" | grep "application_ge_aging" | awk '{if($3==1) print $2}'
+    case "$1" in
+        "")
+            cmd="gunicorn --daemon --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging"
+            ;;
+        "--nodaemon")
+            cmd="gunicorn --workers 1 --bind 0.0.0.0:5000 --timeout 300 --worker-class eventlet wsgi:application_ge_aging"
+            ;;
+        *)
+            echo "${usage}"
+            exit 1
+    esac
+    echo "${cmd}"
+    eval "${cmd}"
+    pid=$(get_pid)
+    echo "$pid"
     exit 0
 }
 
 function run_stop() {
     activate_venv
-    pid=$(ps -ef | fgrep "gunicorn" | grep "application_ge_aging" | awk '{if($3==1) print $2}')
+    pid=$(get_pid)
     if [ "$pid" == "" ]; then
         echo "not running" 
         exit 1
@@ -68,7 +101,7 @@ function run_stop() {
 
 function run_status(){
     activate_venv
-    pid=$(ps -ef | fgrep "gunicorn" | grep "application_ge_aging" | awk '{if($3==1) print $2}')
+    pid=$(get_pid)
     if [ "$pid" == "" ]; then
         echo "stopped" 
     else
@@ -196,6 +229,9 @@ if [ $# -ge 1 ]; then
         ;;
     --init)
         run_init
+        ;;
+    --requirements)
+        run_requirements
         ;;
     --status)
         run_status
