@@ -81,9 +81,9 @@ def vf_data():
         TestdataArchive.mac_ble.like("%"+search_blemac+"%") if search_blemac is not None else text(""),
         )
     # datas = TestdataArchive.query.all()
-    datas = myquery.all()
-
-    total_count = len(datas)
+    # datas = myquery.all()
+    # total_count = len(datas)
+    total_count = myquery.count()
 
     # pagination code
     PER_PAGE = 50

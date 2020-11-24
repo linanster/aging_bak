@@ -30,11 +30,18 @@ function activate_venv() {
   fi
 }
 
-function get_pid(){
+function get_pid_main(){
     pid=$(ps -ef | fgrep "gunicorn" | grep "application_ge_aging" | awk '{if($3==1) print $2}')
     echo "$pid"
 }
-
+function get_pid_logmonitor(){
+    pid=$(ps -ef | fgrep "gunicorn" | grep "app_aging_logmonitor" | awk '{if($3==1) print $2}')
+    echo "$pid"
+}
+function get_pid_gotool(){
+    pid=$(ps -ef | grep "/root/aging/go/gotool" | grep -v "grep" | awk '{if($3==1) print $2}')
+    echo "$pid"
+}
 
 function run_init(){
     pip3 install virtualenv
@@ -81,14 +88,14 @@ function run_start() {
     esac
     echo "${cmd}"
     eval "${cmd}"
-    pid=$(get_pid)
+    pid=$(get_pid_main)
     echo "$pid"
     exit 0
 }
 
 function run_stop() {
     activate_venv
-    pid=$(get_pid)
+    pid=$(get_pid_main)
     if [ "$pid" == "" ]; then
         echo "not running" 
         exit 1
@@ -101,7 +108,7 @@ function run_stop() {
 
 function run_status(){
     activate_venv
-    pid=$(get_pid)
+    pid=$(get_pid_main)
     if [ "$pid" == "" ]; then
         echo "stopped" 
     else
@@ -151,16 +158,16 @@ function run_logmonitor() {
     if [ "$1" == "--start" ]; then
         cd logmonitor
         if [ "$2" == '--nodaemon' ]; then
-            gunicorn --workers 1 --bind 0.0.0.0:5001 --timeout 300 --worker-class eventlet app:app_aging_logmonitor
-            echo "gunicorn --workers 1 --bind 0.0.0.0:5001 --timeout 300 --worker-class eventlet app:app_aging_logmonitor"
+            cmd="gunicorn --workers 1 --bind 0.0.0.0:5001 --timeout 300 --worker-class eventlet app:app_aging_logmonitor"
         else
-            gunicorn --daemon --workers 1 --bind 0.0.0.0:5001 --timeout 300 --worker-class eventlet app:app_aging_logmonitor
-            echo "gunicorn --daemon --workers 1 --bind 0.0.0.0:5001 --timeout 300 --worker-class eventlet app:app_aging_logmonitor"
+            cmd="gunicorn --daemon --workers 1 --bind 0.0.0.0:5001 --timeout 300 --worker-class eventlet app:app_aging_logmonitor"
         fi
-        pid=$(ps -ef | fgrep "gunicorn" | grep "app_aging_logmonitor" | awk '{if($3==1) print $2}')
+        eval "$cmd"
+        echo "$cmd"
+        pid=$(get_pid_logmonitor)
         echo "$pid"
     elif [ "$1" == "--stop" ]; then
-        pid=$(ps -ef | fgrep "gunicorn" | grep "app_aging_logmonitor" | awk '{if($3==1) print $2}')
+        pid=$(get_pid_logmonitor)
         if [ "$pid" == "" ]; then
             echo "not running"
         else
@@ -168,7 +175,7 @@ function run_logmonitor() {
             kill "$pid"
         fi
     elif [ "$1" == "--status" ]; then
-        pid=$(ps -ef | fgrep "gunicorn" | grep "app_aging_logmonitor" | awk '{if($3==1) print $2}')
+        pid=$(get_pid_logmonitor)
         if [ "$pid" == "" ]; then
             echo "stopped"
         else
@@ -183,12 +190,15 @@ function run_logmonitor() {
 
 function run_gotool() {
     if [ "$1" == "--start" ]; then
-        cd "$workdir/go"
-        nohup ./gotool &>/dev/null &
-        pid=$(ps -ef | grep "/root/aging/go/gotool" | grep -v "grep" | awk '{print $2}')
+        # cd "$workdir/go"
+        # nohup ./gotool &>/dev/null &
+        nohup /root/aging/go/gotool &>/dev/null &
+        echo $?
+        # todo: get pid and print
+        pid=$(get_pid_gotool)
         echo "$pid"
     elif [ "$1" == "--stop" ]; then
-        pid=$(ps -ef | grep "/root/aging/go/gotool" | grep -v "grep" | awk '{print $2}')
+        pid=$(get_pid_gotool)
         if [ "$pid" == "" ]; then
             echo "not running"
         else
@@ -196,7 +206,7 @@ function run_gotool() {
             kill "$pid"
         fi
     elif [ "$1" == "--status" ]; then
-        pid=$(ps -ef | grep "/root/aging/go/gotool" | grep -v "grep" | awk '{print $2}')
+        pid=$(get_pid_gotool)
         if [ "$pid" == "" ]; then
             echo "stopped"
         else
