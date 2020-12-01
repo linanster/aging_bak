@@ -107,9 +107,9 @@ def cmd_deletearchive():
 @viewfunclog
 def cmd_download_testdatasarchive():
     timestamp = datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
-    filename = 'TestdatasArchive-' + timestamp + '.xls'
+    shortname = 'TestdatasArchive-' + timestamp + '.xls'
     excelfolder = os.path.join(topdir, 'pub','excel')
-    filename = os.path.join(excelfolder, filename)
+    filename = os.path.join(excelfolder, shortname)
     empty_folder(excelfolder)
     gen_excel(TestdataArchive, filename)
     # 普通下载
@@ -123,16 +123,16 @@ def cmd_download_testdatasarchive():
                     break
                 yield data
     response = Response(send_file(), content_type='application/octet-stream')
-    response.headers["Content-disposition"] = 'attachment; filename=%s' % filename
+    response.headers["Content-disposition"] = 'attachment; filename=%s' % shortname
     return response
 
 @blue_manage.route('/cmd_download_csv', methods=['POST'])
 @viewfunclog
 def cmd_download_csv():
     timestamp = datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
-    filename = 'TestdatasArchive-' + timestamp + '.csv'
+    shortname = 'TestdatasArchive-' + timestamp + '.csv'
     excelfolder = os.path.join(topdir, 'pub','excel')
-    filename = os.path.join(excelfolder, filename)
+    filename = os.path.join(excelfolder, shortname)
     empty_folder(excelfolder)
     gen_csv(TestdataArchive, filename)
     # 普通下载
@@ -146,7 +146,7 @@ def cmd_download_csv():
                     break
                 yield data
     response = Response(send_file(), content_type='application/octet-stream')
-    response.headers["Content-disposition"] = 'attachment; filename=%s' % filename
+    response.headers["Content-disposition"] = 'attachment; filename=%s' % shortname
     return response
 
 ################
