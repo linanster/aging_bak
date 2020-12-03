@@ -5,7 +5,7 @@ import subprocess
 import os
 
 from .mylogger import logger_app
-from app.lib.cloudhandler import check_upgrade_pin
+from app.lib.cloudhandler import check_upgrade_pin, notice_cloud_oplog
 
 from app.myglobals import topdir, upgradefolder, gecloud_ip
 
@@ -52,4 +52,22 @@ def exec_upgrade(pin):
         logger_app.error('[upgrade] errno:{}'.format(errno))
     p.stdout.close()
     p.stderr.close()
+
+    # 4. notice gecloud
+    from app.fcode import FCODE
+    fcode = FCODE
+    opcode = 2
+    opcount = errno
+    opmsg = 'upgrade success' if errno == 0 else 'upgrade failed'
+    # timestamp = get_datetime_now()
+    json_oplog = {
+        "fcode": fcode,
+        "opcode": opcode,
+        "opcount": opcount,
+        "opmsg": opmsg,
+        # "timestamp": timestamp,
+    }
+    notice_cloud_oplog(json_oplog)
+    
+    # 5. return
     return errno

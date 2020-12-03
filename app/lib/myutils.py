@@ -154,3 +154,4 @@ def read_textfile_oneline(filename):
     content = open(filename).readline()
     content = content.replace('\r', '').replace('\n','')
     return content
+

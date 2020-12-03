@@ -46,6 +46,45 @@ def check_upgrade_pin(pin):
     response = requests.request("POST", url, headers=headers, data = payload, verify=False)
     return response.json().get('verified')
 
+def notice_cloud_oplog(json_oplog):
+    # 1. send message via http post method
+    method = 'POST'
+    ############################################
+    url = "{}://{}:{}/api/rasp//upgradenotice".format(gecloud_protocol, gecloud_ip, gecloud_port)
+    ############################################
+    headers = {
+        'Authorization': 'Basic dXNlcjE6MTIzNDU2',
+        # 'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
+    payload = json.dumps(json_oplog)
+    # payload = json_oplog
+
+    # 4. send request
+    try:
+        response = requests.request(method=method, url=url, headers=headers, data=payload, timeout=60, verify=False)
+
+        # 5. take response
+        response_msg = response.json()
+        resp_errno = response_msg.get('errno')
+        resp_msg = response_msg.get('msg')
+
+    except Exception as e:
+        logger_cloud.error('notice_cloud: exception when notice cloud')
+        logger_cloud.error(json.dumps(json_oplog))
+        logger_cloud.error(str(e))
+        return -1
+
+
+    # 6. error handler
+    if resp_errno != 0:
+        logger_cloud.error('notice_cloud: response error')
+        logger_cloud.error(resp_msg)
+        return -2
+    else:
+        return 0
+
     
 
 def upload_to_cloud():
@@ -94,6 +133,11 @@ def upload_to_cloud():
         request_msg.update(dict_timestamp)
         request_msg.update(dict_count)
         request_msg.update(dict_data)
+        # print('==request_msg==', request_msg)
+        # example in python format:
+        # ==request_msg== {'fcode': 5, 'pin': '1606896522.6524', 'timestamp': '2020-12-02 16:08:42', 'count': 1, 'testdatas': [{'status_cmd_check1': 11111, 'factorycode': 5, 'reserve_int_1': 0, 'status_cmd_check2': 11111, 'fw_version': '3.1', 'reserve_str_1': 'xxx', 'bool_uploaded': True, 'rssi_ble1': -65, 'reserve_bool_1': True, 'bool_qualified_signal': True, 'rssi_ble2': -65, 'bool_qualified_overall': True, 'bool_qualified_check': True, 'rssi_wifi1': -33, 'bool_qualified_scan': True, 'rssi_wifi2': -33, 'bool_qualified_deviceid': True, 'mac_ble': 'f4bcda704c20', 'devicecode': 128, 'datetime': '2020-11-13 16:13:53', 'mac_wifi': '010203040506'}]}
+        # example in json native format
+        # ==request_msg== {"fcode": 5, "pin": "1606896522.6524", "timestamp": "2020-12-02 16:08:42", "count": 1, "testdatas": [{"status_cmd_check1": 11111, "factorycode": 5, "reserve_int_1": 0, "status_cmd_check2": 11111, "fw_version": "3.1", "reserve_str_1": "xxx", "bool_uploaded": true, "rssi_ble1": -65, "reserve_bool_1": true, "bool_qualified_signal": true, "rssi_ble2": -65, "bool_qualified_overall": true, "bool_qualified_check": true, "rssi_wifi1": -33, "bool_qualified_scan": true, "rssi_wifi2": -33, "bool_qualified_deviceid": true, "mac_ble": "f4bcda704c20", "devicecode": 128, "datetime": "2020-11-13 16:13:53", "mac_wifi": "010203040506"}]}
     
         # 3. send message via http post method
         method = 'PUT'
