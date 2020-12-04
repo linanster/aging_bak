@@ -39,7 +39,8 @@ function get_pid_logmonitor(){
     echo "$pid"
 }
 function get_pid_gotool(){
-    pid=$(ps -ef | grep "/root/aging/go/gotool" | grep -v "grep" | awk '{if($3==1) print $2}')
+    # pid=$(ps -ef | grep "/root/aging/go/gotool" | grep -v "grep" | awk '{if($3==1) print $2}')
+    pid=$(ps -ef | grep "gotool" | grep -v "grep" | awk '{if($3==1) print $2}')
     echo "$pid"
 }
 
@@ -190,9 +191,9 @@ function run_logmonitor() {
 
 function run_gotool() {
     if [ "$1" == "--start" ]; then
-        # cd "$workdir/go"
-        # nohup ./gotool &>/dev/null &
-        nohup /root/aging/go/gotool &>/dev/null &
+        cd "$workdir/go"
+        nohup ./gotool &>/dev/null &
+        # nohup /root/aging/go/gotool &>/dev/null &
         echo $?
         # todo: get pid and print
         pid=$(get_pid_gotool)
