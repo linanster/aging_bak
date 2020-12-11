@@ -185,7 +185,9 @@ def get_version():
 @application_ge_aging.template_global('get_devices')
 def get_devices():
     from app.models.mysql import Device
-    devices = Device.query.all()
+    from sqlalchemy import asc
+    # devices = Device.query.all()
+    devices = Device.query.order_by(asc(Device.code)).all()
     return devices
 
 @application_ge_aging.template_global('gecloud_conn_info')

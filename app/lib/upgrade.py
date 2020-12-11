@@ -56,13 +56,15 @@ def exec_upgrade(pin):
     # 4. notice gecloud
     from app.fcode import FCODE
     fcode = FCODE
-    opcode = 2
+    # opcode is not needed
+    # opcode should be defined at cloud side
+    # opcode = 2
     opcount = errno
     opmsg = 'upgrade success' if errno == 0 else 'upgrade failed'
     # timestamp = get_datetime_now()
     json_oplog = {
         "fcode": fcode,
-        "opcode": opcode,
+        # "opcode": opcode,
         "opcount": opcount,
         "opmsg": opmsg,
         # "timestamp": timestamp,

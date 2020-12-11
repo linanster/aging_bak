@@ -57,8 +57,9 @@ def vf_device():
     #     results = [d_leedarson_128, ]
     # else:
     #     results = list()
-    results = Device.query.all()
-    return render_template('manage_device.html', results=results)
+    # results = Device.query.all()
+    # return render_template('manage_device.html', results=results)
+    return render_template('manage_device.html')
 
 
 ########################

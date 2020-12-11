@@ -41,66 +41,71 @@ class Device(db_mysql.Model):
     __tablename__ = 'devices'
     id = db_mysql.Column(db_mysql.Integer, nullable=False, autoincrement=True, primary_key = True)
     code = db_mysql.Column(db_mysql.Integer, nullable=False, unique=True)
-    name = db_mysql.Column('name', db_mysql.String(100), nullable=False)
     code_hex = db_mysql.Column(db_mysql.String(10), nullable=False, unique=True)
+    name = db_mysql.Column('name', db_mysql.String(100), nullable=False)
     # factorycode = db_mysql.Column(db_mysql.Integer, db_mysql.ForeignKey(Factory.code), nullable=False)
     description = db_mysql.Column(db_mysql.Text, nullable=True)
     testdatas = db_mysql.relationship('Testdata', backref='device')
     testdatasarchive = db_mysql.relationship('TestdataArchive', backref='device')
-    def __init__(self, code, code_hex, factorycode, name, description=''):
+    # def __init__(self, code, code_hex, factorycode, name, description=''):
+    def __init__(self, code, code_hex, name, description=''):
         self.code = code
         self.code_hex = code_hex
-        self.factorycode = factorycode
+        # self.factorycode = factorycode
         self.name = name
         self.description = description
     @staticmethod
     def seed():
-        d_leedarson_09 = Device(9, '0x09', 1, 'Gen2 Tier2 C-Life Standalone')
-        d_leedarson_11 = Device(11, '0x0B', 1, 'Gen2 Tier2 Sleep-BR30 Standalone')
-        d_leedarson_13 = Device(13, '0x0D', 1, 'Gen2 TCO C-Life A19 ST')
-        d_leedarson_27 = Device(27, '0x1B', 1, 'Gen2 TCO C-Life A19 MFG')
-        d_leedarson_14 = Device(14, '0x0E', 1, 'Gen2 TCO C-Sleep A19 ST')
-        d_leedarson_28 = Device(28, '0x1C', 1, 'Gen2 TCO C-Sleep A19 MFG')
-        d_leedarson_15 = Device(15, '0x0F', 1, 'Gen2 TCO C-Sleep BR30 ST')
-        d_leedarson_29 = Device(29, '0x1D', 1, 'Gen2 TCO C-Sleep BR30 MFG')
-        d_leedarson_128 = Device(128, '0x80', 1, 'Dual mode Soft White A19', 'Leedarson, Topstar')
-        d_leedarson_129 = Device(129, '0x81', 1, 'Dual mode Tunable White A19')
-        d_leedarson_130 = Device(130, '0x82', 1, 'Dual mode Tunable White BR30')
-        d_leedarson_67 = Device(67, '0x43', 1, 'Out door Plug')
+        d_leedarson_09 = Device(9, '0x09', 'Gen2 Tier2 C-Life Standalone')
+        d_leedarson_11 = Device(11, '0x0B', 'Gen2 Tier2 Sleep-BR30 Standalone')
+        d_leedarson_13 = Device(13, '0x0D', 'Gen2 TCO C-Life A19 ST')
+        d_leedarson_27 = Device(27, '0x1B', 'Gen2 TCO C-Life A19 MFG')
+        d_leedarson_14 = Device(14, '0x0E', 'Gen2 TCO C-Sleep A19 ST')
+        d_leedarson_28 = Device(28, '0x1C', 'Gen2 TCO C-Sleep A19 MFG')
+        d_leedarson_15 = Device(15, '0x0F', 'Gen2 TCO C-Sleep BR30 ST')
+        d_leedarson_29 = Device(29, '0x1D', 'Gen2 TCO C-Sleep BR30 MFG')
+        d_leedarson_128 = Device(128, '0x80', 'Dual mode Soft White A19', 'Leedarson, Topstar')
+        d_leedarson_129 = Device(129, '0x81', 'Dual mode Tunable White A19')
+        d_leedarson_130 = Device(130, '0x82', 'Dual mode Tunable White BR30')
+        d_leedarson_67 = Device(67, '0x43', 'Out door Plug')
 
-        d_innotech_30 = Device(30, '0x1E', 2, 'Gen2 TCO Full Color A19 ST')
-        d_innotech_31 = Device(31, '0x1F', 2, 'Gen2 TCO Full Color A19 MFG')
-        d_innotech_32 = Device(32, '0x20', 2, 'Gen2 TCO Full Color BR30 ST')
-        d_innotech_33 = Device(33, '0x21', 2, 'Gen2 TCO Full Color BR30 MFG')
-        d_innotech_34 = Device(34, '0x22', 2, 'Gen2 TCO Full Color Strip ST')
-        d_innotech_35 = Device(35, '0x23', 2, 'Gen2 TCO Full Color Strip MFG')
-        d_innotech_131 = Device(131, '0x83', 2, 'Dual mode Full Color A19', 'Innotech, Leedarson')
-        d_innotech_132 = Device(132, '0x84', 2, 'Dual mode Full Color BR30', 'Innotech, Leedarson')
-        d_innotech_133 = Device(133, '0x85', 2, 'Dual mode Full Color Strip')
-        d_innotech_48 = Device(48, '0x30', 2, 'Dimmer switch')
-        d_innotech_49 = Device(49, '0x31', 2, 'Dimmer Switch(Premium)')
-        d_innotech_51 = Device(51, '0x33', 2, 'Switch Paddle')
-        d_innotech_52 = Device(52, '0x34', 2, 'Switch Toggle')
-        d_innotech_53 = Device(53, '0x35', 2, 'Switch Centre Button')
-        d_innotech_61 = Device(61, '0x3D', 2, 'Paddle switch TCO')
-        d_innotech_62 = Device(62, '0x3E', 2, 'Toggle switch TCO')
-        d_innotech_63 = Device(63, '0x3F', 2, 'Button switch TCO')
-        d_innotech_65 = Device(65, '0x41', 2, 'GEN 1 Plug TCO')
+        d_innotech_30 = Device(30, '0x1E', 'Gen2 TCO Full Color A19 ST')
+        d_innotech_31 = Device(31, '0x1F', 'Gen2 TCO Full Color A19 MFG')
+        d_innotech_32 = Device(32, '0x20', 'Gen2 TCO Full Color BR30 ST')
+        d_innotech_33 = Device(33, '0x21', 'Gen2 TCO Full Color BR30 MFG')
+        d_innotech_34 = Device(34, '0x22', 'Gen2 TCO Full Color Strip ST')
+        d_innotech_35 = Device(35, '0x23', 'Gen2 TCO Full Color Strip MFG')
+        d_innotech_131 = Device(131, '0x83', 'Dual mode Full Color A19', 'Innotech, Leedarson')
+        d_innotech_132 = Device(132, '0x84', 'Dual mode Full Color BR30', 'Innotech, Leedarson')
+        d_innotech_133 = Device(133, '0x85', 'Dual mode Full Color Strip')
+        d_innotech_48 = Device(48, '0x30', 'Dimmer switch')
+        d_innotech_49 = Device(49, '0x31', 'Dimmer Switch(Premium)')
+        d_innotech_51 = Device(51, '0x33', 'Switch Paddle')
+        d_innotech_52 = Device(52, '0x34', 'Switch Toggle')
+        d_innotech_53 = Device(53, '0x35', 'Switch Centre Button')
+        d_innotech_61 = Device(61, '0x3D', 'Paddle switch TCO')
+        d_innotech_62 = Device(62, '0x3E', 'Toggle switch TCO')
+        d_innotech_63 = Device(63, '0x3F', 'Button switch TCO')
+        d_innotech_65 = Device(65, '0x41', 'GEN 1 Plug TCO')
     
-        d_tonly_55 = Device(55, '0x37', 3, 'Dimmer Switch')
-        d_tonly_56 = Device(56, '0x38', 3, 'Dimmer Switch(Premium)')
-        d_tonly_57 = Device(58, '0x3A', 3, 'Switch Toggle')
-        d_tonly_58 = Device(57, '0x39', 3, 'Switch Paddle')
-        d_tonly_59 = Device(59, '0x3B', 3, 'Switch Centre Button')
-        d_tonly_81 = Device(81, '0x51', 3, 'Fan Speed Switch')
+        d_tonly_55 = Device(55, '0x37', 'Dimmer Switch')
+        d_tonly_56 = Device(56, '0x38', 'Dimmer Switch(Premium)')
+        d_tonly_57 = Device(58, '0x3A', 'Switch Toggle')
+        d_tonly_58 = Device(57, '0x39', 'Switch Paddle')
+        d_tonly_59 = Device(59, '0x3B', 'Switch Centre Button')
+        d_tonly_81 = Device(81, '0x51', 'Fan Speed Switch')
 
-        d_changhong_66 = Device(66, '0x42', 4, 'Indoor Plug GEN2')
+        d_changhong_66 = Device(66, '0x42', 'Indoor Plug GEN2')
 
-        # same device id as d_leedarson_128
-        # d_topstar_254 = Device(254, '0xFE', 6, 'Dual Mode Soft White Lamp(0x80)', 'Device ID 冲突')
+        # add 2020.12.11 as Huang Qian asked
+        d_24 = Device(24, '0x18', 'Gen2 Tier2 C-Life, Made for Google')
+        d_10 = Device(10, '0x0A', 'Gen2 Tier C-Sleep, Standalone')
+        d_25 = Device(25, '0x19', 'Gen2 Tier C-Sleep, Made for Google')
+        d_26 = Device(26, '0x1A', 'Gen2 Tier Sleep-BR30, Made for Google')
+
 
         # todo
-        d_test_255 = Device(255, '0xFF', 5, 'TestDevice')
+        d_test_255 = Device(255, '0xFF', 'TestDevice')
 
 
         devices_all = [
@@ -143,7 +148,10 @@ class Device(db_mysql.Model):
             d_tonly_59,
             d_tonly_81,
             d_changhong_66,
-            # d_topstar_254,
+            d_24,
+            d_10,
+            d_25,
+            d_26,
         ]
 
         devices_test = [d_test_255,]

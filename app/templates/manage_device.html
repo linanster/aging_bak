@@ -15,7 +15,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for result in results %}
+        {% for result in get_devices() %}
             <tr>
                 <td>{{ loop.index }}</td>
                 <td>{{ result.name }}</td>
@@ -23,7 +23,6 @@
                 <td>{{ result.code }}</td>
                 <td>{{ result.description }}</td>
             </tr>
-        {% else %}
         {% endfor %}
         </tbody>
     </table>
