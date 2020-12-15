@@ -12,8 +12,8 @@
         <form style="display: inline" id='start' action="{{ url_for('blue_test.pre_cmd_start') }}" method="post">
             {# <button type="submit" class="btn btn-success" {% if get_count_stage()>10000 %}disabled{% endif %}>开始</button> #}
             <button type="submit" class="btn btn-success" style="display:inline" {% if count_stage_exceed() or count_archive_exceed() %}disabled{% endif %}>开始</button>
-            <div class="radio" style="display:inline"><label title="测试数据不会保存,再次点击“开始”按钮时会被自动清除"><input type="radio" name="mode" value="test" checked="checked"/> 测试模式</label></div>
-	    <div class="radio" style="display:inline"><label title="支持测试数据本地保存，并同步至云端"><input type="radio" name="mode" value="production" > 生产模式</label></div>
+            <div class="radio" style="display:inline"><label title="测试数据不会保存,再次点击“开始”按钮时会被自动清除"><input type="radio" name="mode" value="test" /> 测试模式</label></div>
+	    <div class="radio" style="display:inline"><label title="支持测试数据本地保存，并同步至云端"><input type="radio" name="mode" value="production" checked="checked"> 生产模式</label></div>
         </form>
     </div>
     <span class="text-warning">
