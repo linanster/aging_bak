@@ -2,6 +2,8 @@ from threading import Lock
 import os
 from multiprocessing import Queue
 
+# MIMIC = True
+MIMIC = False
 
 topdir = os.path.abspath(os.path.join(os.path.dirname(__file__),".."))
 appfolder = os.path.abspath(os.path.join(topdir, "app"))
@@ -14,20 +16,15 @@ upgradefolder = os.path.abspath(os.path.join(topdir, "upgrade"))
 # days of keep archive data on local Rasp Pi
 RETENTION = 7
 
-# gecloud IP address
-# local
-# gecloud_ip = '10.30.30.101'
-# mycloud aliyun
-# gecloud_ip = '47.101.215.138'
-# gecloud1 aws
-# gecloud_ip = '18.163.185.136'
-# gecloud_ip = 'www.gelightingsh.com'
-gecloud_ip = 'api.gelightingsh.com'
-# gecloud_port = 5100
-# gecloud_port = 5101
-gecloud_port = 8443
-# gecloud_protocol = 'http'
-gecloud_protocol = 'https'
+if MIMIC:
+    gecloud_ip = '10.30.30.101'
+    gecloud_port = 5100
+    gecloud_protocol = 'http'
+else:
+    gecloud_ip = 'api.gelightingsh.com'
+    gecloud_port = 8443
+    gecloud_protocol = 'https'
+
 
 
 # called by lib.mycmd.py

@@ -130,7 +130,6 @@ class Device(db_mysql.Model):
             d_innotech_131,
             d_innotech_132,
             d_innotech_133,
-            d_innotech_48,
             d_innotech_49,
             d_innotech_51,
             d_innotech_52,
