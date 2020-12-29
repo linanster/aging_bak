@@ -221,6 +221,7 @@ function run_gotool() {
 }
 
 function run_resetdb(){
+    activate_venv
     python3 manage.py deletedb_mysql --table
     python3 manage.py deletedb_sqlite --table
     python3 manage.py createdb_mysql --table --data
