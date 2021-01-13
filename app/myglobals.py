@@ -22,8 +22,10 @@ if MIMIC:
     gecloud_protocol = 'http'
 else:
     gecloud_ip = 'api.gelightingsh.com'
-    gecloud_port = 8443
-    gecloud_protocol = 'https'
+    # gecloud_port = 8443
+    # gecloud_protocol = 'https'
+    gecloud_port = 5100
+    gecloud_protocol = 'http'
 
 
 
