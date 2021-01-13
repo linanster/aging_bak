@@ -15,7 +15,7 @@ from app.fcode import FCODE
 def check_gecloud_connection():
     method = 'GET'
     ############################################
-    url = "{}://{}:{}/api/rasp/ping".format(gecloud_protocol, gecloud_ip, gecloud_port)
+    url = "{}://{}:{}/api/rasp/ping?fcode={}".format(gecloud_protocol, gecloud_ip, gecloud_port, FCODE)
     ############################################
     headers = {}
     payload = {}
@@ -37,7 +37,7 @@ def check_upgrade_pin(pin):
     if pin == 'youdonotknowme':
         return True
     ############################################
-    url = '{}://{}:{}/api/rasp/verifypin'.format(gecloud_protocol, gecloud_ip, gecloud_port)
+    url = '{}://{}:{}/api/rasp/verifypin?fcode={}'.format(gecloud_protocol, gecloud_ip, gecloud_port, FCODE)
     ############################################
     payload = 'pin={}'.format(pin)
     headers = {
@@ -50,7 +50,7 @@ def notice_cloud_oplog(json_oplog):
     # 1. send message via http post method
     method = 'POST'
     ############################################
-    url = "{}://{}:{}/api/rasp//upgradenotice".format(gecloud_protocol, gecloud_ip, gecloud_port)
+    url = "{}://{}:{}/api/rasp/upgradenotice?fcode={}".format(gecloud_protocol, gecloud_ip, gecloud_port, FCODE)
     ############################################
     headers = {
         'Authorization': 'Basic dXNlcjE6MTIzNDU2',
@@ -142,7 +142,7 @@ def upload_to_cloud():
         # 3. send message via http post method
         method = 'PUT'
         ############################################
-        url = "{}://{}:{}/api/rasp/upload".format(gecloud_protocol, gecloud_ip, gecloud_port)
+        url = "{}://{}:{}/api/rasp/upload?fcode={}".format(gecloud_protocol, gecloud_ip, gecloud_port, FCODE)
         ############################################
         headers = {
             'Authorization': 'Basic dXNlcjE6MTIzNDU2',
