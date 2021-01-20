@@ -151,7 +151,8 @@ function run_upgrade_legacy(){
 function run_upgrade(){
     activate_venv
     sleep 1
-    git pull --quiet origin master>/dev/null && { echo "pull master latest success"; exit 0; } ||  { echo "pull master latest error"; exit 1; }
+    # git pull --quiet origin master>/dev/null && { echo "pull master latest success"; exit 0; } ||  { echo "pull master latest error"; exit 1; }
+    git pull --quiet origin b1_auto:b1_auto>/dev/null && { echo "pull b1_auto latest success"; exit 0; } ||  { echo "pull b1_auto latest error"; exit 1; }
 }
 
 function run_logmonitor() {

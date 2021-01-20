@@ -12,6 +12,7 @@
             <button type="submit" class="btn btn-primary" {% if results|count == 0 %}disabled{% endif %}>下载报表</button>
         </form>
         &nbsp;&nbsp;&nbsp;&nbsp;
+        <!--
         <form style="display: inline" action="{{ url_for('blue_test.cmd_allon') }}" method="post">
             <button type="submit" class="btn btn-success" {% if results|count == 0 %}disabled{% endif %}>全部点亮</button>
         </form>
@@ -43,6 +44,7 @@
                 <button type="submit" class="btn btn-success" {% if results|count == 0 %}disabled{% endif %}>指示灯B</button>
             </form>
         {% endif %}
+        -->
     </div>
 
 
@@ -63,7 +65,7 @@
                 <form action="{{ url_for('blue_test.vf_cmd_blink_single') }}" method="post">
                     <input type="hidden" name="index" value="{{ loop.index }}"/>
                     <input type="hidden" name="mac" value="{{ result.mac_ble }}"/>
-                    <button type="submit" class="btn btn-primary btn-xs">闪烁</button>
+                    <button type="submit" class="btn btn-primary btn-xs" disabled>闪烁</button>
                 </form>
             </td>
             </tr>

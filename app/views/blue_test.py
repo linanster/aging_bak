@@ -117,7 +117,8 @@ def pre_cmd_start():
 @viewfunclog
 def cmd_start():
     start()
-    watch_to_blink()
+    # leedarson auto requirement 2021.01.20
+    # watch_to_blink()
     watch_timeout()
     watch_to_jump()
     return redirect(url_for('blue_test.vf_running')) 
