@@ -116,6 +116,8 @@ class Device(db_mysql.Model):
 
         # add 2021.03.24 as Jay asked
         d_139 = Device(139, '0x8B', 'Full Color Light Strip')
+        # add 2021.03.29 as Jialing asked
+        d_140 = Device(140, '0x8C', 'Cync Dule Mode Full color PAR38')
 
         # todo
         d_test_255 = Device(255, '0xFF', 'TestDevice')
@@ -171,6 +173,7 @@ class Device(db_mysql.Model):
             d_134,
             d_68,
             d_139,
+            d_140,
         ]
 
         devices_test = [d_test_255,]
