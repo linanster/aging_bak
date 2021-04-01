@@ -14,7 +14,7 @@ from app.lib import viewfunclog
 from app.lib import logger_app
 from app.lib import gen_excel, empty_folder
 from app.lib.myutils import write_json_to_file
-from app.lib.mycmd import reset_all
+from app.lib.mycmd import reset_all, broadcast
 from app.lib.tools import set_sqlite_value3, get_sqlite_value3
 from app.lib.cloudhandler import check_gecloud_connection, upload_to_cloud
 from app.lib.execmodel import update_testdatas_fcode, update_testdatas_devicecode, update_testdatas_bool_qualified_overall
@@ -61,7 +61,8 @@ def vf_tips_mcu():
 @blue_test.route('/start')
 @viewfunclog
 def vf_start():
-    return render_template('test_start.html')
+    msg = request.args.get('msg', '')
+    return render_template('test_start.html', msg=msg)
 
 @blue_test.route('/running')
 @viewfunclog
@@ -94,6 +95,17 @@ def vf_reset():
     return render_template('test_reset.html')
 
 # button & command
+
+@blue_test.route('/cmd_broadcast', methods=['POST'])
+@viewfunclog
+def cmd_broadcast():
+    logger_app.warn('click broadcast button')
+    errno = broadcast()
+    if errno == 0:
+        msg = 'Broadcast done'
+    else:
+        msg = 'Boradcast error'
+    return redirect(url_for('blue_test.vf_start', msg=msg))
 
 @blue_test.route('/pre_cmd_start', methods=['POST'])
 @viewfunclog

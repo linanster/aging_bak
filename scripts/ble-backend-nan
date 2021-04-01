@@ -10,6 +10,7 @@ usage=$"Usage: ble-backend
     -command=allkickout
     -command=indrgb -color=0/1/2/3
     -command=reset
+    -command=broadcast
 \n"
 
 if [ $# -eq 0 ]; then
@@ -90,6 +91,11 @@ while [ $# -gt 0 ]; do
       fi
       ;;
     -command=reset)
+      sleep 3
+      exit 0
+      ;;
+    -command=broadcast)
+      echo "blebackend broadcast output"
       sleep 3
       exit 0
       ;;

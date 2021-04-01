@@ -214,6 +214,11 @@ def start():
     set_errno(errno)
     logger_app.info('==测试结束==')
     return errno
+
+def broadcast():
+    # time.sleep(5)
+    errno = _gosubprocess("./ble-backend -command=broadcast")
+    return errno
     
 
 @processmaker
