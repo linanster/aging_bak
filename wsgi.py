@@ -199,7 +199,7 @@ def gecloud_conn_info():
 def devicecode_broadcast_applicable():
     from app.lib.tools import get_devicecode
     devicecode = get_devicecode()
-    tab_applicable = [68, 134, 135, 136, 137, 138, 139]
+    tab_applicable = [68, 134, 135, 136, 137, 138, 139, 140]
     if devicecode in tab_applicable:
         return True
     else:
