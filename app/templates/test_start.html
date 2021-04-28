@@ -1,7 +1,36 @@
 {% extends '_mybase.html' %}
 
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/my.css') }}">
+{% endblock styles %}
+
 {% block scripts %}
     {{ super() }}
+    <script type="text/javascript">
+        //弹出隐藏层
+        function ShowDiv(show_div,bg_div){
+            document.getElementById(show_div).style.display='block';
+            document.getElementById(bg_div).style.display='block' ;
+            var bgdiv = document.getElementById(bg_div);
+            bgdiv.style.width = document.body.scrollWidth;
+            bgdiv.style.height = $(document).height();
+            //$("#"+bg_div).height($(document).height());
+        };
+    </script>
+    <script type="text/javascript" charset="utf-8">
+        var c = 0
+        var t
+        function timedCount() {
+            document.getElementById('timer').innerHTML = c
+            c = c + 1
+            t = setTimeout("timedCount()", 1000)
+        }
+        $('#btn_broadcast').click(function(){
+            timedCount();
+        });
+    </script>
+
 {% endblock scripts %}
 
 {% block indent_content %}
@@ -10,7 +39,7 @@
 
     <div class="btn-group">
         <form style="display: inline" action="{{ url_for('blue_test.cmd_broadcast') }}" method="post">
-            <button type="submit" class="btn btn-success" {% if not devicecode_broadcast_applicable() %}disabled{% endif %}>广播</button>
+            <button id="btn_broadcast" type="submit" class="btn btn-success" {% if not devicecode_broadcast_applicable() %}disabled{% endif %} onclick="ShowDiv('MyDiv','fade')">广播</button>
         </form>
         <form style="display: inline" id='start' action="{{ url_for('blue_test.pre_cmd_start') }}" method="post">
             {# <button type="submit" class="btn btn-success" {% if get_count_stage()>10000 %}disabled{% endif %}>开始</button> #}
@@ -31,6 +60,16 @@
         <tbody>
         </tbody>
     </table>
+
+    <!--弹出层时背景层DIV-->
+    <div id="fade" class="black_overlay">
+    </div>
+    <div id="MyDiv" class="white_content">
+        <div style="text-align: right; cursor: default; height: 40px;">
+        </div>
+        <h3 style="display: inline">请等待后台广播完成...</h3>
+        <h3 id="timer" style="display: inline"></h3>
+    </div>
 
 {% endblock %}
 
