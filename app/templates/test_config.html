@@ -10,9 +10,10 @@
     <form action="{{ url_for('blue_test.vf_cmd_saveconfig') }}" method="post" class="form-horizontal" onsubmit="return validate_form(this)">
         <fieldset>
             <legend>测试配置</legend>
-
+            <h4>必选项</h4>
+            <hr>
             <div class="form-group" style="width:50%">
-                <label for="devicecode" class="col-lg-2 control-label">设备类型(必选)</label>
+                <label for="devicecode" class="col-lg-2 control-label">设备类型</label>
                 <div class="col-lg-10">
                     <select class="form-control" id="devicecode" name="devicecode">
                         <option value="" style='display: none'>-</option>
@@ -26,7 +27,7 @@
             </div>
 
             <div class="form-group" style="width:50%">
-                <label for="totalcount" class="col-lg-2 control-label">设备数量(必选)</label>
+                <label for="totalcount" class="col-lg-2 control-label">设备数量</label>
                 <div class="col-lg-10">
                     <select class="form-control" id="totalcount" name="totalcount">
                         <option value="" style='display: none'>-</option>
@@ -39,14 +40,16 @@
             </div>
 
             <div class="form-group" style="width:50%">
-                <label for="totalcount" class="col-lg-2 control-label">固件版本(必选)</label>
+                <label for="totalcount" class="col-lg-2 control-label">固件版本</label>
                 <div class="col-lg-10">
                     <input type="text" class="form-control" id="fwversion" name="fwversion" placeholder="有效范围: 10000-99999">
                 </div>
             </div>  
 
+            <h4>可选项</h4>
+            <hr>
             <div class="form-group" style="width:50%">
-                <label for="mcuversion" class="col-lg-2 control-label">MCU版本(可选)</label>
+                <label for="mcuversion" class="col-lg-2 control-label">MCU版本</label>
                 <div class="col-lg-10">
                     <select class="form-control" id="mcuversion" name="mcuversion">
                         <option value="" style='display: none'>-</option>
@@ -64,7 +67,7 @@
             </div>
 
             <div class="form-group" style="width:50%">
-                <label for="ble_strength_low" class="col-lg-2 control-label">自定义BLE强度阈值(可选)</label>
+                <label for="ble_strength_low" class="col-lg-2 control-label">自定义BLE强度阈值</label>
                 <div class="col-lg-10">
                     <select class="form-control" id="ble_strength_low" name="ble_strength_low", defaultValue=-100>
                         <option value="" style='display: none'>-</option>
@@ -82,7 +85,7 @@
             </div>
 
             <div class="form-group" style="width:50%">
-                <label for="wifi_strength_low" class="col-lg-2 control-label">自定义WIFI强度阈值(可选)</label>
+                <label for="wifi_strength_low" class="col-lg-2 control-label">自定义WIFI强度阈值</label>
                 <div class="col-lg-10">
                     <select class="form-control" id="wifi_strength_low" name="wifi_strength_low" defaultValue=-110>
                         <option value="" style='display: none'>-</option>
@@ -100,27 +103,41 @@
             </div>
 
             <div class="form-group" style="width:50%">
-                <label class="col-lg-2 control-label">wifi_mac_low(可选)</label>
+                <label class="col-lg-2 control-label">wifi_mac_low</label>
                 <div class="col-lg-10">
                     <input type="text" class="form-control" id="wifi_mac_low" name="wifi_mac_low" placeholder="例如:123456789A00">
                 </div>
             </div>
             <div class="form-group" style="width:50%">
-                <label class="col-lg-2 control-label">wifi_mac_high(可选)</label>
+                <label class="col-lg-2 control-label">wifi_mac_high</label>
                 <div class="col-lg-10">
                     <input type="text" class="form-control" id="wifi_mac_high" name="wifi_mac_high" placeholder="例如:123456789AFF">
                 </div>
             </div>
             <div class="form-group" style="width:50%">
-                <label class="col-lg-2 control-label">ble_mac_low(可选)</label>
+                <label class="col-lg-2 control-label">ble_mac_low</label>
                 <div class="col-lg-10">
                     <input type="text" class="form-control" id="ble_mac_low" name="ble_mac_low" placeholder="例如:123456789A00">
                 </div>
             </div>
             <div class="form-group" style="width:50%">
-                <label class="col-lg-2 control-label">ble_mac_high(可选)</label>
+                <label class="col-lg-2 control-label">ble_mac_high</label>
                 <div class="col-lg-10">
                     <input type="text" class="form-control" id="ble_mac_high" name="ble_mac_high" placeholder="例如:123456789AFF">
+                </div>
+            </div>
+
+            <div class="form-group" style="width:50%">
+                <label for="factory_stream_id" class="col-lg-2 control-label">产线ID</label>
+                <div class="col-lg-10">
+                    <select class="form-control" id="factory_stream_id" name="factory_stream_id">
+                        <option value="" style='display: none'>-</option>
+                        <option value={{ 0 }}> - </option>
+                        {% for i in range(1,10) %}
+                            <option value={{ i }}>{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
                 </div>
             </div>
 

@@ -15,7 +15,7 @@ from app.lib import logger_app
 from app.lib import gen_excel, empty_folder
 from app.lib.myutils import write_json_to_file
 from app.lib.mycmd import reset_all, broadcast
-from app.lib.tools import set_sqlite_value3, get_sqlite_value3
+from app.lib.tools import set_sqlite_value3, get_sqlite_value3, set_sqlite_value2
 from app.lib.cloudhandler import check_gecloud_connection, upload_to_cloud
 from app.lib.execmodel import update_testdatas_fcode, update_testdatas_devicecode, update_testdatas_bool_qualified_overall
 
@@ -183,6 +183,7 @@ def vf_cmd_saveconfig():
     wifi_mac_high = request.form.get('wifi_mac_high', type=str) or '000000000000'
     ble_mac_low = request.form.get('ble_mac_low', type=str) or '000000000000'
     ble_mac_high = request.form.get('ble_mac_high', type=str) or '000000000000'
+    factory_stream_id = request.form.get('factory_stream_id', type=int) or 0
     # print('==wifi_mac_low==', wifi_mac_low)
     # print('==wifi_mac_high', wifi_mac_high)
     # print('==ble_mac_low==', ble_mac_low)
@@ -203,9 +204,11 @@ def vf_cmd_saveconfig():
     set_sqlite_value3('r_wifi_mac_high', wifi_mac_high)
     set_sqlite_value3('r_ble_mac_low', ble_mac_low)
     set_sqlite_value3('r_ble_mac_high', ble_mac_high)
+    set_sqlite_value2('r_factory_stream_id', factory_stream_id)
 
     dict_params = {
         'devicecode': devicecode,
+        'factory_stream_id': factory_stream_id,
         'totalcount': totalcount,
         'fwversion': fwversion,
         'mcuversion': mcuversion,

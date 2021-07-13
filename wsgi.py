@@ -59,6 +59,10 @@ def ble_mac_low():
 def ble_mac_high():
     from app.lib.tools import get_sqlite_value3
     return get_sqlite_value3('r_ble_mac_high')
+@application_ge_aging.template_global('factory_stream_id')
+def factory_stream_id():
+    from app.lib.tools import get_sqlite_value2
+    return get_sqlite_value2('r_factory_stream_id')
 
 @application_ge_aging.template_global('progress')
 def progress():
