@@ -107,10 +107,10 @@
                     "json"
                 );
             });
-            $("#btn7_reset_db").click(function(){
+            $("#btn7_reset_sqlite").click(function(){
                 if(window.confirm("确认重置数据库吗?")==false)
                     return false;
-                var cmd = "/root/aging/run.sh --resetdb";
+                var cmd = "/root/aging/run.sh --resetdb_sqlite";
                 var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_retcode') }}" + "?cmd=" + cmd;
                 $.post(
                     url,
@@ -119,8 +119,26 @@
                             msg='成功';
                         else
                             msg='失败';
-                        $('#p7_reset_db').css('color', 'red');
-                        $('#p7_reset_db').html(msg);
+                        $('#p7_reset_sqlite').css('color', 'red');
+                        $('#p7_reset_sqlite').html(msg);
+                    },
+                    "json"
+                );
+            });
+            $("#btn8_reset_mysql").click(function(){
+                if(window.confirm("确认重置数据库吗?")==false)
+                    return false;
+                var cmd = "/root/aging/run.sh --resetdb_mysql";
+                var url = location.protocol + '//' + document.domain + ':' + location.port + "{{ url_for('api_cmd_retcode') }}" + "?cmd=" + cmd;
+                $.post(
+                    url,
+                    function(data){
+                        if(data.retcode==0)
+                            msg='成功';
+                        else
+                            msg='失败';
+                        $('#p8_reset_mysql').css('color', 'red');
+                        $('#p8_reset_mysql').html(msg);
                     },
                     "json"
                 );
@@ -156,9 +174,14 @@
     <p id="p3_reset" style="display: inline"></p>
     <br>
     <br>
-    <input type="button" id="btn7_reset_db" value="重置数据库">
-    <p style="display: inline">清除数据库mysql和sqlite的全部数据，并升级库表 </p>
-    <p id="p7_reset_db" style="display: inline"></p>
+    <input type="button" id="btn7_reset_sqlite" value="重置Sqlite数据库">
+    <p style="display: inline">清除数据库Sqlite的全部数据，并升级库表 </p>
+    <p id="p7_reset_sqlite" style="display: inline"></p>
+    <br>
+    <br>
+    <input type="button" id="btn8_reset_mysql" value="重置Mysql数据库">
+    <p style="display: inline">清除数据库Mysql的全部数据，并升级库表 </p>
+    <p id="p8_reset_mysql" style="display: inline"></p>
 
 
 {% endblock %}

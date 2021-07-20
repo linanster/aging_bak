@@ -14,7 +14,9 @@ Usage: run.sh --start [--nodaemon]
               --upgrade
               --logmonitor --start/--stop/--status
               --gotool --start/--stop/--status
-              --resetdb
+              --resetdb_all
+              --resetdb_sqlite
+              --resetdb_mysql
 "
 
 workdir=$(cd "$(dirname $0)" && pwd)
@@ -220,12 +222,19 @@ function run_gotool() {
     exit 0
 }
 
-function run_resetdb(){
+function run_resetdb_sqlite(){
+    activate_venv
+    python3 manage.py deletedb_sqlite --table
+    python3 manage.py createdb_sqlite --table --data
+}
+function run_resetdb_mysql(){
     activate_venv
     python3 manage.py deletedb_mysql --table
-    python3 manage.py deletedb_sqlite --table
     python3 manage.py createdb_mysql --table --data
-    python3 manage.py createdb_sqlite --table --data
+}
+function run_resetdb_all(){
+    run_resetdb_sqlite
+    run_resetdb_mysql
 }
 
 if [ $# -eq 0 ]; then
@@ -269,8 +278,14 @@ if [ $# -ge 1 ]; then
     --gotool)
         run_gotool $2
         ;;
-    --resetdb)
-        run_resetdb
+    --resetdb_all)
+        run_resetdb_all
+        ;;
+    --resetdb_sqlite)
+        run_resetdb_sqlite
+        ;;
+    --resetdb_mysql)
+        run_resetdb_mysql
         ;;
     *)
         echo "$usage"
