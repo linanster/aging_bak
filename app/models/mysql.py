@@ -119,6 +119,21 @@ class Device(db_mysql.Model):
         # add 2021.03.29 as Jialing asked
         d_140 = Device(140, '0x8C', 'Cync Dule Mode Full color PAR38')
 
+        # add 2021.08.12 as "Go Fast Project" email asked
+        d_142 = Device(142, '0x8E', 'Canless Fixture 4 inches Full color')
+        d_143 = Device(143, '0x8F', 'Canless Fixture 6 inches Full color')
+        d_144 = Device(144, '0x90', 'Canless Fixture 4 inches Tunable white')
+        d_145 = Device(145, '0x91', 'Canless Fixture 6 inches Tunable white')
+        d_146 = Device(146, '0x92', 'Decorative bulb RGBW ST19')
+        d_147 = Device(147, '0x93', 'Decorative bulb RGBW G25')
+        d_148 = Device(148, '0x94', 'Decorative bulb SW ST19')
+        d_149 = Device(149, '0x95', 'Decorative bulb SW G25')
+        d_150 = Device(150, '0x96', 'Decorative bulb SW BC')
+        d_151 = Device(151, '0x97', 'Decorative bulb SW BM')
+        d_152 = Device(152, '0x98', 'Reveal Soft white A19')
+        d_153 = Device(153, '0x99', 'Reveal Full color A19')
+
+
         # todo
         d_test_255 = Device(255, '0xFF', 'TestDevice')
 
@@ -174,6 +189,18 @@ class Device(db_mysql.Model):
             d_68,
             d_139,
             d_140,
+            d_142,
+            d_143,
+            d_144,
+            d_145,
+            d_146,
+            d_147,
+            d_148,
+            d_149,
+            d_150,
+            d_151,
+            d_152,
+            d_153,
         ]
 
         devices_test = [d_test_255,]
