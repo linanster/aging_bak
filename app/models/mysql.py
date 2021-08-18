@@ -132,6 +132,10 @@ class Device(db_mysql.Model):
         d_151 = Device(151, '0x97', 'Decorative bulb SW BM')
         d_152 = Device(152, '0x98', 'Reveal Soft white A19')
         d_153 = Device(153, '0x99', 'Reveal Full color A19')
+        # add extra devices on 2021.08.18
+        d_154 = Device(154, '0x9A', 'Reveal Full color BR30')
+        d_155 = Device(155, '0x9B', 'Entertainment Full color A19')
+        d_157 = Device(157, '0x9D', 'Entertainment Full color BR30')
 
 
         # todo
@@ -201,6 +205,9 @@ class Device(db_mysql.Model):
             d_151,
             d_152,
             d_153,
+            d_154,
+            d_155,
+            d_157,
         ]
 
         devices_test = [d_test_255,]
