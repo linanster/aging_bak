@@ -15,7 +15,7 @@ from app.lib import gen_excel, empty_folder, gen_csv
 from app.lib import exec_upgrade, check_github_connection
 from app.lib.cloudhandler import upload_to_cloud
 
-from app.myglobals import logfolder, gofolder, topdir
+from app.myglobals import logfolder, gofolder, topdir, FCODES
 
 blue_manage = Blueprint('blue_manage', __name__, url_prefix='/manage')
 
@@ -30,7 +30,8 @@ def vf_factory():
     fcode = get_factorycode() 
     if fcode == 0:
         results = Factory.query.all()
-    elif fcode in (1, 2, 3, 4, 5, 6):
+    # elif fcode in (1, 2, 3, 4, 5, 6, 7):
+    elif fcode in FCODES:
         result = Factory.query.filter_by(code=fcode).first()
         results = [result,]
     else:
@@ -45,20 +46,6 @@ def vf_factory():
 @blue_manage.route('/device', methods=['GET'])
 @viewfunclog
 def vf_device():
-    # fcode = get_factorycode()
-    # if fcode == 0:
-    #     results = Device.query.all()
-    # elif fcode in (1, 2, 3, 4, 5):
-    #     # factory = Factory.query.filter(Factory.code.__eq__(fcode)).first()
-    #     factory = Factory.query.filter(Factory.code == fcode).first()
-    #     results = factory.devices
-    # elif fcode in (6,):
-    #     d_leedarson_128 = Device.query.filter(Device.code == 128).first()
-    #     results = [d_leedarson_128, ]
-    # else:
-    #     results = list()
-    # results = Device.query.all()
-    # return render_template('manage_device.html', results=results)
     return render_template('manage_device.html')
 
 

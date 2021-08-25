@@ -34,22 +34,6 @@ def vf_error():
 @blue_test.route('/config')
 @viewfunclog
 def vf_config():
-    # fcode = get_factorycode()
-    # if fcode == 0:
-    #     devices = Device.query.all()
-    # elif fcode in (1, 2, 3, 4, 5):
-    #     # factory = Factory.query.filter(Factory.code.__eq__(fcode)).first()
-    #     factory = Factory.query.filter(Factory.code == fcode).first()
-    #     devices = factory.devices
-    # elif fcode in (6, ):
-    #     d_leedarson_128 = Device.query.filter(Device.code == 128).first()
-    #     devices = [d_leedarson_128, ]
-    # else:
-    #     devices = list()
-
-    # devices = Device.query.all()
-    # return render_template('test_config.html', devices=devices)
-
     return render_template('test_config.html')
 
 @blue_test.route('/tips_mcu')

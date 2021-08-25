@@ -41,3 +41,14 @@ MAX_UNUPLOAD_ALLOWED = 15000
 # called by wsgi.py/count_archive_exceed()
 # MAX_ARCHIVED_ALLOWED = 300
 MAX_ARCHIVED_ALLOWED = 65000
+
+# all supported fcodes
+# 1 -- Leedarson
+# 2 -- Innotech
+# 3 -- Tonly
+# 4 -- Changhong
+# 5 -- TestFactory
+# 6 -- Topstar
+# 7 -- FSL
+FCODES = [1, 2, 3, 4, 5, 6, 7]
+
