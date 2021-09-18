@@ -201,13 +201,14 @@ def gecloud_conn_info():
 
 @application_ge_aging.template_global('devicecode_broadcast_applicable')
 def devicecode_broadcast_applicable():
-    from app.lib.tools import get_devicecode
-    devicecode = get_devicecode()
-    tab_applicable = [68, 134, 135, 136, 137, 138, 139, 140]
-    if devicecode in tab_applicable:
-        return True
-    else:
-        return False
+    # from app.lib.tools import get_devicecode
+    # devicecode = get_devicecode()
+    # tab_applicable = [68, 134, 135, 136, 137, 138, 139, 140]
+    # if devicecode in tab_applicable:
+    #     return True
+    # else:
+    #     return False
+    return True
 
 @application_ge_aging.template_filter('parse_is_qualified')
 def parseIsQualified(mybool):
